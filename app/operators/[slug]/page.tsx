@@ -1,4 +1,4 @@
-export const revalidate = 60
+export const revalidate = 86400
  
 export async function generateStaticParams() {
   const chars: any[] = await fetch('https://api.closure.wiki/en/operators').then((res) => res.json())

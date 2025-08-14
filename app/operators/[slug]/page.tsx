@@ -1,4 +1,9 @@
 import CarouselGallery from "@/components/carousel-gallery"
+import { ErrorBoundary } from "@/components/error-boundary"
+import PotentialsTable from "@/components/operators/potentials-table"
+import SkillsTable from "@/components/operators/skills-table"
+import StatsTable from "@/components/operators/stats-table"
+import TalentsTable from "@/components/operators/talent-table"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,7 +19,7 @@ export const revalidate = 86400
  
 export async function generateStaticParams() {
   const chars: any[] = await fetch('https://api.closure.wiki/en/operators').then((res) => res.json())
-  return chars.slice(0, 10).map((char) => ({
+  return chars.map((char) => ({
     slug: String(char.slug),
   }))
 }
@@ -57,11 +62,28 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     });
   });
 
+  const charRarityMap: Record<string, number> = {
+    TIER_6: 6,
+    TIER_5: 5,
+    TIER_4: 4,
+    TIER_3: 3,
+    TIER_2: 2,
+    TIER_1: 1,
+    TIER_0: 0,
+  };
+
   return (
-    <div className="flex flex-1 flex-col gap-4 p-8 mx-auto w-full max-w-5xl">
-      <div>
-        <h1 className="mb-2 text-3xl font-semibold">{data.meta.name}</h1>
-        <Breadcrumb>
+    <div className="flex flex-1 flex-col gap-8 p-8 mx-auto w-full max-w-6xl">
+      <section>
+        <div className="flex items-center justify-between mb-2">
+          <h1 className="text-3xl font-semibold">{data.meta.name}</h1>
+          <div className="flex items-center ml-4">
+            <span className="flex text-yellow-400 text-3xl font-bold">
+              {"★".repeat(charRarityMap[data.char.rarity] ?? 0)}
+            </span>
+          </div>
+        </div>
+        <Breadcrumb className="mb-4">
           <BreadcrumbList>
             <BreadcrumbItem><BreadcrumbLink href="/home">Home</BreadcrumbLink></BreadcrumbItem>
             <BreadcrumbSeparator>/</BreadcrumbSeparator>
@@ -70,125 +92,86 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             <BreadcrumbItem><BreadcrumbPage>{data.meta.name}</BreadcrumbPage></BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-      </div>
-      <Separator />
-      <CarouselGallery images={images} />
+        <Separator className="mb-4" />
+        {images && images.length > 0 && (
+          <section>
+            <CarouselGallery images={images} />
+          </section>
+        )}
+      </section>
 
-            {data.char.phases && data.char.phases.length > 0 && (
+      {data.char.phases && data.char.phases.length > 0 && (
         <section>
-          <h2 className="text-xl font-semibold mb-1">Stats</h2>
+          <h2 className="text-2xl font-semibold mb-2">Attributes</h2>
           <Separator className="mb-4" />
-          <div className="flex flex-col gap-4">
-            {(() => {
-  try {
-    return (
-      <table className="w-full table-fixed border-collapse bg-muted">
-        <thead className="bg-gray-200 dark:bg-card text-sm md:text-sm">
-          <tr>
-            <th />
-            <th className="p-1 text-center">E0 Lv1</th>
-            {data.char.phases[0] && (<th className="p-1 text-center">E0 Lv{data.char.phases[0].attributesKeyFrames[1].level}</th>)}
-            {data.char.phases[1] && (<th className="p-1 text-center">E1 Lv{data.char.phases[1].attributesKeyFrames[1].level}</th>)}
-            {data.char.phases[2] && (<th className="p-1 text-center">E2 Lv{data.char.phases[2].attributesKeyFrames[1].level}</th>)}
-            <th className="p-1 text-center">Trust Bonus</th>
-          </tr>
-        </thead>
-        <tbody className="text-sm md:text-sm">
-          <tr>
-            <td className="bg-gray-200 dark:bg-card p-1 text-center font-semibold">HP</td>
-            <td className="border-t p-1 text-center">{data.char.phases[0].attributesKeyFrames[0].data.maxHp}</td>
-            {data.char.phases[0] && (<td className="border-t p-1 text-center">{data.char.phases[0].attributesKeyFrames[1].data.maxHp}</td>)}
-            {data.char.phases[1] && (<td className="border-t p-1 text-center">{data.char.phases[1].attributesKeyFrames[1].data.maxHp}</td>)}
-            {data.char.phases[2] && (<td className="border-t p-1 text-center">{data.char.phases[2].attributesKeyFrames[1].data.maxHp}</td>)}
-            <td className="border-t p-1 text-center">{data.char.favorKeyFrames[1].data.maxHp}</td>
-          </tr>
-          <tr>
-            <td className="bg-gray-200 dark:bg-card p-1 text-center font-semibold">ATK</td>
-            <td className="border-t p-1 text-center">{data.char.phases[0].attributesKeyFrames[0].data.atk}</td>
-            {data.char.phases[0] && (<td className="border-t p-1 text-center">{data.char.phases[0].attributesKeyFrames[1].data.atk}</td>)}
-            {data.char.phases[1] && (<td className="border-t p-1 text-center">{data.char.phases[1].attributesKeyFrames[1].data.atk}</td>)}
-            {data.char.phases[2] && (<td className="border-t p-1 text-center">{data.char.phases[2].attributesKeyFrames[1].data.atk}</td>)}
-            <td className="border-t p-1 text-center">{data.char.favorKeyFrames[1].data.atk}</td>
-          </tr>
-          <tr>
-            <td className="bg-gray-200 dark:bg-card p-1 text-center font-semibold">DEF</td>
-            <td className="border-t p-1 text-center">{data.char.phases[0].attributesKeyFrames[0].data.def}</td>
-            {data.char.phases[0] && (<td className="border-t p-1 text-center">{data.char.phases[0].attributesKeyFrames[1].data.def}</td>)}
-            {data.char.phases[1] && (<td className="border-t p-1 text-center">{data.char.phases[1].attributesKeyFrames[1].data.def}</td>)}
-            {data.char.phases[2] && (<td className="border-t p-1 text-center">{data.char.phases[2].attributesKeyFrames[1].data.def}</td>)}
-            <td className="border-t p-1 text-center">{data.char.favorKeyFrames[1].data.def}</td>
-          </tr>
-          <tr>
-            <td className="bg-gray-200 dark:bg-card p-1 text-center font-semibold">RES</td>
-            <td className="border-t p-1 text-center">{data.char.phases[0].attributesKeyFrames[0].data.magicResistance}</td>
-            {data.char.phases[0] && (<td className="border-t p-1 text-center">{data.char.phases[0].attributesKeyFrames[1].data.magicResistance}</td>)}
-            {data.char.phases[1] && (<td className="border-t p-1 text-center">{data.char.phases[1].attributesKeyFrames[1].data.magicResistance}</td>)}
-            {data.char.phases[2] && (<td className="border-t p-1 text-center">{data.char.phases[2].attributesKeyFrames[1].data.magicResistance}</td>)}
-            <td className="border-t p-1 text-center">{data.char.favorKeyFrames[1].data.magicResistance}</td>
-          </tr>
-        </tbody>
-      </table>
-    );
-  } catch (e) {
-    console.error('Error rendering stats:', e);
-    return null;
-  }
-            })()}
-            {(() => {
-  try {
-    return (
-      <table className="w-full table-fixed border-collapse bg-muted text-sm md:text-sm">
-        <colgroup>
-          <col style={{ width: '25%' }} />
-          <col style={{ width: '25%' }} />
-          <col style={{ width: '25%' }} />
-          <col style={{ width: '25%' }} />
-        </colgroup>
-        <tbody>
-          <tr>
-            <th className="bg-gray-200 dark:bg-card p-1 text-center">Redeployment Time</th>
-            <td className="px-2 py-1 text-center">
-              {data.char.phases[0].attributesKeyFrames[0].data.respawnTime}s
-              {data.char.phases[1] && data.char.phases[1].attributesKeyFrames[0].data.respawnTime !== data.char.phases[0].attributesKeyFrames[0].data.respawnTime &&
-                ` / ${data.char.phases[1].attributesKeyFrames[0].data.respawnTime}s`}
-              {data.char.phases[2] && data.char.phases[2].attributesKeyFrames[0].data.respawnTime !== data.char.phases[1].attributesKeyFrames[0].data.respawnTime &&
-                ` / ${data.char.phases[2].attributesKeyFrames[0].data.respawnTime}s`}
-            </td>
-            <th className="bg-gray-200 dark:bg-card p-1 text-center">DP Cost</th>
-            <td className="px-2 py-1 text-center">
-              {data.char.phases[0].attributesKeyFrames[0].data.cost}
-              {data.char.phases[1] && data.char.phases[1].attributesKeyFrames[0].data.cost !== data.char.phases[0].attributesKeyFrames[0].data.cost &&
-                ` / ${data.char.phases[1].attributesKeyFrames[0].data.cost}`}
-              {data.char.phases[2] && data.char.phases[2].attributesKeyFrames[0].data.cost !== data.char.phases[1].attributesKeyFrames[0].data.cost &&
-                ` / ${data.char.phases[2].attributesKeyFrames[0].data.cost}`}
-            </td>
-          </tr>
-          <tr>
-            <th className="bg-gray-200 dark:bg-card p-1 text-center">Block Count</th>
-            <td className="border-t px-2 py-1 text-center">
-              {data.char.phases[0].attributesKeyFrames[0].data.blockCnt}
-              {data.char.phases[1] && data.char.phases[1].attributesKeyFrames[0].data.blockCnt !== data.char.phases[0].attributesKeyFrames[0].data.blockCnt &&
-                ` / ${data.char.phases[1].attributesKeyFrames[0].data.blockCnt}`}
-              {data.char.phases[2] && data.char.phases[2].attributesKeyFrames[0].data.blockCnt !== data.char.phases[1].attributesKeyFrames[0].data.blockCnt &&
-                ` / ${data.char.phases[2].attributesKeyFrames[0].data.blockCnt}`}
-            </td>
-            <th className="bg-gray-200 dark:bg-card p-1 text-center">Attack Interval</th>
-            <td className="border-t px-2 py-1 text-center">
-              {data.char.phases[0].attributesKeyFrames[0].data.baseAttackTime}s
-              {data.char.phases[1] && data.char.phases[1].attributesKeyFrames[0].data.baseAttackTime !== data.char.phases[0].attributesKeyFrames[0].data.baseAttackTime &&
-                ` / ${data.char.phases[1].attributesKeyFrames[0].data.baseAttackTime}s`}
-              {data.char.phases[2] && data.char.phases[2].attributesKeyFrames[0].data.baseAttackTime !== data.char.phases[1].attributesKeyFrames[0].data.baseAttackTime &&
-                ` / ${data.char.phases[2].attributesKeyFrames[0].data.baseAttackTime}s`}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    );
-  } catch (e) {
-    console.error('Error rendering stats:', e);
-    return null;
-  }
-            })()}
+          <ErrorBoundary>
+            <StatsTable phases={data.char.phases} favorKeyFrames={data.char.favorKeyFrames} />
+          </ErrorBoundary>
+        </section>
+      )}
+
+      {data.char.talents && data.char.talents.length > 0 && (
+        <section>
+          <h2 className="text-2xl font-semibold mb-2">Talents</h2>
+          <Separator className="mb-4" />
+          <ErrorBoundary>
+            <TalentsTable talents={data.char.talents} />
+          </ErrorBoundary>
+        </section>
+      )}
+
+      {data.char.potentialRanks && data.char.potentialRanks.length === 5 && (
+        <section>
+          <h2 className="text-2xl font-semibold mb-2">Potentials</h2>
+          <Separator className="mb-4" />
+          <ErrorBoundary>
+            <PotentialsTable potentialRanks={data.char.potentialRanks} />
+          </ErrorBoundary>
+        </section>
+      )}
+
+      {data.charSkills && data.charSkills.length > 0 && (
+        <section>
+          <h2 className="text-2xl font-semibold mb-2">Skills</h2>
+          <Separator className="mb-4" />
+          <ErrorBoundary>
+            <SkillsTable skills={data.charSkills} />
+          </ErrorBoundary>
+        </section>
+      )}
+
+      {data.charProfile && data.charProfile.storyTextAudio && data.charProfile.storyTextAudio.length > 0 && (
+        <section>
+          <h2 className="text-2xl font-semibold mb-2">Operator File</h2>
+          <Separator className="mb-4" />
+          <div className="grid gap-4">
+            {data.charProfile.storyTextAudio.map((profile: any, idx: number) => (
+              <div className="p-6 bg-muted dark:bg-card rounded-lg shadow" key={idx} style={{ overflowWrap: 'anywhere' }}>
+                <h3 className="font-semibold mb-2">{profile.storyTitle}</h3>
+                {profile.stories && profile.stories[0]?.storyText &&
+                  <div style={{ whiteSpace: 'pre-line' }}>
+                    {profile.stories[0].storyText}
+                  </div>
+                }
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {data.charDialog && data.charDialog.length > 0 && (
+        <section>
+          <h2 className="text-2xl font-semibold mb-2">Operator Dialogue</h2>
+          <Separator className="mb-6" />
+          <div className="bg-muted dark:bg-card rounded-lg shadow p-4">
+            <ul className="space-y-4">
+              {data.charDialog.map((dialogue: any, idx: number) => (
+                <li className="flex flex-col" key={idx}>
+                  <span className="font-semibold">{dialogue.voiceTitle}</span>
+                  <span className="text-muted-foreground">{dialogue.voiceText}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
       )}

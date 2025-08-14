@@ -86,7 +86,7 @@ export default function CarouselGallery({ images }: { images: GalleryImage[] }) 
         </Button>
 
         {/* Caption */}
-        <div className="absolute right-0 bottom-0 left-0 p-4 text-sm text-white">
+        <div className="absolute right-0 bottom-0 left-0 p-4 text-xs text-white">
           <b>{images[currentIndex].title}</b><br/>{images[currentIndex].desc}
         </div>
       </div>

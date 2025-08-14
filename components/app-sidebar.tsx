@@ -36,15 +36,15 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="text-xl font-bold">Closure Wiki</span>
-                  {/* <span className="">v1.0.0</span> */}
+                  <span className="text-xl font-bold">Closure Wiki [BETA]</span>
+                  <span className="">v25-07-31</span>
                 </div>
               </a>
             </SidebarMenuButton>

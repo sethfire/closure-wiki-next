@@ -1,7 +1,7 @@
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
 
-export const revalidate = 86400
+export const revalidate = 3600
 
 export default async function Page() {
   const data: any = await fetch(`https://api.closure.wiki/en/operators`).then(

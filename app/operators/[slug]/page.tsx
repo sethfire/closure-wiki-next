@@ -12,12 +12,12 @@ import { notFound } from 'next/navigation'
 
 export const revalidate = 86400
  
-// export async function generateStaticParams() {
-//   const chars: any[] = await fetch('https://api.closure.wiki/en/operators').then((res) => res.json())
-//   return chars.slice(0, 10).map((char) => ({
-//     slug: String(char.slug),
-//   }))
-// }
+export async function generateStaticParams() {
+  const chars: any[] = await fetch('https://api.closure.wiki/en/operators').then((res) => res.json())
+  return chars.slice(0, 10).map((char) => ({
+    slug: String(char.slug),
+  }))
+}
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params

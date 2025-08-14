@@ -1,5 +1,4 @@
 import CarouselGallery from "@/components/carousel-gallery"
-import { ErrorBoundary } from "@/components/error-boundary"
 import PotentialsTable from "@/components/operators/potentials-table"
 import SkillsTable from "@/components/operators/skills-table"
 import StatsTable from "@/components/operators/stats-table"
@@ -16,7 +15,8 @@ import { Separator } from "@/components/ui/separator"
 import { notFound } from 'next/navigation'
 
 export const revalidate = 86400
- 
+export const dynamicParams = true
+
 export async function generateStaticParams() {
   const chars: any[] = await fetch('https://api.closure.wiki/en/operators').then((res) => res.json())
   return chars.map((char) => ({
@@ -104,9 +104,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <section>
           <h2 className="text-2xl font-semibold mb-2">Attributes</h2>
           <Separator className="mb-4" />
-          <ErrorBoundary>
-            <StatsTable phases={data.char.phases} favorKeyFrames={data.char.favorKeyFrames} />
-          </ErrorBoundary>
+          <StatsTable phases={data.char.phases} favorKeyFrames={data.char.favorKeyFrames} />
         </section>
       )}
 
@@ -114,9 +112,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <section>
           <h2 className="text-2xl font-semibold mb-2">Talents</h2>
           <Separator className="mb-4" />
-          <ErrorBoundary>
-            <TalentsTable talents={data.char.talents} />
-          </ErrorBoundary>
+          <TalentsTable talents={data.char.talents} />
         </section>
       )}
 
@@ -124,9 +120,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <section>
           <h2 className="text-2xl font-semibold mb-2">Potentials</h2>
           <Separator className="mb-4" />
-          <ErrorBoundary>
-            <PotentialsTable potentialRanks={data.char.potentialRanks} />
-          </ErrorBoundary>
+          <PotentialsTable potentialRanks={data.char.potentialRanks} />
         </section>
       )}
 
@@ -134,9 +128,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <section>
           <h2 className="text-2xl font-semibold mb-2">Skills</h2>
           <Separator className="mb-4" />
-          <ErrorBoundary>
-            <SkillsTable skills={data.charSkills} />
-          </ErrorBoundary>
+          <SkillsTable skills={data.charSkills} />
         </section>
       )}
 

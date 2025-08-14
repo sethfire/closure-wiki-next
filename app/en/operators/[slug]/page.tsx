@@ -85,9 +85,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         </div>
         <Breadcrumb className="mb-4">
           <BreadcrumbList>
-            <BreadcrumbItem><BreadcrumbLink href="/home">Home</BreadcrumbLink></BreadcrumbItem>
+            <BreadcrumbItem><BreadcrumbLink href="/en/home">Home</BreadcrumbLink></BreadcrumbItem>
             <BreadcrumbSeparator>/</BreadcrumbSeparator>
-            <BreadcrumbItem><BreadcrumbLink href="/operators">Operators</BreadcrumbLink></BreadcrumbItem>
+            <BreadcrumbItem><BreadcrumbLink href="/en/operators">Operators</BreadcrumbLink></BreadcrumbItem>
             <BreadcrumbSeparator>/</BreadcrumbSeparator>
             <BreadcrumbItem><BreadcrumbPage>{data.meta.name}</BreadcrumbPage></BreadcrumbItem>
           </BreadcrumbList>
@@ -148,6 +148,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             {data.charProfile.storyTextAudio.map((profile: any, idx: number) => (
               <div className="p-6 bg-muted dark:bg-card rounded-lg shadow" key={idx} style={{ overflowWrap: 'anywhere' }}>
                 <h3 className="font-semibold mb-2">{profile.storyTitle}</h3>
+                <Separator className="mb-2" />
                 {profile.stories && profile.stories[0]?.storyText &&
                   <div style={{ whiteSpace: 'pre-line' }}>
                     {profile.stories[0].storyText}

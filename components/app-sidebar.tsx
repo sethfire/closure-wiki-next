@@ -26,8 +26,12 @@ const data = {
       url: "#",
       items: [
         {
+          title: "Home",
+          url: "/en/home",
+        },
+        {
           title: "Operators",
-          url: "/operators",
+          url: "/en/operators",
         },
       ],
     },
@@ -41,7 +45,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="#">
+              <a href="/en/home">
                 <div className="flex flex-col gap-0.5 leading-none">
                   <span className="text-xl font-bold">Closure Wiki [BETA]</span>
                   <span className="">v25-07-31</span>

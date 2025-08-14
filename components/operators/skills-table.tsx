@@ -17,7 +17,8 @@ export default function SkillsTable({ skills }: { skills: any[] }) {
               <tr>
                 <th className="p-2 text-left" colSpan={5}>
                   <div className="flex items-start gap-4">
-                    <img src={`https://static.closure.wiki/v1/skills/skill_icon_${skill.skillId}.webp`} width="64" height="64" loading="lazy" />
+                    <img src={`https://static.closure.wiki/v1/skills/skill_icon_${skill.skillId}.webp`}
+                    width="64" height="64" loading="lazy" decoding="async" />
                     <div className="flex flex-col gap-2">
                       <h3 className="text-lg">{skill.levels[0].name}</h3>
                       <div className="flex flex-row gap-2">

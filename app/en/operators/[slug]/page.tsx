@@ -32,7 +32,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const data: any = await response.json()
   if (!data) notFound()
 
-  const images: any[] = [];
+  const charArts: any[] = [];
   data.charSkins.forEach((skin: any) => {
     let skinId = skin.skinId.toLowerCase();
     let avatar = "";
@@ -53,7 +53,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       title = `Elite 2`;
     }
 
-    images.push({
+    charArts.push({
       src: `https://static.closure.wiki/v1/characters/${skinId}.webp`,
       thumb: avatar.toLowerCase(),
       title: title,
@@ -93,9 +93,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           </BreadcrumbList>
         </Breadcrumb>
         <Separator className="mb-4" />
-        {images && images.length > 0 && (
+        {charArts && charArts.length > 0 && (
           <section>
-            <CarouselGallery images={images} />
+            <CarouselGallery images={charArts} />
           </section>
         )}
       </section>

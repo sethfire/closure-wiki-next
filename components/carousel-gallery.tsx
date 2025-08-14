@@ -61,6 +61,8 @@ export default function CarouselGallery({ images }: { images: GalleryImage[] }) 
                 src={image.src}
                 alt={`Image ${index + 1}`}
                 className={`h-full w-full ${image.display}`}
+                loading="lazy" 
+                decoding="async"
               />
             </div>
           ))}
@@ -111,6 +113,8 @@ export default function CarouselGallery({ images }: { images: GalleryImage[] }) 
                 width={80}
                 height={80}
                 className="h-full w-full rounded-sm object-cover"
+                loading="lazy" 
+                decoding="async"
               />
             </button>
           ))}

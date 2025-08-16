@@ -35,9 +35,9 @@ export default async function Page() {
   });
 
   return (
-    <div className="flex flex-1 flex-col gap-4 p-4 pt-8 mx-auto w-full max-w-6xl">
+    <div className="flex flex-1 flex-col gap-4 p-4 md:pt-8 mx-auto w-full max-w-6xl">
       <div>
-        <h1 className="mb-2 text-2xl md:text-3xl font-semibold">Operators</h1>
+        <h1 className="mb-2 text-2xl font-semibold">Operators</h1>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem><BreadcrumbLink href="/en/home">Home</BreadcrumbLink></BreadcrumbItem>
@@ -74,7 +74,9 @@ export default async function Page() {
                 />
               </div>
               <div className="absolute left-0 right-0 bottom-0 h-1/3 bg-gradient-to-t from-[rgba(0,0,0,0.8)] to-transparent"></div>
-              <div className="absolute bottom-0 left-0 right-0 text-white px-1 py-2 text-center font-semibold text-sm" style={{ textShadow: '0 0 4px #000, 0 0 2px #000, 1px 1px 0 #000, -1px -1px 0 #000' }}>
+              <div className="absolute bottom-0 left-0 right-0 text-white px-1 py-2 text-center font-semibold text-sm" style={{ 
+                  textShadow: '-1px 0 0 #000,1px 0 0 #000,0 -1px 0 #000,0 1px 0 #000,-1px -1px 0 #000,1px 1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000'
+                }}>
                 {char.isUnreleased && <span className="text-yellow-300">[CN] </span>}
                 {char.name}
               </div>

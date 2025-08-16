@@ -92,12 +92,12 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   };
 
   return (
-    <div className="flex flex-1 flex-col gap-8 p-4 pt-8 mx-auto w-full max-w-6xl">
+    <div className="flex flex-1 flex-col gap-8 p-4 md:pt-8 mx-auto w-full max-w-6xl">
       <section>
         <div className="flex items-center justify-between mb-2">
-          <h1 className="text-2xl md:text-3xl font-semibold">{data.meta.name}</h1>
-          <div className="flex items-center ml-4">
-            <span className="flex text-yellow-400 text-2xl md:text-3xl">
+          <h1 className="text-2xl font-semibold">{data.meta.name}</h1>
+          <div className="flex ml-4 self-start">
+            <span className="flex text-yellow-400 text-2xl">
               {"★".repeat(charRarityMap[data.char.rarity] ?? 0)}
             </span>
           </div>
@@ -118,7 +118,24 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           </section>
         )}
       </section>
-      
+
+      {/* <section>
+        <h2 className="text-xl font-semibold mb-2">Overview</h2>
+        <Separator className="mb-4" />
+        <p>Trait: {data.char.description}</p>
+        <p>Nation: {data.char.nationId}</p>
+        <p>Group: {data.char.groupId}</p>
+        <p>Team: {data.char.teamId}</p>
+        <p>Display No.: {data.char.displayNumber}</p>
+        <p>Position: {data.char.position}</p>
+        <p>Tags: {data.char.tagList.join(", ")}</p>
+        <p>Obtainable via: {data.char.itemObtainApproach}</p>
+        <p>Limited: {data.charProfile.isLimited ? "Yes" : "No"}</p>
+        <p>Class: {data.char.profession}</p>
+        <p>Branch: {data.char.subProfessionId}</p>
+        <p>Voice Actors: {voiceActors}</p>
+      </section> */}
+
       <section>
         <h2 className="text-xl font-semibold mb-2">Description</h2>
         <Separator className="mb-4" />

@@ -19,22 +19,22 @@ import { notFound } from 'next/navigation'
 export const revalidate = 86400
 export const dynamicParams = true
 
+const getOperator = cache(async (slug: string) => {
+  const response: any = await fetch(`https://api.closure.wiki/en/operators/${slug}`);
+  if (!response.ok) notFound();
+
+  const data: any = await response.json();
+  if (!data) notFound();
+
+  return data;
+})
+
 export async function generateStaticParams() {
   const chars: any[] = await fetch('https://api.closure.wiki/en/operators').then((res) => res.json())
   return chars.map((char) => ({
     slug: String(char.slug),
   }))
 }
-
-export const getOperator = cache(async (slug: string) => {
-  const response: any = await fetch(`https://api.closure.wiki/en/operators/${slug}`);
-  if (!response.ok) notFound();
-
-  const data: any = await response.json();
-  if (!data) notFound();
-  
-  return data;
-})
 
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> },
@@ -48,9 +48,7 @@ export async function generateMetadata(
   }
 }
 
-export default async function Page(
-  { params }: { params: Promise<{ slug: string }> }
-) {
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const data: any = await getOperator(slug);
 

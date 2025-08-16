@@ -2,10 +2,6 @@
 
 import * as React from "react"
 import {
-  GalleryVerticalEnd,
-} from "lucide-react"
-
-import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
@@ -18,6 +14,8 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { Ghost, Home, Users } from "lucide-react"
+
 
 const data = {
   navMain: [
@@ -28,10 +26,17 @@ const data = {
         {
           title: "Home",
           url: "/en/home",
+          icon: Home,
         },
         {
           title: "Operators",
           url: "/en/operators",
+          icon: Users,
+        },
+        {
+          title: "Enemies",
+          url: "/en/enemies",
+          icon: Ghost,
         },
       ],
     },
@@ -64,7 +69,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
-                      <a href={item.url}>{item.title}</a>
+                      <a href={item.url}>
+                        {item.icon && <item.icon />} {item.title}
+                      </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}

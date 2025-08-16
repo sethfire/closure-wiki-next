@@ -94,15 +94,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   return (
     <div className="flex flex-1 flex-col gap-8 p-4 md:pt-8 mx-auto w-full max-w-6xl">
       <section>
-        <div className="flex items-center justify-between mb-2">
-          <h1 className="text-2xl font-semibold">{data.meta.name}</h1>
-          <div className="flex ml-4 self-start">
-            <span className="flex text-yellow-400 text-2xl">
-              {"★".repeat(charRarityMap[data.char.rarity] ?? 0)}
-            </span>
-          </div>
-        </div>
-        <Breadcrumb className="mb-4">
+        <Breadcrumb className="mb-2">
           <BreadcrumbList>
             <BreadcrumbItem><BreadcrumbLink href="/en/home">Home</BreadcrumbLink></BreadcrumbItem>
             <BreadcrumbSeparator>/</BreadcrumbSeparator>
@@ -111,6 +103,22 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             <BreadcrumbItem><BreadcrumbPage>{data.meta.name}</BreadcrumbPage></BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
+        <div className="flex justify-between mb-2">
+          <h1 className="text-2xl font-semibold">{data.meta.name}</h1>
+          <span className="text-2xl text-yellow-400">
+            {"★".repeat(charRarityMap[data.char.rarity] ?? 0)}
+          </span>
+        </div>
+        <div className="mb-4 text-sm flex flex-row gap-4">
+          <span>
+            <span className="text-muted-foreground">Release Date (CN): </span>
+            {new Date(0).toLocaleDateString()}
+          </span>
+          <span>
+            <span className="text-muted-foreground">Release Date (EN): </span>
+            {data.meta.isUnreleased ? "Unreleased" : new Date(0).toLocaleDateString()}
+          </span>
+        </div>
         <Separator className="mb-4" />
         {charArts && charArts.length > 0 && (
           <section>

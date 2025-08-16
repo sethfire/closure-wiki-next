@@ -46,15 +46,10 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const { slug } = await params;
   const data: any = await getEnemy(slug);
 
-
-
   return (
     <div className="flex flex-1 flex-col gap-8 p-4 md:pt-8 mx-auto w-full max-w-6xl">
       <section>
-        <div className="flex items-center justify-between mb-2">
-          <h1 className="text-2xl font-semibold">{data.meta.name}</h1>
-        </div>
-        <Breadcrumb className="mb-4">
+        <Breadcrumb className="mb-2">
           <BreadcrumbList>
             <BreadcrumbItem><BreadcrumbLink href="/en/home">Home</BreadcrumbLink></BreadcrumbItem>
             <BreadcrumbSeparator>/</BreadcrumbSeparator>
@@ -63,6 +58,19 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             <BreadcrumbItem><BreadcrumbPage>{data.meta.name}</BreadcrumbPage></BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
+        <div className="flex justify-between mb-2">
+          <h1 className="text-2xl font-semibold">{data.meta.name}</h1>
+        </div>
+        <div className="mb-4 text-sm flex flex-row gap-4">
+          <span>
+            <span className="text-muted-foreground">Release Date (CN): </span>
+            {new Date(0).toLocaleDateString()}
+          </span>
+          <span>
+            <span className="text-muted-foreground">Release Date (EN): </span>
+            {data.meta.isUnreleased ? "Unreleased" : new Date(0).toLocaleDateString()}
+          </span>
+        </div>
         <Separator className="mb-4" />
         <div className="flex flex-row gap-4">
           <img src={`https://static.closure.wiki/v1/enemies/${data.enemy.enemyId}.webp`} alt={`${data.enemy.enemyId}`} width={128} height={128} className="object-contain" />
@@ -90,9 +98,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <Separator className="mb-4" />
           <ul className="ml-6">
               {data.enemy.abilityList.map((ability: any, index: number) =>
-                ability.textFormat === "TITLE"
-                  ? (<li key={index} className="font-bold text-lg mt-4 mb-1 list-none">{ability.text}</li>)
-                  : (<li key={index} className="list-disc list-item items-center mb-1">{ability.text}</li>)
+                  ability.textFormat === "TITLE" 
+                    ? (<li key={index} className="font-bold text-lg mt-4 mb-1 list-none">{ability.text}</li>) 
+                    : (<li key={index} className="list-disc list-item items-center mb-1">{ability.text}</li>) 
               )}
           </ul>
         </section>
@@ -104,9 +112,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <Separator className="mb-4" />
           <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1 list-disc pl-5">
               {data.enemyAppearances.map((stage: any, index: number) =>
-                <li key={index} className="list-disc list-item items-center gap-2 mb-1">
-                  <a href={`/en/operations/${stage.stageId}`} className="hover:underline text-blue-600">{stage.code}: {stage.name}</a>
-                </li>
+                  <li key={index} className="list-disc list-item items-center gap-2 mb-1"> 
+                    <a href={`/en/operations/${stage.stageId}`} className="hover:underline text-blue-600">{stage.code}: {stage.name}</a> 
+                  </li> 
               )}
           </ul>
         </section>

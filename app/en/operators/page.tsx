@@ -37,14 +37,21 @@ export default async function Page() {
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 md:pt-8 mx-auto w-full max-w-6xl">
       <div>
-        <h1 className="mb-2 text-2xl font-semibold">Operators</h1>
-        <Breadcrumb>
+        <Breadcrumb className="mb-2">
           <BreadcrumbList>
             <BreadcrumbItem><BreadcrumbLink href="/en/home">Home</BreadcrumbLink></BreadcrumbItem>
             <BreadcrumbSeparator>/</BreadcrumbSeparator>
             <BreadcrumbItem><BreadcrumbPage>Operators</BreadcrumbPage></BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
+        <h1 className="mb-2 text-2xl font-semibold">Operators</h1>
+        <div className="text-sm">
+          <span>
+            <span className="text-muted-foreground">Showing </span>
+            <span>{characters.length}</span>
+            <span className="text-muted-foreground"> Operators</span>
+          </span>
+        </div>
       </div>
       <Separator />
       <div className="grid grid-cols-3 md:grid-cols-7 gap-2">

@@ -44,7 +44,7 @@ export default function CarouselGallery({ images }: { images: GalleryImage[] }) 
     <div className="w-full">
       {/* Main carousel */}
       <div className="relative overflow-hidden rounded-lg">
-        <div className="relative aspect-video w-full overflow-hidden bg-card">
+        <div className="relative aspect-square md:aspect-video w-full overflow-hidden bg-card">
           {images.map((image, index) => (
             <div
               key={`slide-${index}`}

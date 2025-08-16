@@ -35,9 +35,9 @@ export default async function Page() {
   });
 
   return (
-    <div className="flex flex-1 flex-col gap-4 p-8 mx-auto w-full max-w-6xl">
+    <div className="flex flex-1 flex-col gap-4 p-4 pt-8 mx-auto w-full max-w-6xl">
       <div>
-        <h1 className="mb-2 text-3xl font-semibold">Operators</h1>
+        <h1 className="mb-2 text-2xl md:text-3xl font-semibold">Operators</h1>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem><BreadcrumbLink href="/en/home">Home</BreadcrumbLink></BreadcrumbItem>

@@ -1,3 +1,5 @@
+import type { Metadata, ResolvingMetadata } from 'next'
+import { cache } from 'react'
 import CarouselGallery from "@/components/carousel-gallery"
 import PotentialsTable from "@/components/operators/potentials-table"
 import SkillsTable from "@/components/operators/skills-table"
@@ -24,13 +26,33 @@ export async function generateStaticParams() {
   }))
 }
 
-export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
-  const response: any = await fetch(`https://api.closure.wiki/en/operators/${slug}`)
+export const getOperator = cache(async (slug: string) => {
+  const response: any = await fetch(`https://api.closure.wiki/en/operators/${slug}`);
+  if (!response.ok) notFound();
 
-  if (!response.ok) notFound()
-  const data: any = await response.json()
-  if (!data) notFound()
+  const data: any = await response.json();
+  if (!data) notFound();
+  
+  return data;
+})
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string }> },
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const { slug } = await params;
+  const data: any = await getOperator(slug);
+  return {
+    title: data.meta.name,
+    description: data.char.itemUsage,
+  }
+}
+
+export default async function Page(
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await params;
+  const data: any = await getOperator(slug);
 
   const charArts: any[] = [];
   data.charSkins.forEach((skin: any) => {
@@ -73,12 +95,12 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   };
 
   return (
-    <div className="flex flex-1 flex-col gap-8 p-8 mx-auto w-full max-w-6xl">
+    <div className="flex flex-1 flex-col gap-8 p-4 pt-8 mx-auto w-full max-w-6xl">
       <section>
         <div className="flex items-center justify-between mb-2">
-          <h1 className="text-3xl font-semibold">{data.meta.name}</h1>
+          <h1 className="text-2xl md:text-3xl font-semibold">{data.meta.name}</h1>
           <div className="flex items-center ml-4">
-            <span className="flex text-yellow-400 text-3xl font-bold">
+            <span className="flex text-yellow-400 text-2xl md:text-3xl">
               {"★".repeat(charRarityMap[data.char.rarity] ?? 0)}
             </span>
           </div>
@@ -99,10 +121,16 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           </section>
         )}
       </section>
+      
+      <section>
+        <h2 className="text-xl font-semibold mb-2">Description</h2>
+        <Separator className="mb-4" />
+        <p>{data.char.itemUsage}</p><br /><p className="italic">{data.char.itemDesc}</p>
+      </section>
 
       {data.char.phases && data.char.phases.length > 0 && (
         <section>
-          <h2 className="text-2xl font-semibold mb-2">Attributes</h2>
+          <h2 className="text-xl font-semibold mb-2">Attributes</h2>
           <Separator className="mb-4" />
           <StatsTable phases={data.char.phases} favorKeyFrames={data.char.favorKeyFrames} />
         </section>
@@ -110,7 +138,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
       {data.char.talents && data.char.talents.length > 0 && (
         <section>
-          <h2 className="text-2xl font-semibold mb-2">Talents</h2>
+          <h2 className="text-xl font-semibold mb-2">Talents</h2>
           <Separator className="mb-4" />
           <TalentsTable talents={data.char.talents} />
         </section>
@@ -118,7 +146,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
       {data.char.potentialRanks && data.char.potentialRanks.length === 5 && (
         <section>
-          <h2 className="text-2xl font-semibold mb-2">Potentials</h2>
+          <h2 className="text-xl font-semibold mb-2">Potentials</h2>
           <Separator className="mb-4" />
           <PotentialsTable potentialRanks={data.char.potentialRanks} />
         </section>
@@ -126,7 +154,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
       {data.charSkills && data.charSkills.length > 0 && (
         <section>
-          <h2 className="text-2xl font-semibold mb-2">Skills</h2>
+          <h2 className="text-xl font-semibold mb-2">Skills</h2>
           <Separator className="mb-4" />
           <SkillsTable skills={data.charSkills} />
         </section>
@@ -134,7 +162,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
       {data.charProfile && data.charProfile.storyTextAudio && data.charProfile.storyTextAudio.length > 0 && (
         <section>
-          <h2 className="text-2xl font-semibold mb-2">Operator File</h2>
+          <h2 className="text-xl font-semibold mb-2">Operator File</h2>
           <Separator className="mb-4" />
           <div className="grid gap-4">
             {data.charProfile.storyTextAudio.map((profile: any, idx: number) => (
@@ -154,7 +182,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
       {data.charDialog && data.charDialog.length > 0 && (
         <section>
-          <h2 className="text-2xl font-semibold mb-2">Operator Dialogue</h2>
+          <h2 className="text-xl font-semibold mb-2">Operator Dialogue</h2>
           <Separator className="mb-6" />
           <div className="bg-muted dark:bg-card rounded-lg shadow p-4">
             <ul className="space-y-4">

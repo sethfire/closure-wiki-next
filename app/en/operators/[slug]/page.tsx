@@ -1,5 +1,4 @@
 import type { Metadata, ResolvingMetadata } from 'next'
-import { cache } from 'react'
 import CarouselGallery from "@/components/carousel-gallery"
 import PotentialsTable from "@/components/operators/potentials-table"
 import SkillsTable from "@/components/operators/skills-table"
@@ -19,7 +18,7 @@ import { notFound } from 'next/navigation'
 export const revalidate = 86400
 export const dynamicParams = true
 
-const getOperator = cache(async (slug: string) => {
+const getOperator = async (slug: string) => {
   const response: any = await fetch(`https://api.closure.wiki/en/operators/${slug}`);
   if (!response.ok) notFound();
 
@@ -27,12 +26,12 @@ const getOperator = cache(async (slug: string) => {
   if (!data) notFound();
 
   return data;
-})
+}
 
 export async function generateStaticParams() {
   const chars: any[] = await fetch('https://api.closure.wiki/en/operators').then((res) => res.json())
-  return chars.map((char) => ({
-    slug: String(char.slug),
+  return chars.slice(0, 10).map((char) => ({
+    slug: char.slug,
   }))
 }
 

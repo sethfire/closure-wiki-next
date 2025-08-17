@@ -36,9 +36,23 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await params;
   const data: any = await getEnemy(slug);
+
   return {
     title: data.enemy.name,
     description: data.enemy.description,
+    openGraph: {
+      title: data.enemy.name,
+      description: data.enemy.description,
+      url: `https://arknights.closure.wiki/en/enemies/${slug}`,
+      siteName: "Closure Wiki",
+      images: [{ url: `https://static.closure.wiki/v1/enemies/${data.enemy.enemyId}.webp` }]
+    },
+    twitter: {
+      card: "summary",
+      title: data.enemy.name,
+      description: data.enemy.description,
+      images: `https://static.closure.wiki/v1/enemies/${data.enemy.enemyId}.webp`,
+    },
   }
 }
 

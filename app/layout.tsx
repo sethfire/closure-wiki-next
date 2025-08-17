@@ -8,6 +8,11 @@ import { Analytics } from "@vercel/analytics/next"
 export const metadata: Metadata = {
   title: "Closure Wiki",
   description: "",
+  openGraph: {
+    title: "Closure Wiki",
+    description: "",
+    siteName: "Closure Wiki",
+  }
 };
 
 export default function RootLayout({

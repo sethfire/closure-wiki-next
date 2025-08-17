@@ -10,7 +10,7 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { notFound } from 'next/navigation'
 
-import { AlertCircleIcon, Flag, TriangleAlert } from "lucide-react"
+import { AlertCircleIcon } from "lucide-react"
 
 import {
   Alert,
@@ -209,8 +209,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                 <td className="border p-1" colSpan={6}>{data.enemyStats[0].enemyData.description.m_value}</td>
               </tr>
               <tr>
-                <th className="border py-3 p-1 bg-card">Attack Pattern</th>
-                <td className="border py-3 p-1">{(() => {
+                <th className="border p-1 bg-card">Attack Pattern</th>
+                <td className="border p-1">{(() => {
                   switch (data.enemyStats[0].enemyData.applyWay.m_value) {
                     case "MELEE": return "Melee";
                     case "RANGED": return "Ranged";
@@ -219,24 +219,24 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                     default: return data.enemyStats[0].enemyData.applyWay.m_value;
                   }
                 })()}</td>
-                <th className="border py-3 p-1 bg-card">Location</th>
-                <td className="border py-3 p-1">{(() => {
+                <th className="border p-1 bg-card">Location</th>
+                <td className="border p-1">{(() => {
                   switch (data.enemyStats[0].enemyData.motion.m_value) {
                     case "WALK": return "Ground";
                     case "FLY": return "Flying";
                     default: return data.enemyStats[0].enemyData.motion.m_value;
                   }
                 })()}</td>
-                <th className="border py-3 p-1 bg-card">HP Recovery</th>
-                <td className="border py-3 p-1">{data.enemyStats[0].enemyData.hpRecoveryPerSec?.m_value ?? "-"}</td>
+                <th className="border p-1 bg-card">HP Recovery</th>
+                <td className="border p-1">{data.enemyStats[0].enemyData.hpRecoveryPerSec?.m_value ?? "-"}</td>
               </tr>
               <tr className="bg-card">
-                <th className="border py-3 p-1">HP</th>
-                <th className="border py-3 p-1">ATK</th>
-                <th className="border py-3 p-1">DEF</th>
-                <th className="border py-3 p-1">RES</th>
-                <th className="border py-3 p-1">Attack Range</th>
-                <th className="border py-3 p-1">Weight</th>
+                <th className="border p-1">HP</th>
+                <th className="border p-1">ATK</th>
+                <th className="border p-1">DEF</th>
+                <th className="border p-1">RES</th>
+                <th className="border p-1">Attack Range</th>
+                <th className="border p-1">Weight</th>
               </tr>
               <tr>
                 <td className="border p-1">{data.enemyStats[0].enemyData.attributes.maxHp?.m_value}</td>
@@ -248,24 +248,24 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                 <td className="border p-1">{data.enemyStats[0].enemyData.attributes.massLevel?.m_value}</td>
               </tr>
               <tr className="bg-card">
-                <th className="border py-3 p-1">Movement Speed</th>
-                <th className="border py-3 p-1">Attack Interval</th>
-                <th className="border py-3 p-1">Damage Resistance</th>
-                <th className="border py-3 p-1">Elemental Resistance</th>
-                <th className="border py-3 p-1">Taunt Level</th>
-                <th className="border py-3 p-1">Life Point Penalty</th>
+                <th className="border p-1">Movement Speed</th>
+                <th className="border p-1">Attack Interval</th>
+                <th className="border p-1">Effect Resistance</th>
+                <th className="border p-1">Elemental Resistance</th>
+                <th className="border p-1">Taunt Level</th>
+                <th className="border p-1">Life Point Penalty</th>
               </tr>
               <tr>
                 <td className="border p-1">{data.enemyStats[0].enemyData.attributes.moveSpeed?.m_value}</td>
                 <td className="border p-1">{data.enemyStats[0].enemyData.attributes.baseAttackTime?.m_value}</td>
-                <td className="border p-1">{data.enemyStats[0].enemyData.attributes.epDamageResistance?.m_value}</td>
                 <td className="border p-1">{data.enemyStats[0].enemyData.attributes.epResistance?.m_value}</td>
+                <td className="border p-1">{data.enemyStats[0].enemyData.attributes.epDamageResistance?.m_value}</td>
                 <td className="border p-1">{data.enemyStats[0].enemyData.attributes.tauntLevel?.m_value}</td>
-                <td className="border p-1">{data.enemyStats[0].enemyData.lifePointReduce?.m_value}</td>
+                <td className="border p-1 text-destructive">{data.enemyStats[0].enemyData.lifePointReduce?.m_value}</td>
               </tr>
               <tr>
-                <th className="border py-3 p-1 bg-card">Resistances</th>
-                <td className="border py-3 p-1" colSpan={5}>{(() => {
+                <th className="border p-1 bg-card">Resistances</th>
+                <td className="border p-1" colSpan={5}>{(() => {
                   const immunities = [
                     { key: "stunImmune", label: "Stun" },
                     { key: "silenceImmune", label: "Silence" },
@@ -316,8 +316,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                   <td className="border p-1" colSpan={6}>{data.enemyStats[0].enemyData.description.m_value}</td>
                 </tr>
                 <tr>
-                  <th className="border py-3 p-1 bg-card">Attack Pattern</th>
-                  <td className="border py-3 p-1">{(() => {
+                  <th className="border p-1 bg-card">Attack Pattern</th>
+                  <td className="border p-1">{(() => {
                     switch (data.enemyStats[0].enemyData.applyWay.m_value) {
                       case "MELEE": return "Melee";
                       case "RANGED": return "Ranged";
@@ -326,24 +326,24 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                       default: return data.enemyStats[0].enemyData.applyWay.m_value;
                     }
                   })()}</td>
-                  <th className="border py-3 p-1 bg-card">Location</th>
-                  <td className="border py-3 p-1">{(() => {
+                  <th className="border p-1 bg-card">Location</th>
+                  <td className="border p-1">{(() => {
                     switch (data.enemyStats[0].enemyData.motion.m_value) {
                       case "WALK": return "Ground";
                       case "FLY": return "Flying";
                       default: return data.enemyStats[0].enemyData.motion.m_value;
                     }
                   })()}</td>
-                  <th className="border py-3 p-1 bg-card">HP Recovery</th>
-                  <td className="border py-3 p-1">{data.enemyStats[1].enemyData.hpRecoveryPerSec?.m_value ?? "-"}</td>
+                  <th className="border p-1 bg-card">HP Recovery</th>
+                  <td className="border p-1">{data.enemyStats[1].enemyData.hpRecoveryPerSec?.m_value ?? "-"}</td>
                 </tr>
                 <tr className="bg-card">
-                  <th className="border py-3 p-1">HP</th>
-                  <th className="border py-3 p-1">ATK</th>
-                  <th className="border py-3 p-1">DEF</th>
-                  <th className="border py-3 p-1">RES</th>
-                  <th className="border py-3 p-1">Attack Range</th>
-                  <th className="border py-3 p-1">Weight</th>
+                  <th className="border p-1">HP</th>
+                  <th className="border p-1">ATK</th>
+                  <th className="border p-1">DEF</th>
+                  <th className="border p-1">RES</th>
+                  <th className="border p-1">Attack Range</th>
+                  <th className="border p-1">Weight</th>
                 </tr>
                 <tr>
                   <td className="border p-1">{data.enemyStats[1].enemyData.attributes.maxHp?.m_defined ? data.enemyStats[1].enemyData.attributes.maxHp?.m_value : data.enemyStats[0].enemyData.attributes.maxHp?.m_value}</td>
@@ -359,29 +359,30 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                   <td className="border p-1">{data.enemyStats[1].enemyData.attributes.massLevel?.m_defined ? data.enemyStats[1].enemyData.attributes.massLevel?.m_value : data.enemyStats[0].enemyData.attributes.massLevel?.m_value}</td>
                 </tr>
                 <tr className="bg-card">
-                  <th className="border py-3 p-1">Movement Speed</th>
-                  <th className="border py-3 p-1">Attack Interval</th>
-                  <th className="border py-3 p-1">Damage Resistance</th>
-                  <th className="border py-3 p-1">Elemental Resistance</th>
-                  <th className="border py-3 p-1">Taunt Level</th>
-                  <th className="border py-3 p-1">Life Point Penalty</th>
+                  <th className="border p-1">Movement Speed</th>
+                  <th className="border p-1">Attack Interval</th>
+                  <th className="border p-1">Effect Resistance</th>
+                  <th className="border p-1">Elemental Resistance</th>
+                  <th className="border p-1">Taunt Level</th>
+                  <th className="border p-1">Life Point Penalty</th>
                 </tr>
                 <tr>
                   <td className="border p-1">{data.enemyStats[1].enemyData.attributes.epDamageResistance?.m_defined ? data.enemyStats[1].enemyData.attributes.moveSpeed?.m_value : data.enemyStats[0].enemyData.attributes.moveSpeed?.m_value}</td>
 
                   <td className="border p-1">{data.enemyStats[1].enemyData.attributes.baseAttackTime?.m_defined ? data.enemyStats[1].enemyData.attributes.baseAttackTime?.m_value : data.enemyStats[0].enemyData.attributes.baseAttackTime?.m_value}</td>
 
+                  <td className="border p-1">{data.enemyStats[1].enemyData.attributes.epResistance?.m_defined ? data.enemyStats[1].enemyData.attributes.epResistance?.m_value : data.enemyStats[0].enemyData.attributes.epResistance?.m_value}</td>
+
                   <td className="border p-1">{data.enemyStats[1].enemyData.attributes.epDamageResistance?.m_defined ? data.enemyStats[1].enemyData.attributes.epDamageResistance?.m_value : data.enemyStats[0].enemyData.attributes.epDamageResistance?.m_value}</td>
 
-                  <td className="border p-1">{data.enemyStats[1].enemyData.attributes.epResistance?.m_defined ? data.enemyStats[1].enemyData.attributes.epResistance?.m_value : data.enemyStats[0].enemyData.attributes.epResistance?.m_value}</td>
 
                   <td className="border p-1">{data.enemyStats[1].enemyData.attributes.tauntLevel?.m_defined ? data.enemyStats[1].enemyData.attributes.tauntLevel?.m_value : data.enemyStats[0].enemyData.attributes.tauntLevel?.m_value}</td>
 
-                  <td className="border p-1">{data.enemyStats[1].enemyData.lifePointReduce?.m_defined ? data.enemyStats[1].enemyData.lifePointReduce?.m_value : data.enemyStats[0].enemyData.lifePointReduce?.m_value}</td>
+                  <td className="border p-1 text-destructive">{data.enemyStats[1].enemyData.lifePointReduce?.m_defined ? data.enemyStats[1].enemyData.lifePointReduce?.m_value : data.enemyStats[0].enemyData.lifePointReduce?.m_value}</td>
                 </tr>
                 <tr>
-                  <th className="border py-3 p-1 bg-card">Resistances</th>
-                  <td className="border py-3 p-1" colSpan={5}>{(() => {
+                  <th className="border p-1 bg-card">Resistances</th>
+                  <td className="border p-1" colSpan={5}>{(() => {
                     const immunities = [
                       { key: "stunImmune", label: "Stun" },
                       { key: "silenceImmune", label: "Silence" },

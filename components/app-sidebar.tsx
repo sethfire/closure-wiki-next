@@ -14,7 +14,8 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { Ghost, Home, Users } from "lucide-react"
+import { Ghost, Home, Map, Users } from "lucide-react"
+import { ModeToggle } from "./mode-toggle"
 
 
 const data = {
@@ -37,6 +38,11 @@ const data = {
           title: "Enemies",
           url: "/en/enemies",
           icon: Ghost,
+        },
+        {
+          title: "Operations",
+          url: "/en/operations",
+          icon: Map,
         },
       ],
     },
@@ -82,6 +88,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
       <SidebarFooter>
         {/* <NavUser user={data.user} /> */}
+        <ModeToggle />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

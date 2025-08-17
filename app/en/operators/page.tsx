@@ -35,7 +35,7 @@ export default async function Page() {
   });
 
   return (
-    <div className="flex flex-1 flex-col gap-4 p-4 md:pt-8 mx-auto w-full max-w-6xl">
+    <div className="flex flex-1 flex-col gap-4 p-4 mx-auto w-full max-w-6xl">
       <div>
         <Breadcrumb className="mb-2">
           <BreadcrumbList>

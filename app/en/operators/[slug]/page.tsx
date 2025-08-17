@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import { notFound } from 'next/navigation'
+import { Alert, AlertTitle } from '@/components/ui/alert'
+import { AlertCircleIcon } from 'lucide-react'
 
 export const revalidate = 86400
 export const dynamicParams = true
@@ -120,6 +122,14 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           </span>
         </div>
         <Separator className="mb-4" />
+        
+        {data.meta.isUnreleased && (
+          <Alert className="mb-4">
+            <AlertCircleIcon />
+            <AlertTitle>This operator is not yet available on the EN server of Arknights.</AlertTitle>
+          </Alert>
+        )}
+
         {charArts && charArts.length > 0 && (
           <section>
             <CarouselGallery images={charArts} />

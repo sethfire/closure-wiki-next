@@ -166,7 +166,7 @@ export default function StatsTable({ enemyStats }: { enemyStats: any[] }) {
             <td className="border p-1">{enemyStats[0].enemyData.attributes.epResistance?.m_value}<br /><strong>E</strong></td>
             <td className="border p-1">{enemyStats[0].enemyData.attributes.epDamageResistance?.m_value}<br /><strong>E</strong></td>
             <td className="border p-1">{enemyStats[0].enemyData.attributes.tauntLevel?.m_value}</td>
-            <td className="border p-1 text-destructive">{enemyStats[0].enemyData.lifePointReduce?.m_value}</td>
+            <td className="border p-1 text-destructive">{enemyStats[0].enemyData.lifePointReduce?.m_defined === false ? 1 : enemyStats[0].enemyData.lifePointReduce?.m_value}</td>
           </tr>
           <tr>
             <th className="border p-1 bg-card">Resistances</th>
@@ -284,7 +284,11 @@ export default function StatsTable({ enemyStats }: { enemyStats: any[] }) {
 
                 <td className="border p-1">{enemyStats[1].enemyData.attributes.tauntLevel?.m_defined ? enemyStats[1].enemyData.attributes.tauntLevel?.m_value : enemyStats[0].enemyData.attributes.tauntLevel?.m_value}</td>
 
-                <td className="border p-1 text-destructive">{enemyStats[1].enemyData.lifePointReduce?.m_defined ? enemyStats[1].enemyData.lifePointReduce?.m_value : enemyStats[0].enemyData.lifePointReduce?.m_value}</td>
+                <td className="border p-1 text-destructive">{
+                  enemyStats[1].enemyData.lifePointReduce?.m_defined
+                    ? (enemyStats[1].enemyData.lifePointReduce?.m_value)
+                    : (enemyStats[0].enemyData.lifePointReduce?.m_defined ? enemyStats[0].enemyData.lifePointReduce?.m_value : 1)
+                }</td>
               </tr>
               <tr>
                 <th className="border p-1 bg-card">Resistances</th>

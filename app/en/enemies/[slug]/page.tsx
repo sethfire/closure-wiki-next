@@ -71,33 +71,44 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   return (
     <div className="flex flex-1 flex-col gap-8 p-4 mx-auto w-full max-w-6xl">
       <section>
-        <Breadcrumb className="mb-2">
-          <BreadcrumbList>
-            <BreadcrumbItem><BreadcrumbLink href="/en/home">Home</BreadcrumbLink></BreadcrumbItem>
-            <BreadcrumbSeparator>/</BreadcrumbSeparator>
-            <BreadcrumbItem><BreadcrumbLink href="/en/enemies">Enemies</BreadcrumbLink></BreadcrumbItem>
-            <BreadcrumbSeparator>/</BreadcrumbSeparator>
-            <BreadcrumbItem><BreadcrumbPage>{data.meta.name}</BreadcrumbPage></BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <div className="flex justify-between mb-2">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem><BreadcrumbLink href="/en/home">Home</BreadcrumbLink></BreadcrumbItem>
+              <BreadcrumbSeparator>/</BreadcrumbSeparator>
+              <BreadcrumbItem><BreadcrumbLink href="/en/enemies">Enemies</BreadcrumbLink></BreadcrumbItem>
+              <BreadcrumbSeparator>/</BreadcrumbSeparator>
+              <BreadcrumbItem><BreadcrumbPage>{data.meta.name}</BreadcrumbPage></BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+          <a href={`/en/enemies/${slug}/export`} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Export</a>
+        </div>
         <div className="flex justify-between mb-2">
           <h1 className="text-2xl font-semibold">{data.meta.name}</h1>
         </div>
         <div className="mb-4 text-sm flex flex-row gap-4">
-          <span>
+          {/* <span>
             <span className="text-muted-foreground">Release Date (CN): </span>
             {new Date(0).toLocaleDateString()}
           </span>
           <span>
             <span className="text-muted-foreground">Release Date (EN): </span>
             {data.meta.isUnreleased ? "Unreleased" : new Date(0).toLocaleDateString()}
-          </span>
+          </span> */}
+          <span className="text-muted-foreground">{(() => {
+            switch (data.enemy.enemyLevel) {
+              case "NORMAL": return "Normal";
+              case "ELITE": return "Elite";
+              case "BOSS": return "Boss";
+              default: return "";
+            }
+          })()} Enemy</span>
         </div>
         <Separator className="mb-4" />
         {data.meta.isUnreleased && (
           <Alert className="mb-4">
             <AlertCircleIcon />
-            <AlertTitle>This enemy is not yet available on the EN server of Arknights.</AlertTitle>
+            <AlertTitle>This enemy is not yet available on the Global server of Arknights.</AlertTitle>
           </Alert>
         )}
         <div className="flex flex-col md:flex-row gap-4 items-start">

@@ -20,6 +20,34 @@ import { AlertCircleIcon } from 'lucide-react'
 export const revalidate = 86400
 export const dynamicParams = true
 
+function getOperatorClass(value:string): string {
+  switch (value) {
+    case "PIONEER": return "Vanguard";
+    case "WARRIOR": return "Guard";
+    case "SNIPER": return "Sniper";
+    case "CASTER": return "Caster";
+    case "MEDIC": return "Medic";
+    case "SUPPORT": return "Supporter";
+    case "TANK": return "Defender";
+    case "SPECIAL": return "Specialist";
+    case "TRAP": return "Trap";
+    case "TOKEN": return "Token";
+    default: return "???";
+  }
+}
+
+function getOperatorRarity(value: string): number {
+  switch (value) {
+    case "TIER_6": return 6;
+    case "TIER_5": return 5;
+    case "TIER_4": return 4;
+    case "TIER_3": return 3;
+    case "TIER_2": return 2;
+    case "TIER_1": return 1;
+    default: return 0;
+  }
+}
+
 const getOperator = async (slug: string) => {
   const response: any = await fetch(`https://api.closure.wiki/en/operators/${slug}`);
   if (!response.ok) notFound();
@@ -83,16 +111,6 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     });
   });
 
-  const charRarityMap: Record<string, number> = {
-    TIER_6: 6,
-    TIER_5: 5,
-    TIER_4: 4,
-    TIER_3: 3,
-    TIER_2: 2,
-    TIER_1: 1,
-    TIER_0: 0,
-  };
-
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 mx-auto w-full max-w-6xl">
       <section>
@@ -108,25 +126,26 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <div className="flex justify-between mb-2">
           <h1 className="text-2xl font-semibold">{data.meta.name}</h1>
           <span className="text-2xl text-yellow-400">
-            {"★".repeat(charRarityMap[data.char.rarity] ?? 0)}
+            {"★".repeat(getOperatorRarity(data.char.rarity))}
           </span>
         </div>
         <div className="mb-4 text-sm flex flex-row gap-4">
-          <span>
+          {/* <span>
             <span className="text-muted-foreground">Release Date (CN): </span>
             {new Date(0).toLocaleDateString()}
           </span>
           <span>
             <span className="text-muted-foreground">Release Date (EN): </span>
             {data.meta.isUnreleased ? "Unreleased" : new Date(0).toLocaleDateString()}
-          </span>
+          </span> */}
+          <span className="text-muted-foreground">{getOperatorRarity(data.char.rarity)}★ {getOperatorClass(data.char.profession)} Operator</span>
         </div>
         <Separator className="mb-4" />
         
         {data.meta.isUnreleased && (
           <Alert className="mb-4">
             <AlertCircleIcon />
-            <AlertTitle>This operator is not yet available on the EN server of Arknights.</AlertTitle>
+            <AlertTitle>This operator is not yet available on the Global server of Arknights.</AlertTitle>
           </Alert>
         )}
 

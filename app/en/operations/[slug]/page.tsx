@@ -49,6 +49,13 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const { slug } = await params;
   const data: any = await getOperation(slug);
 
+  let operationType = "";
+  if (data.stage.stageType === "MAIN") operationType = "Main Theme";
+  if (data.stage.stageType === "ACTIVITY") operationType = "Event";
+  if (data.stage.stageType === "DAILY") operationType = "Supply";
+  if (data.stage.stageType === "CAMPAIGN") operationType = "Annihilation";
+  if (data.stage.stageType === "CLIMB_TOWER") operationType = "Stationary Security Service (SSS)";
+
   return (
     <div className="flex flex-1 flex-col gap-8 p-4 mx-auto w-full max-w-6xl">
       <section>
@@ -65,20 +72,13 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <h1 className="text-2xl font-semibold">{`${data.stage.code}: ${data.stage.name}`}</h1>
         </div>
         <div className="mb-4 text-sm flex flex-row gap-4">
-          <span>
-            <span className="text-muted-foreground">Release Date (CN): </span>
-            {new Date(0).toLocaleDateString()}
-          </span>
-          <span>
-            <span className="text-muted-foreground">Release Date (EN): </span>
-            {data.meta.isUnreleased ? "Unreleased" : new Date(0).toLocaleDateString()}
-          </span>
+          <span className="text-muted-foreground">{`${operationType} Operation`}</span>
         </div>
         <Separator className="mb-4" />
         {data.meta.isUnreleased && (
           <Alert className="mb-4">
             <AlertCircleIcon />
-            <AlertTitle>This operation is not yet available on the EN server of Arknights.</AlertTitle>
+            <AlertTitle>This operation is not yet available on the Global server of Arknights.</AlertTitle>
           </Alert>
         )}
         <div className="w-full aspect-video overflow-hidden">

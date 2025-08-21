@@ -45,9 +45,46 @@ export async function generateMetadata(
   }
 }
 
+function getEnemyStat(enemyStats: any[], field: string, defaultValue: any){
+  const result: any[] = [];
+
+  enemyStats.forEach((stat, idx) => {
+    const defined = stat.enemyData[field]?.m_defined;
+    const value   = stat.enemyData[field]?.m_value;
+
+    if (idx === 0) result[idx] = defined ? value : defaultValue;
+    else result[idx] = defined ? value : result[idx - 1];
+  });
+
+  return result;
+}
+
+function getEnemyAttribute(enemyStats: any[], field: string, defaultValue: any){
+  const result: any[] = [];
+
+  enemyStats.forEach((stat, idx) => {
+    const defined = stat.enemyData.attributes[field].m_defined;
+    const value   = stat.enemyData.attributes[field].m_value;
+
+    if (idx === 0) result[idx] = defined ? value : defaultValue;
+    else result[idx] = defined ? value : result[idx - 1];
+  });
+
+  return result;
+}
+
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const data: any = await getOperation(slug);
+
+  const enemySortOrder: Record<string, number> = { BOSS: 0, ELITE: 1, NORMAL: 2 };
+  const sortedEnemies = Object.values(data.enemies).slice()
+    .sort((a: any, b: any) => (enemySortOrder[a.levelType] ?? 99) - (enemySortOrder[b.levelType] ?? 99));
+  const enemies = await Promise.all(sortedEnemies.map(async (enemy: any) => {
+    const response: any = await fetch(`https://api.closure.wiki/en/enemies/${enemy.slug}`);
+    if (!response.ok) throw new Error(`Failed to fetch ${enemy.slug}: ${response.status}`);
+    return response.json();
+  }));
 
   let operationType = "";
   if (data.stage.stageType === "MAIN") operationType = "Main Theme";
@@ -86,26 +123,82 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         </div>
       </section>
       
-      <section>
-        <h2 className="text-xl font-semibold mb-2">Description</h2>
-        <Separator className="mb-2" />
-        <div className="whitespace-pre-line">
-          {parseRichText(data.stage.description.replace(/\\n/g, "\n"))}
-        </div>
-      </section>
+      {data.stage.description && (
+        <section>
+          <h2 className="text-xl font-semibold mb-2">Description</h2>
+          <Separator className="mb-2" />
+          <div className="whitespace-pre-line">
+            {parseRichText(data.stage.description.replace(/\\n/g, "\n"))}
+          </div>
+        </section>
+      )}
 
-      {data.enemies && Object.entries(data.enemies).length > 0 && (
+      {enemies && enemies.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold mb-2">Enemies</h2>
           <Separator className="mb-2" />
-          <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1 list-disc pl-5">
-              {Object.values(data.enemies).map((enemy: any) =>
-                <li key={enemy.slug} className="list-disc list-item items-center gap-2 mb-1">
-                  <img src={`https://static.closure.wiki/v1/enemies/${enemy.slug}.webp`} className="inline-block w-8 h-8 mr-1 align-middle" loading="lazy" decoding="async" />
-                  <a href={`/en/enemies/${enemy.slug}`} className="hover:underline text-blue-600">{enemy.name}</a> x{enemy.count}
-                </li>
-              )}
-          </ul>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse bg-muted text-sm">
+              <thead className="bg-gray-200 dark:bg-card">
+                <tr>
+                    <th className="p-3">Icon</th>
+                    <th className="p-3">Name</th>
+                    <th className="p-3">Count</th>
+                    <th className="p-3">Type</th>
+                    <th className="p-3">Level</th>
+                    <th className="p-3">HP</th>
+                    <th className="p-3">ATK</th>
+                    <th className="p-3">DEF</th>
+                    <th className="p-3">RES</th>
+                    <th className="p-3">Attack&nbsp;Sp.</th>
+                    <th className="p-3">Weight</th>
+                    <th className="p-3">Movement&nbsp;Sp.</th>
+                    <th className="p-3">Range</th>
+                    <th className="p-3">LP&nbsp;Penalty</th>
+                </tr>
+              </thead>
+              <tbody>
+                {enemies.map((enemyData: any) => {
+                    const enemyStats = enemyData.enemyStats;
+                    const enemyLevel = data.enemies[enemyData.enemy.enemyId] ? data.enemies[enemyData.enemy.enemyId].level : null;
+                    if (enemyLevel === null) return null;
+
+                    const enemyCount = data.enemies[enemyData.enemy.enemyId] ? data.enemies[enemyData.enemy.enemyId].count : "?"
+
+                    const enemyName          = getEnemyStat(enemyStats, "name", "-");
+                    const enemyLevelType     = getEnemyStat(enemyStats, "levelType", "NORMAL");
+                    const enemyMaxHP         = getEnemyAttribute(enemyStats, "maxHp", "-");
+                    const enemyATK           = getEnemyAttribute(enemyStats, "atk", "-");
+                    const enemyDEF           = getEnemyAttribute(enemyStats, "def", "-");
+                    const enemyRES           = getEnemyAttribute(enemyStats, "magicResistance", "-");
+                    const enemyRange         = getEnemyStat(enemyStats, "rangeRadius", "-");
+                    const enemyWeight        = getEnemyAttribute(enemyStats, "massLevel", "-");
+                    const enemySpeed         = getEnemyAttribute(enemyStats, "moveSpeed", "-");
+                    const enemyATKSpeed      = getEnemyAttribute(enemyStats, "baseAttackTime", "-");
+                    const enemyLPPenalty     = getEnemyStat(enemyStats, "lifePointReduce", "1");
+
+                    return (
+                      <tr key={enemyData.meta.slug}>
+                        <td className="border-t text-center"><img src={`https://static.closure.wiki/v1/enemies/${enemyData.enemy.enemyId}.webp`} className="inline-block w-12 h-12 align-middle" loading="lazy" decoding="async" /></td>
+                        <td className="border-t p-3 text-center"><a className="hover:underline text-blue-500" href={`/en/enemies/${enemyData.meta.slug}`}>{enemyName[enemyLevel]}</a></td>
+                        <td className="border-t p-3 text-center">{enemyCount}</td>
+                        <td className="border-t p-3 text-center">{enemyLevelType[enemyLevel]}</td>
+                        <td className="border-t p-3 text-center">{enemyLevel}</td>
+                        <td className="border-t p-3 text-center">{enemyMaxHP[enemyLevel]}</td>
+                        <td className="border-t p-3 text-center">{enemyATK[enemyLevel]}</td>
+                        <td className="border-t p-3 text-center">{enemyDEF[enemyLevel]}</td>
+                        <td className="border-t p-3 text-center">{enemyRES[enemyLevel]}</td>
+                        <td className="border-t p-3 text-center">{enemyATKSpeed[enemyLevel]}</td>
+                        <td className="border-t p-3 text-center">{enemyWeight[enemyLevel]}</td>
+                        <td className="border-t p-3 text-center">{enemySpeed[enemyLevel]}</td>
+                        <td className="border-t p-3 text-center">{enemyRange[enemyLevel] === -1 ? "-" : enemyRange[enemyLevel]}</td>
+                        <td className="border-t p-3 text-center">{enemyLPPenalty[enemyLevel]}</td>
+                      </tr>
+                    );
+                })}
+              </tbody>
+            </table>
+          </div>
         </section>
       )}
     </div>

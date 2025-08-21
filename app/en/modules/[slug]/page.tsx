@@ -46,10 +46,10 @@ export async function generateMetadata(
   const data: any = await getModule(slug);
 
   return {
-    title: data.module.name,
+    title: data.module.uniEquipName,
     description: data.module.uniEquipDesc ? (data.module.uniEquipDesc as string).split('\n')[0] : "",
     openGraph: {
-      title: data.module.name,
+      title: data.module.uniEquipName,
       description: data.module.uniEquipDesc ? (data.module.uniEquipDesc as string).split('\n')[0] : "",
       url: `https://arknights.closure.wiki/en/modules/${slug}`,
       siteName: "Closure Wiki",
@@ -57,7 +57,7 @@ export async function generateMetadata(
     },
     twitter: {
       card: "summary",
-      title: data.module.name,
+      title: data.module.uniEquipName,
       description: data.module.uniEquipDesc ? (data.module.uniEquipDesc as string).split('\n')[0] : "",
       images: `https://static.closure.wiki/v1/uniequipimg/${data.module.uniEquipIcon}.webp`,
     },
@@ -134,11 +134,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       <section>
           <h2 className="text-xl font-semibold mb-2">Description</h2>
           <Separator className="mb-2" />
-          <div className="bg-muted dark:bg-card rounded-lg shadow p-6">
-            <div className="whitespace-pre-line">
-              {data.module.uniEquipDesc}
-            </div>
-          </div>
+          <p className="whitespace-pre-line">
+            {data.module.uniEquipDesc}
+          </p>
       </section>
     </div>
   )

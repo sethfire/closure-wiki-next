@@ -16,6 +16,7 @@ import {
   AlertDescription,
   AlertTitle,
 } from "@/components/ui/alert"
+import { parseRichText } from '@/lib/parse'
 
 export const revalidate = 86400
 export const dynamicParams = true
@@ -151,7 +152,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                 {(() => {
                   switch (data.enemyStats[0].enemyData.motion.m_value) {
                     case "WALK": return "Ground";
-                    case "FLY": return "Flying";
+                    case "FLY": return "Aerial";
                     default: return data.enemyStats[0].enemyData.motion.m_value;
                   }
                 })()}
@@ -170,7 +171,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               {data.enemy.abilityList.map((ability: any, index: number) =>
                   ability.textFormat === "TITLE" 
                     ? (<li key={index} className="font-bold text-lg mt-4 mb-1 list-none">{ability.text}</li>) 
-                    : (<li key={index} className="list-disc list-item items-center mb-1">{ability.text}</li>) 
+                    : (<li key={index} className="list-disc list-item items-center mb-1">{parseRichText(ability.text)}</li>) 
               )}
           </ul>
         </section>
@@ -180,7 +181,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <section>
           <h2 className="text-xl font-semibold mb-2">Attributes</h2>
           <Separator className="mb-4" />
-          <StatsTable enemyStats={data.enemyStats} />
+          <div className="overflow-x-auto">
+            <StatsTable enemyStats={data.enemyStats} />
+          </div>
         </section>
       )}
 

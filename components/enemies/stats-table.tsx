@@ -190,7 +190,7 @@ export default function StatsTable({ enemyStats }: { enemyStats: any[] }) {
   const enemyEffectRES     = getEnemyAttribute(enemyStats, "epDamageResistance", "0");
 
   const enemyTauntLevel    = getEnemyAttribute(enemyStats, "tauntLevel", "0");
-  const enemyLifePointPenalty = getEnemyStat(enemyStats, "lifePointReduce", "-");
+  const enemyLifePointPenalty = getEnemyStat(enemyStats, "lifePointReduce", "1");
 
   const enemyLevels = enemyStats.map((_, i) => i);
 

@@ -43,6 +43,19 @@ export async function generateMetadata(
   return {
     title: `${data.stage.code}: ${data.stage.name}`,
     description: data.stage.description,
+    openGraph: {
+      title: `${data.stage.code}: ${data.stage.name}`,
+      description: data.stage.description,
+      siteName: "Closure Wiki",
+      url: `https://arknights.closure.wiki/en/operations/${slug}`,
+      images: [{ url: `https://static.closure.wiki/v1/mappreviews/${data.stage.stageId}.webp` }]
+    },
+    twitter: {
+      title: `${data.stage.code}: ${data.stage.name}`,
+      description: data.stage.description,
+      card: "summary",
+      images: `https://static.closure.wiki/v1/mappreviews/${data.stage.stageId}.webp`,
+    },
   }
 }
 
@@ -114,60 +127,60 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             <table className="w-full border-collapse bg-muted text-sm">
               <thead className="bg-gray-200 dark:bg-card">
                 <tr>
-                    <th className="p-3">Icon</th>
-                    <th className="p-3">Name</th>
-                    <th className="p-3">Count</th>
-                    <th className="p-3">Type</th>
-                    <th className="p-3">Level</th>
-                    <th className="p-3">HP</th>
-                    <th className="p-3">ATK</th>
-                    <th className="p-3">DEF</th>
-                    <th className="p-3">RES</th>
-                    <th className="p-3">Atk&nbsp;Sp.</th>
-                    <th className="p-3">Weight</th>
-                    <th className="p-3">Move&nbsp;Sp.</th>
-                    <th className="p-3">Range</th>
-                    <th className="p-3">LP&nbsp;Penalty</th>
+                  <th className="p-3">Icon</th>
+                  <th className="p-3">Name</th>
+                  <th className="p-3">Count</th>
+                  <th className="p-3">Type</th>
+                  <th className="p-3">Level</th>
+                  <th className="p-3">HP</th>
+                  <th className="p-3">ATK</th>
+                  <th className="p-3">DEF</th>
+                  <th className="p-3">RES</th>
+                  <th className="p-3">Atk&nbsp;Sp.</th>
+                  <th className="p-3">Weight</th>
+                  <th className="p-3">Move&nbsp;Sp.</th>
+                  <th className="p-3">Range</th>
+                  <th className="p-3">LP&nbsp;Penalty</th>
                 </tr>
               </thead>
               <tbody>
                 {enemies.map((enemyData: any) => {
-                    const enemyStats = enemyData.enemyStats;
-                    const enemyLevel = data.enemies[enemyData.enemy.enemyId] ? data.enemies[enemyData.enemy.enemyId].level : null;
-                    if (enemyLevel === null) return null;
+                  const enemyStats = enemyData.enemyStats;
+                  const enemyLevel = data.enemies[enemyData.enemy.enemyId] ? data.enemies[enemyData.enemy.enemyId].level : null;
+                  if (enemyLevel === null) return null;
 
-                    const enemyCount = data.enemies[enemyData.enemy.enemyId] ? data.enemies[enemyData.enemy.enemyId].count : "?"
+                  const enemyCount = data.enemies[enemyData.enemy.enemyId] ? data.enemies[enemyData.enemy.enemyId].count : "?"
 
-                    const enemyName          = getEnemyStat(enemyStats, "name", "-");
-                    const enemyLevelType     = getEnemyStat(enemyStats, "levelType", "NORMAL");
-                    const enemyMaxHP         = getEnemyAttribute(enemyStats, "maxHp", "-");
-                    const enemyATK           = getEnemyAttribute(enemyStats, "atk", "-");
-                    const enemyDEF           = getEnemyAttribute(enemyStats, "def", "-");
-                    const enemyRES           = getEnemyAttribute(enemyStats, "magicResistance", "-");
-                    const enemyRange         = getEnemyStat(enemyStats, "rangeRadius", "-");
-                    const enemyWeight        = getEnemyAttribute(enemyStats, "massLevel", "-");
-                    const enemySpeed         = getEnemyAttribute(enemyStats, "moveSpeed", "-");
-                    const enemyATKSpeed      = getEnemyAttribute(enemyStats, "baseAttackTime", "-");
-                    const enemyLPPenalty     = getEnemyStat(enemyStats, "lifePointReduce", "1");
+                  const enemyName          = getEnemyStat(enemyStats, "name", "-");
+                  const enemyLevelType     = getEnemyStat(enemyStats, "levelType", "NORMAL");
+                  const enemyMaxHP         = getEnemyAttribute(enemyStats, "maxHp", "-");
+                  const enemyATK           = getEnemyAttribute(enemyStats, "atk", "-");
+                  const enemyDEF           = getEnemyAttribute(enemyStats, "def", "-");
+                  const enemyRES           = getEnemyAttribute(enemyStats, "magicResistance", "-");
+                  const enemyRange         = getEnemyStat(enemyStats, "rangeRadius", "-");
+                  const enemyWeight        = getEnemyAttribute(enemyStats, "massLevel", "-");
+                  const enemySpeed         = getEnemyAttribute(enemyStats, "moveSpeed", "-");
+                  const enemyATKSpeed      = getEnemyAttribute(enemyStats, "baseAttackTime", "-");
+                  const enemyLPPenalty     = getEnemyStat(enemyStats, "lifePointReduce", "1");
 
-                    return (
-                      <tr key={enemyData.meta.slug}>
-                        <td className="border-t text-center"><img src={`https://static.closure.wiki/v1/enemies/${enemyData.enemy.enemyId}.webp`} className="inline-block w-12 h-12 align-middle" loading="lazy" decoding="async" /></td>
-                        <td className="border-t p-3 text-center"><a className="hover:underline text-blue-500" href={`/en/enemies/${enemyData.meta.slug}`}>{enemyName[enemyLevel]}</a></td>
-                        <td className="border-t p-3 text-center">{enemyCount}</td>
-                        <td className="border-t p-3 text-center">{getEnemyLevelType(enemyLevelType[enemyLevel])}</td>
-                        <td className="border-t p-3 text-center">{enemyLevel}</td>
-                        <td className="border-t p-3 text-center">{enemyMaxHP[enemyLevel]}</td>
-                        <td className="border-t p-3 text-center">{enemyATK[enemyLevel]}</td>
-                        <td className="border-t p-3 text-center">{enemyDEF[enemyLevel]}</td>
-                        <td className="border-t p-3 text-center">{enemyRES[enemyLevel]}</td>
-                        <td className="border-t p-3 text-center">{enemyATKSpeed[enemyLevel]}</td>
-                        <td className="border-t p-3 text-center">{enemyWeight[enemyLevel]}</td>
-                        <td className="border-t p-3 text-center">{enemySpeed[enemyLevel]}</td>
-                        <td className="border-t p-3 text-center">{enemyRange[enemyLevel] === -1 ? "-" : enemyRange[enemyLevel]}</td>
-                        <td className="border-t p-3 text-center">{enemyLPPenalty[enemyLevel]}</td>
-                      </tr>
-                    );
+                  return (
+                    <tr key={enemyData.meta.slug}>
+                      <td className="border-t text-center"><img src={`https://static.closure.wiki/v1/enemies/${enemyData.enemy.enemyId}.webp`} className="inline-block w-12 h-12 align-middle" loading="lazy" decoding="async" /></td>
+                      <td className="border-t p-3 text-center"><a className="hover:underline text-blue-500" href={`/en/enemies/${enemyData.meta.slug}`}>{enemyName[enemyLevel]}</a></td>
+                      <td className="border-t p-3 text-center">{enemyCount}</td>
+                      <td className="border-t p-3 text-center">{getEnemyLevelType(enemyLevelType[enemyLevel])}</td>
+                      <td className="border-t p-3 text-center">{enemyLevel}</td>
+                      <td className="border-t p-3 text-center">{enemyMaxHP[enemyLevel]}</td>
+                      <td className="border-t p-3 text-center">{enemyATK[enemyLevel]}</td>
+                      <td className="border-t p-3 text-center">{enemyDEF[enemyLevel]}</td>
+                      <td className="border-t p-3 text-center">{enemyRES[enemyLevel]}</td>
+                      <td className="border-t p-3 text-center">{enemyATKSpeed[enemyLevel]}</td>
+                      <td className="border-t p-3 text-center">{enemyWeight[enemyLevel]}</td>
+                      <td className="border-t p-3 text-center">{enemySpeed[enemyLevel]}</td>
+                      <td className="border-t p-3 text-center">{enemyRange[enemyLevel] === -1 ? "-" : enemyRange[enemyLevel]}</td>
+                      <td className="border-t p-3 text-center">{enemyLPPenalty[enemyLevel]}</td>
+                    </tr>
+                  );
                 })}
               </tbody>
             </table>

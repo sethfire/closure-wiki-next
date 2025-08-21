@@ -52,14 +52,14 @@ export async function generateMetadata(
     openGraph: {
       title: data.enemy.name,
       description: data.enemy.description,
-      url: `https://arknights.closure.wiki/en/enemies/${slug}`,
       siteName: "Closure Wiki",
+      url: `https://arknights.closure.wiki/en/enemies/${slug}`,
       images: [{ url: `https://static.closure.wiki/v1/enemies/${data.enemy.enemyId}.webp` }]
     },
     twitter: {
-      card: "summary",
       title: data.enemy.name,
       description: data.enemy.description,
+      card: "summary",
       images: `https://static.closure.wiki/v1/enemies/${data.enemy.enemyId}.webp`,
     },
   }

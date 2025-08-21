@@ -74,6 +74,19 @@ export async function generateMetadata(
   return {
     title: data.meta.name,
     description: data.char.itemUsage,
+    openGraph: {
+      title: data.meta.name,
+      description: data.char.itemUsage,
+      siteName: "Closure Wiki",
+      url: `https://arknights.closure.wiki/en/operations/${slug}`,
+      images: [{ url: `https://static.closure.wiki/v1/charavatars/${data.charProfile.charID}.webp` }]
+    },
+    twitter: {
+      title: data.meta.name,
+      description: data.char.itemUsage,
+      card: "summary",
+      images: `https://static.closure.wiki/v1/charavatars/${data.charProfile.charID}.webp`,
+    },
   }
 }
 

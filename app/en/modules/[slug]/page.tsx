@@ -50,14 +50,14 @@ export async function generateMetadata(
     openGraph: {
       title: data.module.uniEquipName,
       description: data.module.uniEquipDesc ? (data.module.uniEquipDesc as string).split('\n')[0] : "",
-      url: `https://arknights.closure.wiki/en/modules/${slug}`,
       siteName: "Closure Wiki",
+      url: `https://arknights.closure.wiki/en/modules/${slug}`,
       images: [{ url: `https://static.closure.wiki/v1/uniequipimg/${data.module.uniEquipIcon}.webp` }]
     },
     twitter: {
-      card: "summary",
       title: data.module.uniEquipName,
       description: data.module.uniEquipDesc ? (data.module.uniEquipDesc as string).split('\n')[0] : "",
+      card: "summary",
       images: `https://static.closure.wiki/v1/uniequipimg/${data.module.uniEquipIcon}.webp`,
     },
   }

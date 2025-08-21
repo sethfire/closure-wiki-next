@@ -67,9 +67,13 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const sortedEnemies = Object.values(data.enemies).slice()
     .sort((a: any, b: any) => (enemySortOrder[a.levelType] ?? 99) - (enemySortOrder[b.levelType] ?? 99));
   const enemies = await Promise.all(sortedEnemies.map(async (enemy: any) => {
-    const response: any = await fetch(`https://api.closure.wiki/en/enemies/${enemy.slug}`);
-    if (!response.ok) throw new Error(`Failed to fetch ${enemy.slug}: ${response.status}`);
-    return response.json();
+    try {
+      const res = await fetch(`https://api.closure.wiki/en/enemies/${enemy.slug}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return (await res.json());
+    } catch (err) {
+      return null;
+    }
   }));
 
   let operationType = "";
@@ -145,6 +149,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               </thead>
               <tbody>
                 {enemies.map((enemyData: any) => {
+                  if (!enemyData) return null;
                   const enemyStats = enemyData.enemyStats;
                   const enemyLevel = data.enemies[enemyData.enemy.enemyId] ? data.enemies[enemyData.enemy.enemyId].level : null;
                   if (enemyLevel === null) return null;

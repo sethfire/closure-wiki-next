@@ -132,11 +132,11 @@ const IMMUNITIES = [
   { key: "stunImmune", label: "Stun" },
   { key: "silenceImmune", label: "Silence" },
   { key: "sleepImmune", label: "Sleep" },
-  { key: "frozenImmune", label: "Freezing" },
+  { key: "frozenImmune", label: "Freeze" },
   { key: "levitateImmune", label: "Levitate" },
   { key: "disarmedCombatImmune", label: "Disarm" },
   { key: "fearedImmune", label: "Fear" },
-  { key: "palsyImmune", label: "Palsy" },
+  { key: "palsyImmune", label: "Paralysis" },
   { key: "attractImmune", label: "Attract" },
 ];
 
@@ -270,19 +270,8 @@ export default function StatsTable({ enemyStats }: { enemyStats: any[] }) {
               <tr>
                 <th className="border p-1 bg-card">Resistances</th>
                 <td className="border p-1" colSpan={5}>{(() => {
-                  const immunities = [
-                    { key: "stunImmune", label: "Stun" },
-                    { key: "silenceImmune", label: "Silence" },
-                    { key: "sleepImmune", label: "Sleep" },
-                    { key: "frozenImmune", label: "Freezing" },
-                    { key: "levitateImmune", label: "Levitate" },
-                    { key: "disarmedCombatImmune", label: "Disarm" },
-                    { key: "fearedImmune", label: "Fear" },
-                    { key: "palsyImmune", label: "Palsy" },
-                    { key: "attractImmune", label: "Attract" },
-                  ];
                   const attributes = enemyStats[0].enemyData.attributes;
-                  const active = immunities
+                  const active = IMMUNITIES
                     .filter(({ key }) => attributes[key]?.m_value)
                     .map(({ label }) => label);
                   return active.length > 0 ? active.join(", ") : "-";

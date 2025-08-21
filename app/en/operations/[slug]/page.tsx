@@ -11,6 +11,7 @@ import { Separator } from "@/components/ui/separator"
 import { notFound } from 'next/navigation'
 import { Alert, AlertTitle } from '@/components/ui/alert'
 import { AlertCircleIcon } from 'lucide-react'
+import { parseRichText } from '@/lib/parse'
 
 export const revalidate = 86400
 export const dynamicParams = true
@@ -89,7 +90,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <h2 className="text-xl font-semibold mb-2">Description</h2>
         <Separator className="mb-2" />
         <div className="whitespace-pre-line">
-          {data.stage.description.replace(/\\n/g, "\n")}
+          {parseRichText(data.stage.description.replace(/\\n/g, "\n"))}
         </div>
       </section>
 

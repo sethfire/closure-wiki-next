@@ -1,3 +1,5 @@
+import { parseRichText } from "@/lib/parse";
+
 export default function TalentsTable({ talents }: { talents: any[] }) {
   return (
     <div className="flex flex-col gap-4">
@@ -37,7 +39,7 @@ export default function TalentsTable({ talents }: { talents: any[] }) {
                 })()}
                 </td>
                 <td className="border-t p-1 text-left whitespace-pre-line">
-                {candidate.description}
+                {parseRichText(candidate.description)}
                 </td>
             </tr>
             ))}

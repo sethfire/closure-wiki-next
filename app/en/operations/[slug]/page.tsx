@@ -11,7 +11,7 @@ import { Separator } from "@/components/ui/separator"
 import { notFound } from 'next/navigation'
 import { Alert, AlertTitle } from '@/components/ui/alert'
 import { AlertCircleIcon } from 'lucide-react'
-import { parseRichText } from '@/lib/parse'
+import { parseRichText, stripTags } from '@/lib/parse'
 import { getEnemyStat, getEnemyAttribute, getEnemyLevelType } from '@/lib/enemy-utils'
 
 export const revalidate = 86400
@@ -40,21 +40,26 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await params;
   const data: any = await getOperation(slug);
+
+  const title = `${data.stage.code}: ${data.stage.name}`;
+  const description = stripTags(data.stage.description.replace(/\\n/g, "\n"));
+  const image = `https://static.closure.wiki/v1/mappreviews/${data.stage.stageId}.webp`;
+
   return {
-    title: `${data.stage.code}: ${data.stage.name}`,
-    description: data.stage.description,
+    title: title,
+    description: description,
     openGraph: {
-      title: `${data.stage.code}: ${data.stage.name}`,
-      description: data.stage.description,
+      title: title,
+      description: description,
       siteName: "Closure Wiki",
       url: `https://arknights.closure.wiki/en/operations/${slug}`,
-      images: [{ url: `https://static.closure.wiki/v1/mappreviews/${data.stage.stageId}.webp` }]
+      images: [{ url: image }]
     },
     twitter: {
-      title: `${data.stage.code}: ${data.stage.name}`,
-      description: data.stage.description,
+      title: title,
+      description: description,
       card: "summary",
-      images: `https://static.closure.wiki/v1/mappreviews/${data.stage.stageId}.webp`,
+      images: image,
     },
   }
 }
@@ -119,6 +124,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <Separator className="mb-2" />
           <div className="whitespace-pre-line">
             {parseRichText(data.stage.description.replace(/\\n/g, "\n"))}
+          </div>
+          <div className="whitespace-pre-line">
+            {stripTags(data.stage.description.replace(/\\n/g, "\n"))}
           </div>
         </section>
       )}

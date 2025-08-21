@@ -31,6 +31,11 @@ export function parseBlackBoard(str: string, blackboard: any): string {
   }
 }
 
+export function stripTags(str: string): string {
+  if (!str) return "";
+  return str.replace(/<(?:@|\$)[^>]*>(.*?)<\/>/g, '$1');
+}
+
 export function parseRichText(str: string): React.ReactNode[] {
   const regex = /<(\$|@)([^>]+)?>(.+?)<\/>/g;
   const result: React.ReactNode[] = [];

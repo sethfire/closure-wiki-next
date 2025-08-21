@@ -8,6 +8,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
+import { getEnemyAttackType, getEnemyDamageType, getEnemyLevelType, getEnemyMotionType, getEnemyTag } from "@/lib/enemy-utils"
 import { notFound } from 'next/navigation'
 
 export const revalidate = 0
@@ -20,59 +21,6 @@ const getEnemy = async (slug: string) => {
   if (!data) notFound();
 
   return data;
-}
-
-function getEnemyLevelType(value: string): string {
-  switch (value) {
-    case "NORMAL": return "Normal";
-    case "ELITE": return "Elite";
-    case "BOSS": return "Boss";
-    default: return "-";
-  }
-}
-
-function getEnemyAttackType(value: string): string {
-  switch (value) {
-    case "MELEE": return "Melee";
-    case "RANGED": return "Ranged";
-    case "ALL": return "Melee/Ranged";
-    case "NONE": return "None";
-    default: return "-";
-  }
-}
-
-function getEnemyDamageType(value: string): string {
-  switch (value) {
-    case "PHYSIC": return "Physical";
-    case "MAGIC": return "Arts";
-    case "NO_DAMAGE": return "None";
-    default: return "-";
-  }
-}
-
-function getEnemyMotionType(value: string): string {
-  switch (value) {
-    case "WALK": return "Ground";
-    case "FLY": return "Aerial";
-    default: return "-";
-  }
-}
-
-function getEnemyTag(value: string): string {
-  switch (value) {
-    case "infection": return "Infected Creature";
-    case "drone": return "Drone";
-    case "sarkaz": return "Sarkaz";
-    case "mutant": return "Possessed";
-    case "seamonster": return "Sea Monster";
-    case "originiumartscraft": return "Arts Creation";
-    case "animated": return "Apparition";
-    case "machine": return "Machina";
-    case "wildanimal": return "Wild Beast";
-    case "collapsal": return "Collapsal";
-    case "origen": return "源石造物";
-    default: return "-";
-  }
 }
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {

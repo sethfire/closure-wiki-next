@@ -62,9 +62,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <a href="/en/home">
+                <div className="flex aspect-square size-8 items-center justify-center rounded">
+                  <img src="https://static.closure.wiki/v1/closure.webp" className="size-8 rounded"/>
+                </div>
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="text-xl font-bold">Closure Wiki [BETA]</span>
-                  <span className="">v25-07-31</span>
+                  <span>Closure Wiki [BETA]</span>
+                  <span>v25-07-31</span>
                 </div>
               </a>
             </SidebarMenuButton>

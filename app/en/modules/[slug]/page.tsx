@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import { notFound } from 'next/navigation'
-import StatsTable from '@/components/enemies/stats-table'
 import { AlertCircleIcon } from "lucide-react"
 import {
   Alert,
@@ -69,7 +68,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const data: any = await getModule(slug);
 
   return (
-    <div className="flex flex-1 flex-col gap-8 p-4 mx-auto w-full max-w-6xl">
+    <div className="flex flex-1 flex-col gap-8 p-4 mx-auto w-full max-w-6xl mb-16">
       <section>
         <div className="flex justify-between mb-2">
           <Breadcrumb>

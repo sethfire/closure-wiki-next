@@ -17,6 +17,7 @@ import {
   AlertTitle,
 } from "@/components/ui/alert"
 import { parseRichText } from '@/lib/parse'
+import { getEnemyAttackType, getEnemyDamageType, getEnemyLevelType, getEnemyMotionType } from '@/lib/enemy-utils'
 
 export const revalidate = 86400
 export const dynamicParams = true
@@ -69,7 +70,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const data: any = await getEnemy(slug);
 
   return (
-    <div className="flex flex-1 flex-col gap-8 p-4 mx-auto w-full max-w-6xl">
+    <div className="flex flex-1 flex-col gap-8 p-4 mx-auto w-full max-w-6xl mb-16">
       <section>
         <div className="flex justify-between mb-2">
           <Breadcrumb>
@@ -87,22 +88,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <h1 className="text-2xl font-semibold">{data.meta.name}</h1>
         </div>
         <div className="mb-4 text-sm flex flex-row gap-4">
-          {/* <span>
-            <span className="text-muted-foreground">Release Date (CN): </span>
-            {new Date(0).toLocaleDateString()}
-          </span>
-          <span>
-            <span className="text-muted-foreground">Release Date (EN): </span>
-            {data.meta.isUnreleased ? "Unreleased" : new Date(0).toLocaleDateString()}
-          </span> */}
-          <span className="text-muted-foreground">{(() => {
-            switch (data.enemy.enemyLevel) {
-              case "NORMAL": return "Normal";
-              case "ELITE": return "Elite";
-              case "BOSS": return "Boss";
-              default: return "";
-            }
-          })()} Enemy</span>
+          <span className="text-muted-foreground">{getEnemyLevelType(data.enemy.enemyLevel)} Enemy</span>
         </div>
         <Separator className="mb-4" />
         {data.meta.isUnreleased && (
@@ -123,50 +109,19 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               </span>
               <span>
                 <span className="text-muted-foreground">Type: </span>
-                {(() => {
-                  switch (data.enemy.enemyLevel) {
-                    case "NORMAL": return "Normal";
-                    case "ELITE": return "Elite";
-                    case "BOSS": return "Boss";
-                    default: return "";
-                  }
-                })()}
+                {getEnemyLevelType(data.enemy.enemyLevel)}
               </span>
               <span>
                 <span className="text-muted-foreground">Attack Pattern: </span>
-                {(() => {
-                  switch (data.enemyStats[0].enemyData.applyWay.m_value) {
-                    case "MELEE": return "Melee";
-                    case "RANGED": return "Ranged";
-                    case "ALL": return "Melee/Ranged";
-                    case "NONE": return "None";
-                    default: return data.enemyStats[0].enemyData.applyWay.m_value;
-                  }
-                })()}
+                {getEnemyAttackType(data.enemyStats[0].enemyData.applyWay.m_value)}
               </span>
               <span>
                 <span className="text-muted-foreground">Damage: </span>
-                {data.enemy.damageType
-                  .map((type: string) => {
-                    switch (type) {
-                      case "PHYSIC": return "Physical";
-                      case "MAGIC": return "Arts";
-                      case "NO_DAMAGE": return "None";
-                      default: return type;
-                    }
-                  })
-                  .join("/")
-                }
+                {data.enemy.damageType.map((type: string) => getEnemyDamageType(type)).join("/")}
               </span>
               <span>
                 <span className="text-muted-foreground">Location: </span>
-                {(() => {
-                  switch (data.enemyStats[0].enemyData.motion.m_value) {
-                    case "WALK": return "Ground";
-                    case "FLY": return "Aerial";
-                    default: return data.enemyStats[0].enemyData.motion.m_value;
-                  }
-                })()}
+                {getEnemyMotionType(data.enemyStats[0].enemyData.motion.m_value)}
               </span>
             </div>
             <p className="flex-1">{data.enemy.description}</p>

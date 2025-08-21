@@ -12,6 +12,7 @@ import { notFound } from 'next/navigation'
 import { Alert, AlertTitle } from '@/components/ui/alert'
 import { AlertCircleIcon } from 'lucide-react'
 import { parseRichText } from '@/lib/parse'
+import { getEnemyStat, getEnemyAttribute, getEnemyLevelType } from '@/lib/enemy-utils'
 
 export const revalidate = 86400
 export const dynamicParams = true
@@ -45,34 +46,6 @@ export async function generateMetadata(
   }
 }
 
-function getEnemyStat(enemyStats: any[], field: string, defaultValue: any){
-  const result: any[] = [];
-
-  enemyStats.forEach((stat, idx) => {
-    const defined = stat.enemyData[field]?.m_defined;
-    const value   = stat.enemyData[field]?.m_value;
-
-    if (idx === 0) result[idx] = defined ? value : defaultValue;
-    else result[idx] = defined ? value : result[idx - 1];
-  });
-
-  return result;
-}
-
-function getEnemyAttribute(enemyStats: any[], field: string, defaultValue: any){
-  const result: any[] = [];
-
-  enemyStats.forEach((stat, idx) => {
-    const defined = stat.enemyData.attributes[field].m_defined;
-    const value   = stat.enemyData.attributes[field].m_value;
-
-    if (idx === 0) result[idx] = defined ? value : defaultValue;
-    else result[idx] = defined ? value : result[idx - 1];
-  });
-
-  return result;
-}
-
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const data: any = await getOperation(slug);
@@ -94,7 +67,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   if (data.stage.stageType === "CLIMB_TOWER") operationType = "Stationary Security Service (SSS)";
 
   return (
-    <div className="flex flex-1 flex-col gap-8 p-4 mx-auto w-full max-w-6xl">
+    <div className="flex flex-1 flex-col gap-8 p-4 mx-auto w-full max-w-6xl mb-16">
       <section>
         <Breadcrumb className="mb-2">
           <BreadcrumbList>
@@ -150,9 +123,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                     <th className="p-3">ATK</th>
                     <th className="p-3">DEF</th>
                     <th className="p-3">RES</th>
-                    <th className="p-3">Attack&nbsp;Sp.</th>
+                    <th className="p-3">Atk&nbsp;Sp.</th>
                     <th className="p-3">Weight</th>
-                    <th className="p-3">Movement&nbsp;Sp.</th>
+                    <th className="p-3">Move&nbsp;Sp.</th>
                     <th className="p-3">Range</th>
                     <th className="p-3">LP&nbsp;Penalty</th>
                 </tr>
@@ -182,7 +155,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                         <td className="border-t text-center"><img src={`https://static.closure.wiki/v1/enemies/${enemyData.enemy.enemyId}.webp`} className="inline-block w-12 h-12 align-middle" loading="lazy" decoding="async" /></td>
                         <td className="border-t p-3 text-center"><a className="hover:underline text-blue-500" href={`/en/enemies/${enemyData.meta.slug}`}>{enemyName[enemyLevel]}</a></td>
                         <td className="border-t p-3 text-center">{enemyCount}</td>
-                        <td className="border-t p-3 text-center">{enemyLevelType[enemyLevel]}</td>
+                        <td className="border-t p-3 text-center">{getEnemyLevelType(enemyLevelType[enemyLevel])}</td>
                         <td className="border-t p-3 text-center">{enemyLevel}</td>
                         <td className="border-t p-3 text-center">{enemyMaxHP[enemyLevel]}</td>
                         <td className="border-t p-3 text-center">{enemyATK[enemyLevel]}</td>

@@ -112,7 +112,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   });
 
   return (
-    <div className="flex flex-1 flex-col gap-4 p-4 mx-auto w-full max-w-6xl">
+    <div className="flex flex-1 flex-col gap-8 p-4 mx-auto w-full max-w-6xl mb-16">
       <section>
         <Breadcrumb className="mb-2">
           <BreadcrumbList>

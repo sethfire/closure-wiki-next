@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { parseRichText } from "@/lib/parse";
+import { parseBlackBoard, parseRichText } from "@/lib/parse";
 
 export default function SkillsTable({ skills }: { skills: any[] }) {
   return (
@@ -71,7 +71,7 @@ export default function SkillsTable({ skills }: { skills: any[] }) {
                       }
                     })()}
                   </td>
-                  <td className="border-t p-1 text-left whitespace-pre-line">{parseRichText(level.description)}</td>
+                  <td className="border-t p-1 text-left whitespace-pre-line">{parseRichText(parseBlackBoard(level.description, level.blackboard).replace(/\\n/g, "\n"))}</td>
                   <td className="border-t p-1 text-center">{level.spData.initSp}</td>
                   <td className="border-t p-1 text-center">{level.spData.spCost}</td>
                   <td className="border-t p-1 text-center">{level.duration === -1 ? '-' : level.duration}</td>

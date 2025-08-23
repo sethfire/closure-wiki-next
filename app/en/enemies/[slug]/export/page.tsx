@@ -16,7 +16,7 @@ export const revalidate = 0
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const data: any = await getEnemy(slug);
+  const data: any = await getEnemy("en", slug);
   if (!data) notFound();
 
   let enemyStats = "";

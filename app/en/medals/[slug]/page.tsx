@@ -16,15 +16,15 @@ import {
   AlertTitle,
 } from "@/components/ui/alert";
 import { parseRichText } from "@/lib/parse";
-import { getModule, getModules } from "@/lib/fetch-utils";
+import { getMedal, getMedals } from "@/lib/fetch-utils";
 
 export const revalidate = 86400;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  const modules: any[] = await getModules("en");
-  return modules.slice(0, 10).map((module) => ({
-    slug: module.slug,
+  const medals: any[] = await getMedals("en");
+  return medals.slice(0, 10).map((medal) => ({
+    slug: medal.slug,
   }));
 }
 
@@ -33,15 +33,15 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { slug } = await params;
-  const data: any = await getModule("en", slug);
+  const data: any = await getMedal("en", slug);
   if (!data) notFound();
 
-  const title = data.module.uniEquipName;
-  const description = data.module.uniEquipDesc ? (data.module.uniEquipDesc as string).split("\n")[0] : "";
-  const image = `https://static.closure.wiki/v1/uniequipimg/${data.module.uniEquipIcon}.webp`;
+  const title = data.medal.medalName;
+  const description = data.medal.description;
+  const image = `https://static.closure.wiki/v1/medalicon/${data.medal.medalId}.webp`;
   
   const siteName = "Closure Wiki";
-  const url = `https://closure.wiki/en/modules/${slug}`;
+  const url = `https://closure.wiki/en/medals/${slug}`;
 
   return {
     title: title,
@@ -64,7 +64,7 @@ export async function generateMetadata(
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const data: any = await getModule("en", slug);
+  const data: any = await getMedal("en", slug);
   if (!data) notFound();
 
   return (
@@ -75,66 +75,43 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             <BreadcrumbList>
               <BreadcrumbItem><BreadcrumbLink href="/en/home">Home</BreadcrumbLink></BreadcrumbItem>
               <BreadcrumbSeparator>/</BreadcrumbSeparator>
-              <BreadcrumbItem><BreadcrumbLink href="/en/modules">Modules</BreadcrumbLink></BreadcrumbItem>
+              <BreadcrumbItem><BreadcrumbLink href="/en/medals">Medals</BreadcrumbLink></BreadcrumbItem>
               <BreadcrumbSeparator>/</BreadcrumbSeparator>
-              <BreadcrumbItem><BreadcrumbPage>{data.module.uniEquipName}</BreadcrumbPage></BreadcrumbItem>
+              <BreadcrumbItem><BreadcrumbPage>{data.medal.medalName}</BreadcrumbPage></BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </div>
         <div className="flex justify-between mb-2">
-          <h1 className="text-2xl font-semibold">{data.module.uniEquipName}</h1>
+          <h1 className="text-2xl font-semibold">{data.medal.medalName}</h1>
         </div>
         <div className="mb-4 text-sm flex flex-row gap-4">
-          <span>
-            <span className="text-muted-foreground">Release Date ({data.meta.isUnreleased ? "CN" : "Global"}): </span>
-            {new Date(data.module.uniEquipGetTime * 1000).toLocaleDateString()}
-          </span>
+          <span className="text-muted-foreground">Medal</span>
         </div>
         <Separator className="mb-4" />
         {data.meta.isUnreleased && (
           <Alert className="mb-4">
             <AlertCircleIcon />
-            <AlertTitle>This module is not yet available on the Global server of Arknights.</AlertTitle>
+            <AlertTitle>This medal is not yet available on the Global server of Arknights.</AlertTitle>
           </Alert>
         )}
         <div className="flex flex-col md:flex-row gap-4 items-start">
-          <img src={`https://static.closure.wiki/v1/uniequipimg/${data.module.uniEquipIcon}.webp`}
+          <img src={`https://static.closure.wiki/v1/medalicon/${data.medal.medalId}.webp`}
             className="w-[180px] h-[180px] md:w-32 md:h-32 object-contain" />
 
           <div className="flex flex-1 flex-col gap-2">
             <div className="flex flex-row gap-4 text-sm overflow-x-auto">
               <span>
                 <span className="text-muted-foreground">Type: </span>
-                {data.module.typeName1}-{data.module.typeName2}
+                {data.medal.medalType}
               </span>
               <span>
-                <span className="text-muted-foreground">Operator: </span>
-                {data.module.charId}
+                <span className="text-muted-foreground">Rarity: </span>
+                {data.medal.rarity}
               </span>
             </div>
-            <p className="flex-1">{data.module.uniEquipDesc ? (data.module.uniEquipDesc as string).split("\n")[0] : null}</p>
+            <p className="flex-1">{data.medal.description}</p>
           </div>
         </div>
-      </section>
-
-      {data.module.hasUnlockMission && data.missions && data.missions.length > 0 && (
-        <section>
-          <h2 className="text-xl font-semibold mb-2">Missions</h2>
-          <Separator className="mb-2" />
-          <ul className="ml-6">
-            {data.missions.map((mission: any, index: number) =>
-              <li key={index} className="list-disc list-item items-center mb-1">{parseRichText(mission.desc)}</li>
-            )}
-          </ul>
-        </section>
-      )}
-
-      <section>
-        <h2 className="text-xl font-semibold mb-2">Description</h2>
-        <Separator className="mb-2" />
-        <p className="whitespace-pre-line">
-          {data.module.uniEquipDesc}
-        </p>
       </section>
     </div>
   );

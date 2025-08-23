@@ -24,7 +24,7 @@ export const revalidate = 86400;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  const enemies: any[] = await getEnemies();
+  const enemies: any[] = await getEnemies("en");
   return enemies.slice(0, 10).map((enemy) => ({
     slug: enemy.slug,
   }));
@@ -35,11 +35,15 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { slug } = await params;
-  const data: any = await getEnemy(slug);
+  const data: any = await getEnemy("en", slug);
+  if (!data) notFound();
 
   const title = data.enemy.name;
   const description = data.enemy.description;
   const image = `https://static.closure.wiki/v1/enemies/${data.enemy.enemyId}.webp`;
+
+  const siteName = "Closure Wiki";
+  const url = `https://closure.wiki/en/enemies/${slug}`;
 
   return {
     title: title,
@@ -47,8 +51,8 @@ export async function generateMetadata(
     openGraph: {
       title: title,
       description: description,
-      siteName: "Closure Wiki",
-      url: `https://arknights.closure.wiki/en/enemies/${slug}`,
+      siteName: siteName,
+      url: url,
       images: [{ url: image }]
     },
     twitter: {
@@ -62,7 +66,7 @@ export async function generateMetadata(
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const data: any = await getEnemy(slug);
+  const data: any = await getEnemy("en", slug);
   if (!data) notFound();
 
   return (

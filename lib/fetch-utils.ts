@@ -1,68 +1,41 @@
-import { notFound } from "next/navigation";
-
 const API_BASE_URL = "https://api.closure.wiki";
-const LANG = "en";
 
-export async function getOperators() {
-  const response: any = await fetch(`${API_BASE_URL}/${LANG}/operators`);
-  if (!response.ok) notFound();
+const ALLOWED_LANGS = ["en"];
+const ALLOWED_TYPES = ["operators", "enemies", "operations", "modules", "medals"];
+
+async function getDataItems(lang: string, type: string) {
+  if (!ALLOWED_LANGS.includes(lang)) return null;
+  if (!ALLOWED_TYPES.includes(type)) return null;
+
+  const response: any = await fetch(`${API_BASE_URL}/${lang}/${type}`);
+  if (!response.ok) return null;
+  
   const data: any = await response.json();
-  if (!data) notFound();
   return data;
 }
 
-export async function getOperator(slug: string) {
-  const response: any = await fetch(`${API_BASE_URL}/${LANG}/operators/${slug}`);
-  if (!response.ok) notFound();
+async function getDataItem(lang: string, type: string, slug: string) {
+  if (!ALLOWED_LANGS.includes(lang)) return null;
+  if (!ALLOWED_TYPES.includes(type)) return null;
+
+  const response: any = await fetch(`${API_BASE_URL}/${lang}/${type}/${slug}`);
+  if (!response.ok) return null;
+
   const data: any = await response.json();
-  if (!data) notFound();
   return data;
 }
 
-export async function getEnemies() {
-  const response: any = await fetch(`${API_BASE_URL}/${LANG}/enemies`);
-  if (!response.ok) notFound();
-  const data: any = await response.json();
-  if (!data) notFound();
-  return data;
-}
+export const getOperators = async (lang: string) => getDataItems(lang, "operators");
+export const getOperator = async (lang: string, slug: string) => getDataItem(lang, "operators", slug);
 
-export async function getEnemy(slug: string) {
-  const response: any = await fetch(`${API_BASE_URL}/${LANG}/enemies/${slug}`);
-  if (!response.ok) notFound();
-  const data: any = await response.json();
-  if (!data) notFound();
-  return data;
-}
+export const getEnemies = async (lang: string) => getDataItems(lang, "enemies");
+export const getEnemy = async (lang: string, slug: string) => getDataItem(lang, "enemies", slug);
 
-export async function getOperations() {
-  const response: any = await fetch(`${API_BASE_URL}/${LANG}/operations`);
-  if (!response.ok) notFound();
-  const data: any = await response.json();
-  if (!data) notFound();
-  return data;
-}
+export const getOperations = async (lang: string) => getDataItems(lang, "operations");
+export const getOperation = async (lang: string, slug: string) => getDataItem(lang, "operations", slug);
 
-export async function getOperation(slug: string) {
-  const response: any = await fetch(`${API_BASE_URL}/${LANG}/operations/${slug}`);
-  if (!response.ok) notFound();
-  const data: any = await response.json();
-  if (!data) notFound();
-  return data;
-}
+export const getModules = async (lang: string) => getDataItems(lang, "modules");
+export const getModule = async (lang: string, slug: string) => getDataItem(lang, "modules", slug);
 
-export async function getModules() {
-  const response: any = await fetch(`${API_BASE_URL}/${LANG}/modules`);
-  if (!response.ok) notFound();
-  const data: any = await response.json();
-  if (!data) notFound();
-  return data;
-}
-
-export async function getModule(slug: string) {
-  const response: any = await fetch(`${API_BASE_URL}/${LANG}/modules/${slug}`);
-  if (!response.ok) notFound();
-  const data: any = await response.json();
-  if (!data) notFound();
-  return data;
-}
+export const getMedals = async (lang: string) => getDataItems(lang, "medals");
+export const getMedal = async (lang: string, slug: string) => getDataItem(lang, "medals", slug);

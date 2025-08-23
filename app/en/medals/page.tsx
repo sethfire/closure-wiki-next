@@ -1,18 +1,16 @@
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
-import { getEnemyRarityColor } from "@/lib/enemy-utils";
-import { getEnemies } from "@/lib/fetch-utils";
+import { getMedals } from "@/lib/fetch-utils";
 
 export const revalidate = 86400;
 
 export default async function Page() {
-  const data: any = await getEnemies("en");
+  const data: any = await getMedals("en");
 
-  const enemies = data
-    .filter((enemy: any) => !enemy.hideInHandbook)
-    .sort((a: any, b: any) => {
-      if (a.isUnreleased !== b.isUnreleased) return b.isUnreleased ? 1 : -1;
-    });
+  const medals = data.sort((a: any, b: any) => {
+    if (a.isUnreleased !== b.isUnreleased) return b.isUnreleased ? 1 : -1;
+    // return b.displayTime - a.displayTime;
+  });
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 mx-auto w-full max-w-6xl">
@@ -21,25 +19,25 @@ export default async function Page() {
           <BreadcrumbList>
             <BreadcrumbItem><BreadcrumbLink href="/en/home">Home</BreadcrumbLink></BreadcrumbItem>
             <BreadcrumbSeparator>/</BreadcrumbSeparator>
-            <BreadcrumbItem><BreadcrumbPage>Enemies</BreadcrumbPage></BreadcrumbItem>
+            <BreadcrumbItem><BreadcrumbPage>Medals</BreadcrumbPage></BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <h1 className="mb-2 text-2xl font-semibold">Enemies</h1>
+        <h1 className="mb-2 text-2xl font-semibold">Medals</h1>
         <div className="text-sm">
           <span>
             <span className="text-muted-foreground">Showing </span>
-            <span>{enemies.length}</span>
-            <span className="text-muted-foreground"> Enemies</span>
+            <span>{medals.length}</span>
+            <span className="text-muted-foreground"> Medals</span>
           </span>
         </div>
       </div>
       <Separator />
       <div className="grid grid-cols-3 md:grid-cols-7 gap-2">
-        {enemies.map((enemy: any) => (
-          <a href={`/en/enemies/${enemy.slug}`} key={enemy.slug}>
+        {medals.map((medal: any) => (
+          <a href={`/en/medals/${medal.slug}`} key={medal.slug}>
             <div className="group relative aspect-square rounded overflow-hidden">
               <img
-                src={`https://static.closure.wiki/v1/enemies/${enemy.slug}.webp`}
+                src={`https://static.closure.wiki/v1/medalicon/${medal.slug}.webp`}
                 className="w-full h-full object-contain transition-transform duration-150 group-hover:scale-105"
                 loading="lazy"
                 decoding="async"
@@ -48,10 +46,9 @@ export default async function Page() {
               <div className="absolute bottom-0 left-0 right-0 text-white px-1 py-2 text-center font-semibold text-sm" style={{ 
                   textShadow: '-1px 0 0 #000,1px 0 0 #000,0 -1px 0 #000,0 1px 0 #000,-1px -1px 0 #000,1px 1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000'
                 }}>
-                {enemy.isUnreleased && <span className="text-yellow-300">[CN] </span>}
-                {enemy.name}
+                {medal.isUnreleased && <span className="text-yellow-300">[CN] </span>}
+                {medal.name}
               </div>
-              <div className="absolute left-0 right-0 bottom-0 h-[4px]" style={{ backgroundColor: getEnemyRarityColor(enemy.enemyLevel) }}></div>
             </div>
           </a>
         ))}

@@ -1,12 +1,12 @@
-import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
+import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
 import { getOperations } from "@/lib/fetch-utils";
 import { notFound } from "next/navigation";
 
 export const revalidate = 3600
 
 export default async function Page() {
-  const data: any = await getOperations();
+  const data: any = await getOperations("en");
   if (!data) notFound();
 
   const stages = data.stages.sort((a: any, b: any) => {

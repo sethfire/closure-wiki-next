@@ -6,7 +6,7 @@ import { getOperators } from "@/lib/fetch-utils";
 export const revalidate = 86400;
 
 export default async function Page() {
-  const data: any = await getOperators();
+  const data: any = await getOperators("en");
 
   const characters = data.slice().sort((a: any, b: any) => {
     if (a.isUnreleased !== b.isUnreleased) return b.isUnreleased ? 1 : -1;

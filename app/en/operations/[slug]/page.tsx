@@ -19,7 +19,7 @@ export const revalidate = 86400
 export const dynamicParams = true
 
 export async function generateStaticParams() {
-  const data: any = await getOperations();
+  const data: any = await getOperations("en");
   return data.stages.slice(0, 10).map((stage: any) => ({
     slug: stage.slug,
   }))
@@ -30,11 +30,15 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { slug } = await params;
-  const data: any = await getOperation(slug);
+  const data: any = await getOperation("en", slug);
+  if (!data) notFound();
 
   const title = `${data.stage.code}: ${data.stage.name}`;
   const description = stripTags(data.stage.description.replace(/\\n/g, "\n"));
   const image = `https://static.closure.wiki/v1/mappreviews/${data.stage.stageId}.webp`;
+
+  const siteName = "Closure Wiki";
+  const url = `https://closure.wiki/en/operations/${slug}`;
 
   return {
     title: title,
@@ -42,8 +46,8 @@ export async function generateMetadata(
     openGraph: {
       title: title,
       description: description,
-      siteName: "Closure Wiki",
-      url: `https://arknights.closure.wiki/en/operations/${slug}`,
+      siteName: siteName,
+      url: url,
       images: [{ url: image }]
     },
     twitter: {
@@ -57,7 +61,7 @@ export async function generateMetadata(
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const data: any = await getOperation(slug);
+  const data: any = await getOperation("en", slug);
   if (!data) notFound();
 
   const enemySortOrder: Record<string, number> = { BOSS: 0, ELITE: 1, NORMAL: 2 };

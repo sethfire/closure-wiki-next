@@ -14,7 +14,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { Ghost, Home, Map, Users, WashingMachine } from "lucide-react"
+import { Ghost, Home, Map, Medal, Users, WashingMachine } from "lucide-react"
 import { ModeToggle } from "./mode-toggle"
 
 
@@ -48,6 +48,11 @@ const data = {
           title: "Modules",
           url: "/en/modules",
           icon: WashingMachine,
+        },
+        {
+          title: "Medals",
+          url: "/en/medals",
+          icon: Medal,
         },
       ],
     },

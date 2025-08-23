@@ -5,7 +5,7 @@ import { getModules } from "@/lib/fetch-utils";
 export const revalidate = 86400;
 
 export default async function Page() {
-  const data: any = await getModules();
+  const data: any = await getModules("en");
 
   const modules = data
     .filter((module: any) => module.type === "ADVANCED")

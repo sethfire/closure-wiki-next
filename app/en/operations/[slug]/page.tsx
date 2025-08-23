@@ -13,22 +13,13 @@ import { Alert, AlertTitle } from '@/components/ui/alert'
 import { AlertCircleIcon } from 'lucide-react'
 import { parseRichText, stripTags } from '@/lib/parse'
 import { getEnemyStat, getEnemyAttribute, getEnemyLevelType } from '@/lib/enemy-utils'
+import { getOperation, getOperations } from '@/lib/fetch-utils'
 
 export const revalidate = 86400
 export const dynamicParams = true
 
-const getOperation = async (slug: string) => {
-  const response: any = await fetch(`https://api.closure.wiki/en/operations/${slug}`);
-  if (!response.ok) notFound();
-
-  const data: any = await response.json();
-  if (!data) notFound();
-
-  return data;
-}
-
 export async function generateStaticParams() {
-  const data: any = await fetch('https://api.closure.wiki/en/operations').then((res) => res.json())
+  const data: any = await getOperations();
   return data.stages.slice(0, 10).map((stage: any) => ({
     slug: stage.slug,
   }))
@@ -67,6 +58,7 @@ export async function generateMetadata(
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const data: any = await getOperation(slug);
+  if (!data) notFound();
 
   const enemySortOrder: Record<string, number> = { BOSS: 0, ELITE: 1, NORMAL: 2 };
   const sortedEnemies = Object.values(data.enemies).slice()

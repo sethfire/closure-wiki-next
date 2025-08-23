@@ -1,4 +1,4 @@
-import type { Metadata, ResolvingMetadata } from 'next'
+import type { Metadata, ResolvingMetadata } from "next";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,35 +6,26 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
-import { notFound } from 'next/navigation'
-import { AlertCircleIcon } from "lucide-react"
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import { notFound } from "next/navigation";
+import { AlertCircleIcon } from "lucide-react";
 import {
   Alert,
   AlertDescription,
   AlertTitle,
-} from "@/components/ui/alert"
-import { parseRichText } from '@/lib/parse'
+} from "@/components/ui/alert";
+import { parseRichText } from "@/lib/parse";
+import { getModule, getModules } from "@/lib/fetch-utils";
 
-export const revalidate = 86400
-export const dynamicParams = true
-
-const getModule = async (slug: string) => {
-  const response: any = await fetch(`https://api.closure.wiki/en/modules/${slug}`);
-  if (!response.ok) notFound();
-
-  const data: any = await response.json();
-  if (!data) notFound();
-
-  return data;
-}
+export const revalidate = 86400;
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  const chars: any[] = await fetch('https://api.closure.wiki/en/modules').then((res) => res.json())
-  return chars.slice(0, 10).map((char) => ({
-    slug: char.slug,
-  }))
+  const modules: any[] = await getModules();
+  return modules.slice(0, 10).map((module) => ({
+    slug: module.slug,
+  }));
 }
 
 export async function generateMetadata(
@@ -43,29 +34,32 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await params;
   const data: any = await getModule(slug);
-
+  const title = data.module.uniEquipName;
+  const description = data.module.uniEquipDesc ? (data.module.uniEquipDesc as string).split("\n")[0] : "";
+  const image = `https://static.closure.wiki/v1/uniequipimg/${data.module.uniEquipIcon}.webp`;
   return {
-    title: data.module.uniEquipName,
-    description: data.module.uniEquipDesc ? (data.module.uniEquipDesc as string).split('\n')[0] : "",
+    title: title,
+    description: description,
     openGraph: {
-      title: data.module.uniEquipName,
-      description: data.module.uniEquipDesc ? (data.module.uniEquipDesc as string).split('\n')[0] : "",
+      title: title,
+      description: description,
       siteName: "Closure Wiki",
       url: `https://arknights.closure.wiki/en/modules/${slug}`,
-      images: [{ url: `https://static.closure.wiki/v1/uniequipimg/${data.module.uniEquipIcon}.webp` }]
+      images: [{ url: image }],
     },
     twitter: {
-      title: data.module.uniEquipName,
-      description: data.module.uniEquipDesc ? (data.module.uniEquipDesc as string).split('\n')[0] : "",
+      title: title,
+      description: description,
       card: "summary",
-      images: `https://static.closure.wiki/v1/uniequipimg/${data.module.uniEquipIcon}.webp`,
+      images: image,
     },
-  }
+  };
 }
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const data: any = await getModule(slug);
+  if (!data) notFound();
 
   return (
     <div className="flex flex-1 flex-col gap-8 p-4 mx-auto w-full max-w-6xl mb-16">
@@ -89,7 +83,6 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             <span className="text-muted-foreground">Release Date ({data.meta.isUnreleased ? "CN" : "Global"}): </span>
             {new Date(data.module.uniEquipGetTime * 1000).toLocaleDateString()}
           </span>
-          {/* <span className="text-muted-foreground">Operator Module</span> */}
         </div>
         <Separator className="mb-4" />
         {data.meta.isUnreleased && (
@@ -113,7 +106,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                 {data.module.charId}
               </span>
             </div>
-            <p className="flex-1">{data.module.uniEquipDesc ? (data.module.uniEquipDesc as string).split('\n')[0] : null}</p>
+            <p className="flex-1">{data.module.uniEquipDesc ? (data.module.uniEquipDesc as string).split("\n")[0] : null}</p>
           </div>
         </div>
       </section>
@@ -131,12 +124,12 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       )}
 
       <section>
-          <h2 className="text-xl font-semibold mb-2">Description</h2>
-          <Separator className="mb-2" />
-          <p className="whitespace-pre-line">
-            {data.module.uniEquipDesc}
-          </p>
+        <h2 className="text-xl font-semibold mb-2">Description</h2>
+        <Separator className="mb-2" />
+        <p className="whitespace-pre-line">
+          {data.module.uniEquipDesc}
+        </p>
       </section>
     </div>
-  )
+  );
 }

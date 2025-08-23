@@ -1,36 +1,16 @@
-import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
+import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import { getCharRarity, getCharRarityColor } from "@/lib/char-utils";
+import { getOperators } from "@/lib/fetch-utils";
 
-export const revalidate = 3600
+export const revalidate = 86400;
 
 export default async function Page() {
-  const data: any = await fetch(`https://api.closure.wiki/en/operators`).then(
-    (res) => res.json()
-  )
-
-  const charRarityColorMap: Record<string, string> = {
-    TIER_1: '#A0A0A0',
-    TIER_2: '#DCDC00',
-    TIER_3: '#00AAEE',
-    TIER_4: '#D6C5D6',
-    TIER_5: '#FFFFA9',
-    TIER_6: '#FFC800',
-  };
-
-  const charRarityMap: Record<string, number> = {
-    TIER_6: 6,
-    TIER_5: 5,
-    TIER_4: 4,
-    TIER_3: 3,
-    TIER_2: 2,
-    TIER_1: 1,
-  };
+  const data: any = await getOperators();
 
   const characters = data.slice().sort((a: any, b: any) => {
     if (a.isUnreleased !== b.isUnreleased) return b.isUnreleased ? 1 : -1;
-    const rarityA = charRarityMap[a.rarity];
-    const rarityB = charRarityMap[b.rarity];
-    if (rarityB !== rarityA) return rarityB - rarityA;
+    if (getCharRarity(b.rarity) !== getCharRarity(a.rarity)) return getCharRarity(b.rarity) - getCharRarity(a.rarity);
     return a.name.localeCompare(b.name);
   });
 
@@ -87,7 +67,7 @@ export default async function Page() {
                 {char.isUnreleased && <span className="text-yellow-300">[CN] </span>}
                 {char.name}
               </div>
-              <div className="absolute left-0 right-0 bottom-0 h-[4px]" style={{ backgroundColor: charRarityColorMap[char.rarity]}}></div>
+              <div className="absolute left-0 right-0 bottom-0 h-[4px]" style={{ backgroundColor: getCharRarityColor(char.rarity) }}></div>
             </div>
           </a>
         ))}

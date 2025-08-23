@@ -1,9 +1,9 @@
-import type { Metadata, ResolvingMetadata } from 'next'
-import CarouselGallery from "@/components/carousel-gallery"
-import PotentialsTable from "@/components/operators/potentials-table"
-import SkillsTable from "@/components/operators/skills-table"
-import StatsTable from "@/components/operators/stats-table"
-import TalentsTable from "@/components/operators/talent-table"
+import type { Metadata, ResolvingMetadata } from "next";
+import CarouselGallery from "@/components/carousel-gallery";
+import PotentialsTable from "@/components/operators/potentials-table";
+import SkillsTable from "@/components/operators/skills-table";
+import StatsTable from "@/components/operators/stats-table";
+import TalentsTable from "@/components/operators/talent-table";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,58 +11,22 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
-import { notFound } from 'next/navigation'
-import { Alert, AlertTitle } from '@/components/ui/alert'
-import { AlertCircleIcon } from 'lucide-react'
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import { AlertCircleIcon } from "lucide-react";
+import { getCharClass, getCharRarity } from "@/lib/char-utils";
+import { getOperator, getOperators } from "@/lib/fetch-utils";
+import { notFound } from "next/navigation";
 
-export const revalidate = 86400
-export const dynamicParams = true
-
-function getOperatorClass(value:string): string {
-  switch (value) {
-    case "PIONEER": return "Vanguard";
-    case "WARRIOR": return "Guard";
-    case "SNIPER": return "Sniper";
-    case "CASTER": return "Caster";
-    case "MEDIC": return "Medic";
-    case "SUPPORT": return "Supporter";
-    case "TANK": return "Defender";
-    case "SPECIAL": return "Specialist";
-    case "TRAP": return "Trap";
-    case "TOKEN": return "Token";
-    default: return "???";
-  }
-}
-
-function getOperatorRarity(value: string): number {
-  switch (value) {
-    case "TIER_6": return 6;
-    case "TIER_5": return 5;
-    case "TIER_4": return 4;
-    case "TIER_3": return 3;
-    case "TIER_2": return 2;
-    case "TIER_1": return 1;
-    default: return 0;
-  }
-}
-
-const getOperator = async (slug: string) => {
-  const response: any = await fetch(`https://api.closure.wiki/en/operators/${slug}`);
-  if (!response.ok) notFound();
-
-  const data: any = await response.json();
-  if (!data) notFound();
-
-  return data;
-}
+export const revalidate = 86400;
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  const chars: any[] = await fetch('https://api.closure.wiki/en/operators').then((res) => res.json())
+  const chars: any[] = await getOperators();
   return chars.slice(0, 10).map((char) => ({
     slug: char.slug,
-  }))
+  }));
 }
 
 export async function generateMetadata(
@@ -71,28 +35,34 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await params;
   const data: any = await getOperator(slug);
+
+  const title = data.meta.name;
+  const description = data.char.itemUsage;
+  const image = `https://static.closure.wiki/v1/charavatars/${data.charProfile.charID}.webp`;
+
   return {
-    title: data.meta.name,
-    description: data.char.itemUsage,
+    title: title,
+    description: description,
     openGraph: {
-      title: data.meta.name,
-      description: data.char.itemUsage,
+      title: title,
+      description: description,
       siteName: "Closure Wiki",
-      url: `https://arknights.closure.wiki/en/operations/${slug}`,
-      images: [{ url: `https://static.closure.wiki/v1/charavatars/${data.charProfile.charID}.webp` }]
+      url: `https://arknights.closure.wiki/en/operators/${slug}`,
+      images: [{ url: image }],
     },
     twitter: {
-      title: data.meta.name,
-      description: data.char.itemUsage,
+      title: title,
+      description: description,
       card: "summary",
-      images: `https://static.closure.wiki/v1/charavatars/${data.charProfile.charID}.webp`,
+      images: image,
     },
-  }
+  };
 }
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const data: any = await getOperator(slug);
+  if (!data) notFound();
 
   const charArts: any[] = [];
   data.charSkins.forEach((skin: any) => {
@@ -139,7 +109,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <div className="flex justify-between mb-2">
           <h1 className="text-2xl font-semibold">{data.meta.name}</h1>
           <span className="text-2xl text-yellow-400">
-            {"★".repeat(getOperatorRarity(data.char.rarity))}
+            {"★".repeat(getCharRarity(data.char.rarity))}
           </span>
         </div>
         <div className="mb-4 text-sm flex flex-row gap-4">
@@ -151,7 +121,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             <span className="text-muted-foreground">Release Date (EN): </span>
             {data.meta.isUnreleased ? "Unreleased" : new Date(0).toLocaleDateString()}
           </span> */}
-          <span className="text-muted-foreground">{getOperatorRarity(data.char.rarity)}★ {getOperatorClass(data.char.profession)} Operator</span>
+          <span className="text-muted-foreground">{getCharRarity(data.char.rarity)}★ {getCharClass(data.char.profession)} Operator</span>
         </div>
         <Separator className="mb-4" />
         

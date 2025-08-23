@@ -1,14 +1,12 @@
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
+import { getOperations } from "@/lib/fetch-utils";
 import { notFound } from "next/navigation";
 
 export const revalidate = 3600
 
 export default async function Page() {
-  const response: any = await fetch(`https://api.closure.wiki/en/operations`);
-  if (!response.ok) notFound();
-
-  const data: any = await response.json();
+  const data: any = await getOperations();
   if (!data) notFound();
 
   const stages = data.stages.sort((a: any, b: any) => {

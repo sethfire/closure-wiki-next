@@ -2,6 +2,8 @@ const tagStyles: Record<string, React.CSSProperties> = {
   "ba.vup": { color: "#0098DC" },
   "ba.vdown": { color: "#FF6237" },
   "ba.rem": { color: "#F49800" },
+  "eb.key": { color: "#00FFFF" },
+  "eb.danger": { color: "#FF0000" },
 };
 
 export function parseBlackBoard(str: string, blackboard: any): string {

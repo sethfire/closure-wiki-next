@@ -9,23 +9,15 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import { getEnemyAttackType, getEnemyDamageType, getEnemyLevelType, getEnemyMotionType, getEnemyTag } from "@/lib/enemy-utils"
+import { getEnemy } from "@/lib/fetch-utils"
 import { notFound } from 'next/navigation'
 
 export const revalidate = 0
 
-const getEnemy = async (slug: string) => {
-  const response: any = await fetch(`https://api.closure.wiki/en/enemies/${slug}`);
-  if (!response.ok) notFound();
-
-  const data: any = await response.json();
-  if (!data) notFound();
-
-  return data;
-}
-
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const data: any = await getEnemy(slug);
+  if (!data) notFound();
 
   let enemyStats = "";
   enemyStats += "{{Enemy infobox";

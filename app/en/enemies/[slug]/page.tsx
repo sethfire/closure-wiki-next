@@ -1,4 +1,4 @@
-import type { Metadata, ResolvingMetadata } from 'next'
+import type { Metadata, ResolvingMetadata } from "next";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,37 +6,28 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
-import { notFound } from 'next/navigation'
-import StatsTable from '@/components/enemies/stats-table'
-import { AlertCircleIcon } from "lucide-react"
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import { notFound } from "next/navigation";
+import StatsTable from "@/components/enemies/stats-table";
+import { AlertCircleIcon } from "lucide-react";
 import {
   Alert,
   AlertDescription,
   AlertTitle,
-} from "@/components/ui/alert"
-import { parseRichText } from '@/lib/parse'
-import { getEnemyAttackType, getEnemyDamageType, getEnemyLevelType, getEnemyMotionType } from '@/lib/enemy-utils'
+} from "@/components/ui/alert";
+import { parseRichText } from "@/lib/parse";
+import { getEnemyAttackType, getEnemyDamageType, getEnemyLevelType, getEnemyMotionType } from "@/lib/enemy-utils";
+import { getEnemies, getEnemy } from "@/lib/fetch-utils";
 
-export const revalidate = 86400
-export const dynamicParams = true
-
-const getEnemy = async (slug: string) => {
-  const response: any = await fetch(`https://api.closure.wiki/en/enemies/${slug}`);
-  if (!response.ok) notFound();
-
-  const data: any = await response.json();
-  if (!data) notFound();
-
-  return data;
-}
+export const revalidate = 86400;
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  const chars: any[] = await fetch('https://api.closure.wiki/en/enemies').then((res) => res.json())
-  return chars.slice(0, 10).map((char) => ({
-    slug: char.slug,
-  }))
+  const enemies: any[] = await getEnemies();
+  return enemies.slice(0, 10).map((enemy) => ({
+    slug: enemy.slug,
+  }));
 }
 
 export async function generateMetadata(
@@ -46,21 +37,25 @@ export async function generateMetadata(
   const { slug } = await params;
   const data: any = await getEnemy(slug);
 
+  const title = data.enemy.name;
+  const description = data.enemy.description;
+  const image = `https://static.closure.wiki/v1/enemies/${data.enemy.enemyId}.webp`;
+
   return {
-    title: data.enemy.name,
-    description: data.enemy.description,
+    title: title,
+    description: description,
     openGraph: {
-      title: data.enemy.name,
-      description: data.enemy.description,
+      title: title,
+      description: description,
       siteName: "Closure Wiki",
       url: `https://arknights.closure.wiki/en/enemies/${slug}`,
-      images: [{ url: `https://static.closure.wiki/v1/enemies/${data.enemy.enemyId}.webp` }]
+      images: [{ url: image }]
     },
     twitter: {
-      title: data.enemy.name,
-      description: data.enemy.description,
+      title: title,
+      description: description,
       card: "summary",
-      images: `https://static.closure.wiki/v1/enemies/${data.enemy.enemyId}.webp`,
+      images: image,
     },
   }
 }
@@ -68,6 +63,7 @@ export async function generateMetadata(
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const data: any = await getEnemy(slug);
+  if (!data) notFound();
 
   return (
     <div className="flex flex-1 flex-col gap-8 p-4 mx-auto w-full max-w-6xl mb-16">

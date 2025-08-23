@@ -1,12 +1,11 @@
-import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
+import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import { getModules } from "@/lib/fetch-utils";
 
-export const revalidate = 3600
+export const revalidate = 86400;
 
 export default async function Page() {
-  const data: any = await fetch(`https://api.closure.wiki/en/modules`).then(
-    (res) => res.json()
-  )
+  const data: any = await getModules();
 
   const modules = data
     .filter((module: any) => module.type === "ADVANCED")

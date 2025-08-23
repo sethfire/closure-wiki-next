@@ -1,3 +1,12 @@
+export function getEnemyRarityColor(value: string): string {
+  switch (value) {
+    case "NORMAL": return "#A0A0A0";
+    case "ELITE": return "#FFFFA9";
+    case "BOSS": return "#FF0000";
+    default: return "#A0A0A0";
+  }
+}
+
 export function getEnemyLevelType(value: string): string {
   switch (value) {
     case "NORMAL": return "Normal";

@@ -1,25 +1,18 @@
-import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
+import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import { getEnemyRarityColor } from "@/lib/enemy-utils";
+import { getEnemies } from "@/lib/fetch-utils";
 
-export const revalidate = 3600
+export const revalidate = 86400;
 
 export default async function Page() {
-  const data: any = await fetch(`https://api.closure.wiki/en/enemies`).then(
-    (res) => res.json()
-  )
+  const data: any = await getEnemies();
 
   const enemies = data
     .filter((enemy: any) => !enemy.hideInHandbook)
     .sort((a: any, b: any) => {
       if (a.isUnreleased !== b.isUnreleased) return b.isUnreleased ? 1 : -1;
     });
-
-  const enemyRarityColors: Record<string, string> = {
-    NORMAL: '#A0A0A0',
-    ELITE: '#FFFFA9',
-    BOSS: '#FF0000',
-  };
-
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 mx-auto w-full max-w-6xl">
@@ -58,7 +51,7 @@ export default async function Page() {
                 {enemy.isUnreleased && <span className="text-yellow-300">[CN] </span>}
                 {enemy.name}
               </div>
-              <div className="absolute left-0 right-0 bottom-0 h-[4px]" style={{ backgroundColor: enemyRarityColors[enemy.enemyLevel] }}></div>
+              <div className="absolute left-0 right-0 bottom-0 h-[4px]" style={{ backgroundColor: getEnemyRarityColor(enemy.enemyLevel) }}></div>
             </div>
           </a>
         ))}

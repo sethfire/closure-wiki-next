@@ -18,7 +18,7 @@ import {
 import { parseRichText } from "@/lib/parse";
 import { getModule, getModules } from "@/lib/fetch-utils";
 
-export const revalidate = 86400;
+export const revalidate = 2419200;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {

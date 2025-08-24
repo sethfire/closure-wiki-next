@@ -19,7 +19,7 @@ import { getCharClass, getCharRarity } from "@/lib/char-utils";
 import { getOperator, getOperators } from "@/lib/fetch-utils";
 import { notFound } from "next/navigation";
 
-export const revalidate = 86400;
+export const revalidate = 2419200;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {

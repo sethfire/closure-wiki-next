@@ -15,7 +15,7 @@ import { parseRichText, stripTags } from '@/lib/parse'
 import { getEnemyStat, getEnemyAttribute, getEnemyLevelType } from '@/lib/enemy-utils'
 import { getOperation, getOperations } from '@/lib/fetch-utils'
 
-export const revalidate = 86400
+export const revalidate = 2419200;
 export const dynamicParams = true
 
 export async function generateStaticParams() {

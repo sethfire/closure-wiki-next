@@ -1,6 +1,6 @@
 const API_BASE_URL = "https://api.closure.wiki";
 
-const ALLOWED_LANGS = ["en"];
+const ALLOWED_LANGS = ["en", "cn", "jp", "kr", "tw"];
 const ALLOWED_TYPES = ["operators", "enemies", "operations", "modules", "medals"];
 
 async function getDataItems(lang: string, type: string) {

@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import { getOperations } from "@/lib/fetch-utils";
 import { notFound } from "next/navigation";
 
-export const revalidate = 3600
+export const revalidate = 86400;
 
 export default async function Page() {
   const data: any = await getOperations("en");

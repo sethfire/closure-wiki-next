@@ -1,12 +1,4 @@
 import type { Metadata, ResolvingMetadata } from "next";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { notFound } from "next/navigation";
 import StatsTable from "@/components/enemies/stats-table";
@@ -19,8 +11,9 @@ import {
 import { parseRichText } from "@/lib/parse";
 import { getEnemyAttackType, getEnemyDamageType, getEnemyLevelType, getEnemyMotionType } from "@/lib/enemy-utils";
 import { getEnemies, getEnemy } from "@/lib/fetch-utils";
+import Breadcrumbs from "@/components/ui/dynamic-breadcrumb";
 
-export const revalidate = 86400;
+export const revalidate = 2419200;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
@@ -73,19 +66,15 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     <div className="flex flex-1 flex-col gap-8 p-4 mx-auto w-full max-w-6xl mb-16">
       <section>
         <div className="flex justify-between mb-2">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem><BreadcrumbLink href="/en/home">Home</BreadcrumbLink></BreadcrumbItem>
-              <BreadcrumbSeparator>/</BreadcrumbSeparator>
-              <BreadcrumbItem><BreadcrumbLink href="/en/enemies">Enemies</BreadcrumbLink></BreadcrumbItem>
-              <BreadcrumbSeparator>/</BreadcrumbSeparator>
-              <BreadcrumbItem><BreadcrumbPage>{data.meta.name}</BreadcrumbPage></BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+          <Breadcrumbs items={[
+            { label: "Home", href: "/en/home" },
+            { label: "Enemies", href: "/en/enemies" },
+            { label: data.enemy.name },
+          ]} />
           <a href={`/en/enemies/${slug}/export`} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Export</a>
         </div>
         <div className="flex justify-between mb-2">
-          <h1 className="text-2xl font-semibold">{data.meta.name}</h1>
+          <h1 className="text-2xl font-semibold">{data.enemy.name}</h1>
         </div>
         <div className="mb-4 text-sm flex flex-row gap-4">
           <span className="text-muted-foreground">{getEnemyLevelType(data.enemy.enemyLevel)} Enemy</span>

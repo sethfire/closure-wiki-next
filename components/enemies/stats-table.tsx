@@ -103,8 +103,8 @@ export default function StatsTable({ enemyStats }: { enemyStats: any[] }) {
   const enemyWeight        = getEnemyAttribute(enemyStats, "massLevel", "-");
   const enemySpeed         = getEnemyAttribute(enemyStats, "moveSpeed", "-");
   const enemyATKSpeed      = getEnemyAttribute(enemyStats, "baseAttackTime", "-");
-  const enemyElementalRES  = getEnemyAttribute(enemyStats, "epResistance", "0");
-  const enemyEffectRES     = getEnemyAttribute(enemyStats, "epDamageResistance", "0");
+  const enemyEffectRES     = getEnemyAttribute(enemyStats, "epResistance", "0");
+  const enemyElementalRES  = getEnemyAttribute(enemyStats, "epDamageResistance", "0");
 
   const enemyTauntLevel    = getEnemyAttribute(enemyStats, "tauntLevel", "0");
   const enemyLifePointPenalty = getEnemyStat(enemyStats, "lifePointReduce", "1");
@@ -179,8 +179,8 @@ export default function StatsTable({ enemyStats }: { enemyStats: any[] }) {
               <tr>
                 <td className="border p-1">{enemySpeed[level]}<br /><strong>{getMoveSpeedRating(enemySpeed[level])}</strong></td>
                 <td className="border p-1">{enemyATKSpeed[level]}<br /><strong>{getAttackSpeedRating(enemyATKSpeed[level])}</strong></td>
-                <td className="border p-1">{enemyElementalRES[level]}<br /><strong>E</strong></td>
                 <td className="border p-1">{enemyEffectRES[level]}<br /><strong>E</strong></td>
+                <td className="border p-1">{enemyElementalRES[level]}<br /><strong>E</strong></td>
                 <td className="border p-1">{enemyTauntLevel[level]}</td>
                 <td className={`border p-1 ${enemyLifePointPenalty[level] > 0 ? 'text-destructive' : 'text-green-500'}`}>{enemyLifePointPenalty[level]}</td>
               </tr>

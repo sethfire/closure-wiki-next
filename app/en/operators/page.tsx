@@ -8,10 +8,14 @@ export const revalidate = 86400;
 export default async function Page() {
   const data: any = await getOperators("en");
 
+  const sortOrderResponse: any = await fetch("https://api.closure.wiki/v2/en/operators/order");
+  const sortOrderMap = await sortOrderResponse.json();
+
   const characters = data.slice().sort((a: any, b: any) => {
     if (a.isUnreleased !== b.isUnreleased) return b.isUnreleased ? 1 : -1;
     if (getCharRarity(b.rarity) !== getCharRarity(a.rarity)) return getCharRarity(b.rarity) - getCharRarity(a.rarity);
-    return a.name.localeCompare(b.name);
+
+    return sortOrderMap[b.id] - sortOrderMap[a.id];
   });
 
   return (

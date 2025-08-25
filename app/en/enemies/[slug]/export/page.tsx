@@ -103,6 +103,7 @@ ${enemyType}|grade   = ${getEnemyLevelType(data.enemy.enemyLevel)}
 
 ==Stats==
 ${enemyStats}
+<!-- TODO: Enemy resistances -->
 
 <!-- Replace with correct year, if needed -->
 {{Y7 enemies}}`
@@ -124,7 +125,7 @@ ${enemyStats}
         <Separator />
       </section>
       <section>
-        <CodeBlock code={output} language="plaintext" />
+        <CodeBlock code={output} language="wiki" />
       </section>
     </div>
   )

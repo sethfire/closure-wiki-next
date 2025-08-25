@@ -12,9 +12,8 @@ export default async function Page() {
   const sortOrderMap = await sortOrderResponse.json();
 
   const characters = data.slice().sort((a: any, b: any) => {
-    if (a.isUnreleased !== b.isUnreleased) return b.isUnreleased ? 1 : -1;
+    // if (a.isUnreleased !== b.isUnreleased) return b.isUnreleased ? 1 : -1;
     if (getCharRarity(b.rarity) !== getCharRarity(a.rarity)) return getCharRarity(b.rarity) - getCharRarity(a.rarity);
-
     return sortOrderMap[b.id] - sortOrderMap[a.id];
   });
 

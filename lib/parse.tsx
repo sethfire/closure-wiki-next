@@ -13,12 +13,13 @@ export function parseBlackBoard(str: string, blackboard: any): string {
     return str.replace(/{([^}:]+)(?::([^}]+))?}/g, (_, key, format) => {
         // console.log("Parsing key:", key, "with format:", format);
 
-        // const entry = blackboard[key];
-        // if (!entry) return `{${key}}`;
-
-        const entry = blackboard.find((b: any) => b.key === key);
+        const entry = blackboard[key];
         if (!entry) return `{${key}}`;
-        let val = entry.value;
+        let val = entry;
+
+        // const entry = blackboard.find((b: any) => b.key === key);
+        // if (!entry) return `{${key}}`;
+        // let val = entry.value;
 
         if (format === "0%") return `${Math.round(val * 100)}%`;
         if (format === "0.0") return val.toFixed(1);

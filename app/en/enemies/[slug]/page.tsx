@@ -100,18 +100,22 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                 <span className="text-muted-foreground">Type: </span>
                 {getEnemyLevelType(data.enemy.enemyLevel)}
               </span>
-              <span>
-                <span className="text-muted-foreground">Attack Pattern: </span>
-                {getEnemyAttackType(data.enemyStats[0].enemyData.applyWay.m_value)}
-              </span>
+                {data.enemyStats && (
+                  <span>
+                    <span className="text-muted-foreground">Attack Pattern: </span>
+                    {getEnemyAttackType(data.enemyStats[0].enemyData.applyWay.m_value)}
+                  </span>
+                )}
               <span>
                 <span className="text-muted-foreground">Damage: </span>
                 {data.enemy.damageType.map((type: string) => getEnemyDamageType(type)).join("/")}
               </span>
-              <span>
-                <span className="text-muted-foreground">Location: </span>
-                {getEnemyMotionType(data.enemyStats[0].enemyData.motion.m_value)}
-              </span>
+                {data.enemyStats && (
+                  <span>
+                    <span className="text-muted-foreground">Location: </span>
+                    {getEnemyMotionType(data.enemyStats[0].enemyData.motion.m_value)}
+                  </span>
+                )}
             </div>
             <p className="flex-1">{data.enemy.description}</p>
           </div>
@@ -142,7 +146,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         </section>
       )}
 
-      {data.enemyAppearances && data.enemyAppearances.length > 0 && (
+      {/* {data.enemyAppearances && data.enemyAppearances.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold mb-2">Appearances</h2>
           <Separator className="mb-2" />
@@ -154,7 +158,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               )}
           </ul>
         </section>
-      )}
+      )} */}
     </div>
   )
 }

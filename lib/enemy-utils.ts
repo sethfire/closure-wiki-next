@@ -55,7 +55,7 @@ export function getEnemyTag(value: string): string {
     case "machine": return "Machina";
     case "wildanimal": return "Wild Beast";
     case "collapsal": return "Collapsal";
-    case "origen": return "源石造物";
+    case "origen": return "Originium Creation";
     default: return "-";
   }
 }

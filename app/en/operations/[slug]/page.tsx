@@ -151,9 +151,27 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               <tbody>
                 {enemies.map((enemyData: any) => {
                   if (!enemyData) return null;
+
                   const enemyStats = enemyData.enemyStats;
                   const enemyLevel = data.enemies[enemyData.enemy.enemyId] ? data.enemies[enemyData.enemy.enemyId].level : null;
-                  if (enemyLevel === null) return null;
+                  if (enemyStats === null || enemyLevel === null) return (
+                    <tr key={enemyData.meta.slug}>
+                      <td className="border-t text-center"><img src={`https://static.closure.wiki/v1/enemies/${enemyData.enemy.enemyId}.webp`} className="inline-block w-12 h-12 align-middle" loading="lazy" decoding="async" /></td>
+                      <td className="border-t p-3 text-center"><a className="hover:underline text-blue-500" href={`/en/enemies/${enemyData.meta.slug}`}>{enemyData.meta.name}</a></td>
+                      <td className="border-t p-3 text-center">{data.enemies[enemyData.enemy.enemyId] ? data.enemies[enemyData.enemy.enemyId].count : "?"}</td>
+                      <td className="border-t p-3 text-center">{getEnemyLevelType(enemyData.enemy.enemyLevel)}</td>
+                      <td className="border-t p-3 text-center">-</td>
+                      <td className="border-t p-3 text-center">-</td>
+                      <td className="border-t p-3 text-center">-</td>
+                      <td className="border-t p-3 text-center">-</td>
+                      <td className="border-t p-3 text-center">-</td>
+                      <td className="border-t p-3 text-center">-</td>
+                      <td className="border-t p-3 text-center">-</td>
+                      <td className="border-t p-3 text-center">-</td>
+                      <td className="border-t p-3 text-center">-</td>
+                      <td className="border-t p-3 text-center">-</td>
+                    </tr>
+                  );
 
                   const enemyCount = data.enemies[enemyData.enemy.enemyId] ? data.enemies[enemyData.enemy.enemyId].count : "?"
 

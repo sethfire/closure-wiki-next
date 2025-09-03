@@ -92,12 +92,7 @@ ${enemyType}|grade   = ${getEnemyLevelType(data.enemy.enemyLevel)}
 {{Table end}}
 
 ==Appearances==
-<!-- List of stages where this enemy appears. Please copy the stages below into the correct stage type -->
-<!-- See https://arknights.wiki.gg/wiki/template:Appearances for the full list of stage types -->
-<!-- ${enemyAppearances} -->
 {{Appearances
-|main theme =
-|intermezzi =
 |side story =
 }}
 

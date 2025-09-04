@@ -4,9 +4,9 @@ export default function Page() {
       <p className="text-xl mb-2">Welcome!</p>
       <p>closure.wiki is an unofficial resource archive for Arknights. This is still a work in progress, so some pages may be incomplete.</p>
       <p className="mb-4">Disclaimer: This is a hobby project and is not affiliated with Hypergryph or Yostar. All trademarks are property of their respective owners.</p>
-      <p>
+      {/* <p>
         Contact: <a href="https://discord.gg/gY8V43aQdU" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">Arknights Terra Wiki Discord</a>
-      </p>
+      </p> */}
       
       <div className="flex justify-center mt-8">
         <img

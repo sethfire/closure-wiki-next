@@ -39,47 +39,81 @@ export function stripTags(str: string): string {
   return str.replace(/<(?:@|\$)[^>]*>(.*?)<\/>/g, '$1');
 }
 
-export function parseRichText(str: string): React.ReactNode[] {
-  const regex = /<(\$|@)([^>]+)?>(.+?)<\/>/g;
-  const result: React.ReactNode[] = [];
-  let lastIndex = 0;
-  let match;
-  let key = 0;
-  while ((match = regex.exec(str)) !== null) {
+const OPEN_RE = /^<([@$]?)([\w.]+)>/;
+const CLOSE_RE = /^<\/>/;
 
-    // match[1]: $ or @
-    // match[2]: tag name (e.g., ba.vup) or undefined
-    // match[3]: inner text
-    
-    if (match.index > lastIndex) {
-      const before = str.slice(lastIndex, match.index);
-      result.push(before);
+function cssToInline(styleObj?: React.CSSProperties) {
+  if (!styleObj) return "";
+  const css = Object.entries(styleObj)
+    .map(([k, v]) => `${k.replace(/[A-Z]/g, m => "-" + m.toLowerCase())}:${String(v)}`)
+    .join(";");
+  return css ? ` style="${css}"` : "";
+}
+
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+export function parseRichText(raw: string): string {
+  // treat literal "\n" as newline too
+  const input = raw.replace(/\\n/g, "\n");
+
+  let i = 0;
+  let out = "";
+  const stack: string[] = [];
+
+  while (i < input.length) {
+    const slice = input.slice(i);
+
+    // Open tag: <@name>, <$name>, or <name>
+    const open = OPEN_RE.exec(slice);
+    if (open) {
+      const prefix = open[1];         // "@", "$", or ""
+      const tagName = open[2];        // e.g. "ba.vup"
+      stack.push(tagName);
+
+      // base style from tagStyles (if any)
+      const base = tagStyles[tagName] as React.CSSProperties | undefined;
+
+      // if it's $, underline; otherwise keep base
+      const style: React.CSSProperties | undefined =
+        prefix === "$" ? { ...(base ?? {}), textDecoration: "underline" } : base;
+
+      out += `<span${cssToInline(style)}>`;
+      i += open[0].length;
+      continue;
     }
 
-    if (match[1] === '$') {
-      result.push(
-        <span key={key++} className="underline">{match[3]}</span>
-      );
-    }
-    
-    if (match[1] === '@') {
-      if (match[2] && tagStyles[match[2]]) {
-        result.push(
-          <span key={key++} style={tagStyles[match[2]]}>{match[3]}</span>
-        );
-      } else {
-        result.push(
-          <span key={key++} className="font-bold">{match[3]}</span>
-        );
-      }
+    // Close tag </>
+    if (CLOSE_RE.test(slice)) {
+      if (stack.length) stack.pop();
+      out += `</span>`;
+      i += 3;
+      continue;
     }
 
-    lastIndex = regex.lastIndex;
+    // Plain text chunk
+    const nextLt = slice.indexOf("<");
+    if (nextLt === -1) {
+      out += escapeHtml(slice);
+      break;
+    }
+    if (nextLt > 0) {
+      out += escapeHtml(slice.slice(0, nextLt));
+      i += nextLt;
+      continue;
+    }
+
+    // Starts with "<" but not a recognized tag — render "<" literally
+    out += "&lt;";
+    i += 1;
   }
-  // Push any remaining text
-  if (lastIndex < str.length) {
-    const after = str.slice(lastIndex);
-    result.push(after);
+
+  // close any unclosed spans
+  while (stack.length) {
+    stack.pop();
+    out += `</span>`;
   }
-  return result;
+
+  return out.replace(/\n/g, "<br>");
 }

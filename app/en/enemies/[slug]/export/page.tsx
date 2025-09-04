@@ -12,9 +12,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const data: any = await getEnemy("en", slug);
   if (!data) notFound();
   
-  const cnData: any = await getEnemy("cn", slug);
-  const jpData: any = await getEnemy("jp", slug);
-  const krData: any = await getEnemy("kr", slug);
+  // const cnData: any = await getEnemy("cn", slug);
+  // const jpData: any = await getEnemy("jp", slug);
+  // const krData: any = await getEnemy("kr", slug);
 
   const enemyMaxHP         = getEnemyAttribute(data.enemyStats, "maxHp", "-");
   const enemyATK           = getEnemyAttribute(data.enemyStats, "atk", "-");
@@ -65,9 +65,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 `{{Enemy infobox
 |name    = ${data.enemy.name}
 |code    = ${data.enemy.enemyIndex}
-|cnname  = ${cnData.enemy.name}
-|jpname  = ${jpData.meta.isUnreleased ? "" : jpData.enemy.name}
-|krname  = ${krData.meta.isUnreleased ? "" : krData.enemy.name}
+|name    = ${data.enemy.name}
 ${enemyType}|grade   = ${getEnemyLevelType(data.enemy.enemyLevel)}
 |attack  = ${getEnemyAttackType(data.enemyStats[0].enemyData.applyWay.m_value)}
 |damage  = ${data.enemy.damageType.map((type: string) => getEnemyDamageType(type)).join("/")}

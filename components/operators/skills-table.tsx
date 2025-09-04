@@ -71,7 +71,9 @@ export default function SkillsTable({ skills }: { skills: any[] }) {
                       }
                     })()}
                   </td>
-                  <td className="border-t p-1 text-left whitespace-pre-line">{parseRichText(parseBlackBoard(level.description, level.blackboard).replace(/\\n/g, "\n"))}</td>
+                  <td className="border-t p-1 text-left whitespace-pre-line">
+                    <span dangerouslySetInnerHTML={{ __html: parseRichText(parseBlackBoard(level.description, level.blackboard).replace(/\\n/g, "\n")) }} />
+                  </td>
                   <td className="border-t p-1 text-center">{level.spData.initSp}</td>
                   <td className="border-t p-1 text-center">{level.spData.spCost}</td>
                   <td className="border-t p-1 text-center">{level.duration === -1 ? '-' : level.duration}</td>

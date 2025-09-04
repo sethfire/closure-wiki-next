@@ -143,7 +143,7 @@ export default function StatsTable({ enemyStats }: { enemyStats: any[] }) {
                 })()}</td>
               </tr>
               <tr className="bg-card"><th className="border p-1" colSpan={6}>Description</th></tr>
-              <tr><td className="border p-1" colSpan={6}>{parseRichText(enemyDescription[level])}</td></tr>
+              <tr><td className="border p-1" colSpan={6}><span dangerouslySetInnerHTML={{ __html: parseRichText(enemyDescription[level]) }} /></td></tr>
               <tr>
                 <th className="border p-1 bg-card">Attack Pattern</th>
                 <td className="border p-1">{getEnemyAttackType(enemyAttackType[level])}</td>

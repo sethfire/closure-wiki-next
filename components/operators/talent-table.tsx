@@ -39,7 +39,7 @@ export default function TalentsTable({ talents }: { talents: any[] }) {
                 })()}
                 </td>
                 <td className="border-t p-1 text-left whitespace-pre-line">
-                {parseRichText(candidate.description)}
+                <span dangerouslySetInnerHTML={{ __html: parseRichText(candidate.description.replace(/\\n/g, "\n")) }} />
                 </td>
             </tr>
             ))}

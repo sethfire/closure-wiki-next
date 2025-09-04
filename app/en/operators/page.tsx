@@ -13,8 +13,10 @@ export default async function Page() {
 
   const characters = data.slice().sort((a: any, b: any) => {
     // if (a.isUnreleased !== b.isUnreleased) return b.isUnreleased ? 1 : -1;
-    if (getCharRarity(b.rarity) !== getCharRarity(a.rarity)) return getCharRarity(b.rarity) - getCharRarity(a.rarity);
-    return sortOrderMap[b.id] - sortOrderMap[a.id];
+    // if (getCharRarity(b.rarity) !== getCharRarity(a.rarity)) return getCharRarity(b.rarity) - getCharRarity(a.rarity);
+    const aOrder = sortOrderMap[a.id] ?? Number.MAX_SAFE_INTEGER;
+    const bOrder = sortOrderMap[b.id] ?? Number.MAX_SAFE_INTEGER;
+    return bOrder - aOrder;
   });
 
   return (

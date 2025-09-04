@@ -70,9 +70,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <div className="flex aspect-square size-8 items-center justify-center rounded">
                   <img src="https://static.closure.wiki/v1/closure.webp" className="size-8 rounded"/>
                 </div>
-                <div className="flex flex-col gap-0.5 leading-none">
-                  <span>Closure Wiki [BETA]</span>
-                  <span>v25-07-31</span>
+                <div className="flex flex-col gap-0.5 leading-none font-semibold">
+                  <span>Closure Wiki</span>
+                  {/* <span>closure.wiki</span> */}
+                  {/* <span>Work in progress!</span> */}
                 </div>
               </a>
             </SidebarMenuButton>

@@ -15,9 +15,10 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { AlertCircleIcon } from "lucide-react";
-import { getCharBranch, getCharClass, getCharRarity } from "@/lib/char-utils";
+import { getCharBranch, getCharClass, getCharRarity, getFaction } from "@/lib/char-utils";
 import { getOperator, getOperators } from "@/lib/fetch-utils";
 import { notFound } from "next/navigation";
+import { parseRichText } from "@/lib/parse";
 
 export const revalidate = 2419200;
 export const dynamicParams = true;
@@ -117,15 +118,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           </span>
         </div>
         <div className="mb-4 text-sm flex flex-row gap-4">
-          {/* <span>
-            <span className="text-muted-foreground">Release Date (CN): </span>
-            {new Date(0).toLocaleDateString()}
-          </span>
-          <span>
-            <span className="text-muted-foreground">Release Date (EN): </span>
-            {data.meta.isUnreleased ? "Unreleased" : new Date(0).toLocaleDateString()}
-          </span> */}
-          <span className="text-muted-foreground">{getCharRarity(data.char.rarity)}★ {getCharBranch(data.char.subProfessionId)} {getCharClass(data.char.profession)} Operator</span>
+          <span className="text-muted-foreground">{getCharRarity(data.char.rarity)}★ {getCharClass(data.char.profession)} Operator</span>
         </div>
         <Separator className="mb-4" />
         
@@ -146,11 +139,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       <section>
         <h2 className="text-xl font-semibold mb-2">Overview</h2>
         <Separator className="mb-4" />
-        {/* <p>Trait: {data.char.description}</p>
-        <p>Nation: {data.char.nationId}</p>
-        <p>Group: {data.char.groupId}</p>
-        <p>Team: {data.char.teamId}</p> */}
-        <table className="w-full table-fixed border-collapse bg-muted text-sm">
+        <table className="w-full table-fixed border-collapse bg-muted text-sm mb-4">
           <colgroup>
             <col style={{ width: '25%' }} />
             <col style={{ width: '25%' }} />
@@ -169,11 +158,11 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             </tr>
             <tr>
               <th className="bg-gray-200 dark:bg-card p-1 text-center">Description</th>
-              <td className="border-t px-2 py-1 text-center" colSpan={3}><p>{data.char.itemUsage}</p><br /><p>{data.char.itemDesc}</p></td>
+              <td className="border-t px-2 py-1 text-center" colSpan={3}>{data.char.itemUsage}<br />{data.char.itemDesc}</td>
             </tr>
             <tr>
-              <th className="bg-gray-200 dark:bg-card p-1 text-center">Tags</th>
-              <td className="border-t px-2 py-1 text-center" colSpan={3}>{data.char.tagList.join(", ")}</td>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Trait</th>
+              <td className="border-t px-2 py-1 text-center" colSpan={3}><span dangerouslySetInnerHTML={{ __html: parseRichText(data.char.description)}} /></td>
             </tr>
             <tr>
               <th className="bg-gray-200 dark:bg-card p-1 text-center">Class</th>
@@ -183,15 +172,15 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             </tr>
             <tr>
               <th className="bg-gray-200 dark:bg-card p-1 text-center">Nation</th>
-              <td className="border-t px-2 py-1 text-center">{data.char.nationId ? data.char.nationId.split(" ").map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ") : "N/A"}</td>
-              <th className="bg-gray-200 dark:bg-card p-1 text-center">Group</th>
-              <td className="border-t px-2 py-1 text-center">{data.char.groupId ? data.char.groupId.split(" ").map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ") : "N/A"}</td>
+              <td className="border-t px-2 py-1 text-center">{getFaction(data.char.nationId)}</td>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Faction</th>
+              <td className="border-t px-2 py-1 text-center">{getFaction(data.char.groupId)}</td>
             </tr>
             <tr>
-              <th className="bg-gray-200 dark:bg-card p-1 text-center">Rarity</th>
-              <td className="border-t px-2 py-1 text-center">{getCharRarity(data.char.rarity)}★</td>
               <th className="bg-gray-200 dark:bg-card p-1 text-center">Position</th>
               <td className="border-t px-2 py-1 text-center">{data.char.position ? data.char.position.charAt(0).toUpperCase() + data.char.position.slice(1).toLowerCase() : "N/A"}</td>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Tags</th>
+              <td className="border-t px-2 py-1 text-center">{data.char.tagList.join(", ")}</td>
             </tr>
             <tr>
               <th className="bg-gray-200 dark:bg-card p-1 text-center">Obtain Method</th>
@@ -199,6 +188,41 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               <th className="bg-gray-200 dark:bg-card p-1 text-center">Limited</th>
               <td className="border-t px-2 py-1 text-center">{data.charProfile.isLimited ? "Yes" : "No"}</td>
             </tr>
+          </tbody>
+        </table>
+        
+        <table className="w-full table-fixed border-collapse bg-muted text-sm">
+          <colgroup>
+            <col style={{ width: '25%' }} />
+            <col style={{ width: '25%' }} />
+            <col style={{ width: '25%' }} />
+            <col style={{ width: '25%' }} />
+          </colgroup>
+          <tbody>
+            <tr>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Illustrator(s)</th>
+              <td className="px-2 py-1 text-center" colSpan={3}>
+                {Array.isArray(data.charSkins) && data.charSkins.length > 0
+                  ? Array.from(new Set(data.charSkins.flatMap((skin: any) => skin?.displaySkin?.drawerList ?? []))).join(", ") || "N/A"
+                  : "N/A"}
+              </td>
+            </tr>
+            <tr>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">JP Voice</th>
+              <td className="border-t px-2 py-1 text-center">{data.voiceLangDict?.dict["JP"]?.cvName.join(", ") ?? "N/A"}</td>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">CN Voice</th>
+              <td className="border-t px-2 py-1 text-center">{data.voiceLangDict?.dict["CN_MANDARIN"]?.cvName.join(", ") ?? "N/A"}</td>
+            </tr>
+            <tr>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">EN Voice</th>
+              <td className="border-t px-2 py-1 text-center">{data.voiceLangDict?.dict["EN"]?.cvName.join(", ") ?? "N/A"}</td>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">KR Voice</th>
+              <td className="border-t px-2 py-1 text-center">{data.voiceLangDict?.dict["KR"]?.cvName.join(", ") ?? "N/A"}</td>
+            </tr>
+            {/* <tr>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Other</th>
+              <td className="px-2 py-1 text-center" colSpan={3}>{data.voiceLangDict?.dict["LINKAGE"]?.cvName.join(", ") ?? "N/A"}</td>
+            </tr> */}
           </tbody>
         </table>
       </section>

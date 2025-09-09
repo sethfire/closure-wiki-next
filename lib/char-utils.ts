@@ -23,6 +23,57 @@ export function getCharRarityColor(value: string): string {
   }
 }
 
+export function getFaction(value: string): string {
+  switch (value) {
+    case "none": return "No team";
+    case "rhodes": return "Rhodes Island";
+    case "yan": return "Yan";
+    case "lungmen": return "Yan-Lungmen";
+    case "egir": return "Ægir";
+    case "bolivar": return "Bolívar";
+    case "columbia": return "Columbia";
+    case "higashi": return "Higashi";
+    case "iberia": return "Iberia";
+    case "kazimierz": return "Kazimierz";
+    case "kjerag": return "Kjerag";
+    case "laterano": return "Laterano";
+    case "leithanien": return "Leithanien";
+    case "minos": return "Minos";
+    case "rim": return "Rim Billiton";
+    case "sami": return "Sami";
+    case "sargon": return "Sargon";
+    case "siracusa": return "Siracusa";
+    case "ursus": return "Ursus";
+    case "victoria": return "Victoria";
+    case "elite": return "Rhodes Island-Elite Operator";
+    case "sweep": return "S.W.E.E.P.";
+    case "babel": return "Babel";
+    case "abyssal": return "Abyssal Hunters";
+    case "blacksteel": return "Blacksteel Worldwide";
+    case "glasgow": return "Glasgow";
+    case "karlan": return "Karlan Trade CO., LTD";
+    case "lgd": return "Lungmen Guard Department";
+    case "penguin": return "Penguin Logistics";
+    case "pinus": return "Pinus Sylvestris";
+    case "rhine": return "Rhine Lab";
+    case "siesta": return "Siesta";
+    case "sui": return "Yan-Sui";
+    case "dublinn": return "Dublinn";
+    case "tara": return "Tara";
+    case "action4": return "Op Team A4";
+    case "reserve1": return "Reserve Op Team A1";
+    case "reserve4": return "Reserve Op Team A4";
+    case "reserve6": return "Reserve Op Team A6";
+    case "chiave": return "Chiave Gang";
+    case "followers": return "Followers";
+    case "lee": return "Lee's Detective Agency";
+    case "rainbow": return "Team Rainbow";
+    case "student": return "Ursus Student Self-Governing Group";
+    case "laios": return "Laios's Party";
+    default: return "N/A";
+  }
+}
+
 export function getCharClass(value: string): string {
   switch (value) {
     case "PIONEER": return "Vanguard";

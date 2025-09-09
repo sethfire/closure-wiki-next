@@ -1,4 +1,6 @@
 const tagStyles: Record<string, React.CSSProperties> = {
+  "ba.kw": { color: "#00B0FF" },
+  "ba.talpu": { color: "#0098DC" },
   "ba.vup": { color: "#0098DC" },
   "ba.vdown": { color: "#FF6237" },
   "ba.rem": { color: "#F49800" },
@@ -55,8 +57,8 @@ function escapeHtml(s: string): string {
 }
 
 export function parseRichText(raw: string): string {
-  // treat literal "\n" as newline too
   const input = raw.replace(/\\n/g, "\n");
+  // console.log(input)
 
   let i = 0;
   let out = "";
@@ -65,17 +67,14 @@ export function parseRichText(raw: string): string {
   while (i < input.length) {
     const slice = input.slice(i);
 
-    // Open tag: <@name>, <$name>, or <name>
     const open = OPEN_RE.exec(slice);
     if (open) {
-      const prefix = open[1];         // "@", "$", or ""
-      const tagName = open[2];        // e.g. "ba.vup"
+      const prefix = open[1];
+      const tagName = open[2];
       stack.push(tagName);
 
-      // base style from tagStyles (if any)
       const base = tagStyles[tagName] as React.CSSProperties | undefined;
 
-      // if it's $, underline; otherwise keep base
       const style: React.CSSProperties | undefined =
         prefix === "$" ? { ...(base ?? {}), textDecoration: "underline" } : base;
 
@@ -84,7 +83,6 @@ export function parseRichText(raw: string): string {
       continue;
     }
 
-    // Close tag </>
     if (CLOSE_RE.test(slice)) {
       if (stack.length) stack.pop();
       out += `</span>`;
@@ -92,7 +90,6 @@ export function parseRichText(raw: string): string {
       continue;
     }
 
-    // Plain text chunk
     const nextLt = slice.indexOf("<");
     if (nextLt === -1) {
       out += escapeHtml(slice);
@@ -104,7 +101,6 @@ export function parseRichText(raw: string): string {
       continue;
     }
 
-    // Starts with "<" but not a recognized tag — render "<" literally
     out += "&lt;";
     i += 1;
   }

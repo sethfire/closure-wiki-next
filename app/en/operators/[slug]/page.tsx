@@ -15,7 +15,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { AlertCircleIcon } from "lucide-react";
-import { getCharClass, getCharRarity } from "@/lib/char-utils";
+import { getCharBranch, getCharClass, getCharRarity } from "@/lib/char-utils";
 import { getOperator, getOperators } from "@/lib/fetch-utils";
 import { notFound } from "next/navigation";
 
@@ -125,7 +125,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             <span className="text-muted-foreground">Release Date (EN): </span>
             {data.meta.isUnreleased ? "Unreleased" : new Date(0).toLocaleDateString()}
           </span> */}
-          <span className="text-muted-foreground">{getCharRarity(data.char.rarity)}★ {getCharClass(data.char.profession)} Operator</span>
+          <span className="text-muted-foreground">{getCharRarity(data.char.rarity)}★ {getCharBranch(data.char.subProfessionId)} {getCharClass(data.char.profession)} Operator</span>
         </div>
         <Separator className="mb-4" />
         
@@ -143,27 +143,64 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         )}
       </section>
 
-      {/* <section>
+      <section>
         <h2 className="text-xl font-semibold mb-2">Overview</h2>
         <Separator className="mb-4" />
-        <p>Trait: {data.char.description}</p>
+        {/* <p>Trait: {data.char.description}</p>
         <p>Nation: {data.char.nationId}</p>
         <p>Group: {data.char.groupId}</p>
-        <p>Team: {data.char.teamId}</p>
-        <p>Display No.: {data.char.displayNumber}</p>
-        <p>Position: {data.char.position}</p>
-        <p>Tags: {data.char.tagList.join(", ")}</p>
-        <p>Obtainable via: {data.char.itemObtainApproach}</p>
-        <p>Limited: {data.charProfile.isLimited ? "Yes" : "No"}</p>
-        <p>Class: {data.char.profession}</p>
-        <p>Branch: {data.char.subProfessionId}</p>
-        <p>Voice Actors: {voiceActors}</p>
-      </section> */}
-
-      <section>
-        <h2 className="text-xl font-semibold mb-2">Description</h2>
-        <Separator className="mb-4" />
-        <p>{data.char.itemUsage}</p><br /><p className="italic">{data.char.itemDesc}</p>
+        <p>Team: {data.char.teamId}</p> */}
+        <table className="w-full table-fixed border-collapse bg-muted text-sm">
+          <colgroup>
+            <col style={{ width: '25%' }} />
+            <col style={{ width: '25%' }} />
+            <col style={{ width: '25%' }} />
+            <col style={{ width: '25%' }} />
+          </colgroup>
+          <tbody>
+            <tr>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center" colSpan={4}>Overview</th>
+            </tr>
+            <tr>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Name</th>
+              <td className="px-2 py-1 text-center">{data.char.name}</td>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Display No.</th>
+              <td className="px-2 py-1 text-center">{data.char.displayNumber}</td>
+            </tr>
+            <tr>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Description</th>
+              <td className="border-t px-2 py-1 text-center" colSpan={3}><p>{data.char.itemUsage}</p><br /><p>{data.char.itemDesc}</p></td>
+            </tr>
+            <tr>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Tags</th>
+              <td className="border-t px-2 py-1 text-center" colSpan={3}>{data.char.tagList.join(", ")}</td>
+            </tr>
+            <tr>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Class</th>
+              <td className="border-t px-2 py-1 text-center">{getCharClass(data.char.profession)}</td>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Subbranch</th>
+              <td className="border-t px-2 py-1 text-center">{getCharBranch(data.char.subProfessionId)}</td>
+            </tr>
+            <tr>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Nation</th>
+              <td className="border-t px-2 py-1 text-center">{data.char.nationId ? data.char.nationId.split(" ").map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ") : "N/A"}</td>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Group</th>
+              <td className="border-t px-2 py-1 text-center">{data.char.groupId ? data.char.groupId.split(" ").map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ") : "N/A"}</td>
+            </tr>
+            <tr>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Rarity</th>
+              <td className="border-t px-2 py-1 text-center">{getCharRarity(data.char.rarity)}★</td>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Position</th>
+              <td className="border-t px-2 py-1 text-center">{data.char.position ? data.char.position.charAt(0).toUpperCase() + data.char.position.slice(1).toLowerCase() : "N/A"}</td>
+            </tr>
+            <tr>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Obtain Method</th>
+              <td className="border-t px-2 py-1 text-center">{data.char.itemObtainApproach}</td>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Limited</th>
+              <td className="border-t px-2 py-1 text-center">{data.charProfile.isLimited ? "Yes" : "No"}</td>
+            </tr>
+          </tbody>
+        </table>
       </section>
 
       {data.char.phases && data.char.phases.length > 0 && (

@@ -182,12 +182,6 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               <th className="bg-gray-200 dark:bg-card p-1 text-center">Tags</th>
               <td className="border-t px-2 py-1 text-center">{data.char.tagList.join(", ")}</td>
             </tr>
-            <tr>
-              <th className="bg-gray-200 dark:bg-card p-1 text-center">Obtain Method</th>
-              <td className="border-t px-2 py-1 text-center">{data.char.itemObtainApproach}</td>
-              <th className="bg-gray-200 dark:bg-card p-1 text-center">Limited</th>
-              <td className="border-t px-2 py-1 text-center">{data.charProfile.isLimited ? "Yes" : "No"}</td>
-            </tr>
           </tbody>
         </table>
         
@@ -219,10 +213,6 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               <th className="bg-gray-200 dark:bg-card p-1 text-center">KR Voice</th>
               <td className="border-t px-2 py-1 text-center">{data.voiceLangDict?.dict["KR"]?.cvName.join(", ") ?? "N/A"}</td>
             </tr>
-            {/* <tr>
-              <th className="bg-gray-200 dark:bg-card p-1 text-center">Other</th>
-              <td className="px-2 py-1 text-center" colSpan={3}>{data.voiceLangDict?.dict["LINKAGE"]?.cvName.join(", ") ?? "N/A"}</td>
-            </tr> */}
           </tbody>
         </table>
       </section>

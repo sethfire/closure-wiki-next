@@ -13,7 +13,7 @@ export default async function Page() {
 
   const characters = data.slice().sort((a: any, b: any) => {
     // if (a.isUnreleased !== b.isUnreleased) return b.isUnreleased ? 1 : -1;
-    // if (getCharRarity(b.rarity) !== getCharRarity(a.rarity)) return getCharRarity(b.rarity) - getCharRarity(a.rarity);
+    if (getCharRarity(b.rarity) !== getCharRarity(a.rarity)) return getCharRarity(b.rarity) - getCharRarity(a.rarity);
     const aOrder = sortOrderMap[a.id] ?? Number.MAX_SAFE_INTEGER;
     const bOrder = sortOrderMap[b.id] ?? Number.MAX_SAFE_INTEGER;
     return bOrder - aOrder;
@@ -42,7 +42,7 @@ export default async function Page() {
       <div className="grid grid-cols-3 md:grid-cols-7 gap-2">
         {characters.map((char: any) => (
           <a href={`/en/operators/${char.slug}`} key={char.slug}>
-            <div className="group relative aspect-square bg-card rounded overflow-hidden">
+            <div className="group relative aspect-square bg-muted dark:bg-card rounded overflow-hidden">
               <img
                 src={`https://static.closure.wiki/v1/charavatars/${char.id}.webp`}
                 className="w-full h-full object-contain transition-transform duration-150 group-hover:scale-105"

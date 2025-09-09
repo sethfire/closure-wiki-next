@@ -80,6 +80,14 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <span className="text-muted-foreground">{getEnemyLevelType(data.enemy.enemyLevel)} Enemy</span>
         </div>
         <Separator className="mb-4" />
+        
+        {data.meta.isUnreleased && (
+          <Alert className="mb-4">
+            <AlertCircleIcon />
+            <AlertTitle>This operator is not yet available on the Global server of Arknights.</AlertTitle>
+          </Alert>
+        )}
+
         <div className="flex flex-col md:flex-row gap-4 items-start">
           <img src={`https://static.closure.wiki/v1/enemies/${data.enemy.enemyId}.webp`}
             className="w-[180px] h-[180px] md:w-32 md:h-32 object-contain" />
@@ -124,7 +132,11 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               {data.enemy.abilityList.map((ability: any, index: number) =>
                   ability.textFormat === "TITLE" 
                     ? (<li key={index} className="font-bold text-lg mt-4 mb-1 list-none">{ability.text}</li>) 
-                    : (<li key={index} className="list-disc list-item items-center mb-1">{parseRichText(ability.text)}</li>) 
+                    : (
+                        <li key={index} className="list-disc list-item items-center mb-1">
+                          <span dangerouslySetInnerHTML={{ __html: parseRichText(ability.text) }} />
+                        </li>
+                      )
               )}
           </ul>
         </section>

@@ -118,9 +118,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <section>
           <h2 className="text-xl font-semibold mb-2">Description</h2>
           <Separator className="mb-2" />
-          <div className="whitespace-pre-line">
-            {parseRichText(data.stage.description.replace(/\\n/g, "\n"))}
-          </div>
+          <div className="whitespace-pre-line" dangerouslySetInnerHTML={{ __html: parseRichText(data.stage.description.replace(/\\n/g, "\n")) }} />
         </section>
       )}
 

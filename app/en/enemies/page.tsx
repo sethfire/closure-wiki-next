@@ -37,7 +37,7 @@ export default async function Page() {
       <div className="grid grid-cols-3 md:grid-cols-7 gap-2">
         {enemies.map((enemy: any) => (
           <a href={`/en/enemies/${enemy.slug}`} key={enemy.slug}>
-            <div className="group relative aspect-square rounded overflow-hidden">
+            <div className="group relative aspect-square rounded overflow-hidden bg-muted dark:bg-transparent">
               <img
                 src={`https://static.closure.wiki/v1/enemies/${enemy.slug}.webp`}
                 className="w-full h-full object-contain transition-transform duration-150 group-hover:scale-105"

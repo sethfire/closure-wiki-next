@@ -44,7 +44,7 @@ export default function CarouselGallery({ images }: { images: GalleryImage[] }) 
     <div className="w-full">
       {/* Main carousel */}
       <div className="relative overflow-hidden rounded-lg">
-        <div className="relative aspect-square md:aspect-video w-full overflow-hidden bg-card">
+        <div className="relative aspect-square md:aspect-video w-full overflow-hidden bg-muted dark:bg-card">
           {images.map((image, index) => (
             <div
               key={`slide-${index}`}
@@ -88,7 +88,7 @@ export default function CarouselGallery({ images }: { images: GalleryImage[] }) 
         </Button>
 
         {/* Caption */}
-        <div className="absolute right-0 bottom-0 left-0 p-4 text-xs text-white">
+        <div className="absolute right-0 bottom-0 left-0 p-4 text-xs">
           <b>{images[currentIndex].title}</b><br/>{images[currentIndex].desc}
         </div>
       </div>

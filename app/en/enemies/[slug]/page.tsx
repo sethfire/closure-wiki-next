@@ -152,7 +152,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         </section>
       )}
 
-      {/* {data.enemyAppearances && data.enemyAppearances.length > 0 && (
+      {data.enemyAppearances && data.enemyAppearances.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold mb-2">Appearances</h2>
           <Separator className="mb-2" />
@@ -164,7 +164,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               )}
           </ul>
         </section>
-      )} */}
+      )}
     </div>
   )
 }

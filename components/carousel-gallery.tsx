@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 interface GalleryImage {
   src: string;
   thumb: string;
+  download: string;
   title: string;
   desc: string;
   display: string;
@@ -71,7 +72,7 @@ export default function CarouselGallery({ images, changeAspectonMobile = false }
           size="icon"
           className="absolute top-2 right-2 cursor-pointer"
         >
-          <a href={current.src} target="_blank" rel="noopener noreferrer">
+          <a href={current.download ? current.download : current.src} target="_blank" rel="noopener noreferrer">
             <DownloadIcon className="h-6 w-6" />
           </a>
         </Button>

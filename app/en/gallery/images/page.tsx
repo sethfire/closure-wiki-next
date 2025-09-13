@@ -28,7 +28,7 @@ export default async function Page() {
   // imgGroupNames moved to config/bgGroupNames.ts as bgGroupNames
 
   return (
-    <div className="flex flex-1 flex-col gap-4 p-4 mx-auto w-full max-w-6xl">
+    <div className="flex flex-1 flex-col gap-4 p-4 mx-auto w-full max-w-5xl">
       <div>
         <Breadcrumb className="mb-2">
           <BreadcrumbList>
@@ -54,8 +54,9 @@ export default async function Page() {
           const imageItems: any[] = [];
           images.forEach((img: string) => {
             imageItems.push({
-              src: `https://static.closure.wiki/v2/avg/images/${img}`,
+              src: `https://static.closure.wiki/v2/preview/avg/images/${img.split(".")[0]}.webp`,
               thumb: `https://static.closure.wiki/v2/thumb/avg/images/${img.split(".")[0]}.webp`,
+              download: `https://static.closure.wiki/v2/avg/images/${img}`,
               title: img,
               desc: "",
               display: "object-contain",

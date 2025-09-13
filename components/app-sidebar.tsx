@@ -49,15 +49,15 @@ const data = {
           url: "/en/modules",
           icon: WashingMachine,
         },
-        // {
-        //   title: "Backgrounds",
-        //   url: "/en/gallery/backgrounds",
-        //   icon: Camera,
-        // },
         {
           title: "Story Images",
           url: "/en/gallery/images",
           icon: Image,
+        },
+        {
+          title: "Backgrounds",
+          url: "/en/gallery/backgrounds",
+          icon: Camera,
         },
         // {
         //   title: "Medals",

@@ -25,10 +25,6 @@ export function getCharAvatar(id: string): string {
   return `${ASSET_URL}/${VERSION}/charavatars/${id}.png`;
 }
 
-export function getPreviewCharAvatar(id: string): string {
-  return `${ASSET_URL}/${VERSION}/preview/charavatars/${id}.png`;
-}
-
 export function getCharPortrait(id: string): string {
   return `${ASSET_URL}/${VERSION}/charportraits/${id}.png`;
 }
@@ -43,4 +39,20 @@ export function getMapPreview(id: string): string {
 
 export function getModuleImg(id: string): string {
   return `${ASSET_URL}/${VERSION}/modules/${id}.png`;
+}
+
+export function getCharAvatarThumbnail(id: string): string {
+  return `${ASSET_URL}/${VERSION}/thumb/charavatars/${id}.webp`;
+}
+
+export function getMapPreviewThumbnail(id: string): string {
+  return `${ASSET_URL}/${VERSION}/thumb/mappreviews/${id}.webp`;
+}
+
+export function getEnemyIconThumbnail(id: string): string {
+  return `${ASSET_URL}/${VERSION}/thumb/enemies/${id}.webp`;
+}
+
+export function getModuleImgThumbnail(id: string): string {
+  return `${ASSET_URL}/${VERSION}/thumb/modules/${id}.webp`;
 }

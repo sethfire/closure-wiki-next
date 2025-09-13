@@ -2,7 +2,7 @@ import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbS
 import { Separator } from "@/components/ui/separator";
 import { getEnemyRarityColor } from "@/lib/enemy-utils";
 import { getEnemies } from "@/lib/fetch-utils";
-import { getEnemyIcon } from "@/lib/image-utils";
+import { getEnemyIconThumbnail } from "@/lib/image-utils";
 
 export const revalidate = 86400;
 
@@ -40,8 +40,7 @@ export default async function Page() {
           <a href={`/en/enemies/${enemy.slug}`} key={enemy.slug}>
             <div className="group relative aspect-square rounded overflow-hidden bg-muted dark:bg-transparent">
               <img
-                // src={`https://static.closure.wiki/v1/enemies/${enemy.slug}.webp`}
-                src={getEnemyIcon(enemy.slug)}
+                src={getEnemyIconThumbnail(enemy.slug)}
                 className="w-full h-full object-contain transition-transform duration-150 group-hover:scale-105"
                 loading="lazy"
                 decoding="async"

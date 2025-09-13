@@ -1,7 +1,7 @@
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { getOperations } from "@/lib/fetch-utils";
-import { getMapPreview } from "@/lib/image-utils";
+import { getMapPreviewThumbnail } from "@/lib/image-utils";
 import { notFound } from "next/navigation";
 
 export const revalidate = 86400;
@@ -39,8 +39,7 @@ export default async function Page() {
           <a href={`/en/operations/${stage.slug}`} key={stage.slug}>
             <div className="group relative aspect-square rounded overflow-hidden">
               <img
-                src={`https://static.closure.wiki/v1/mappreviews/${stage.stageId}.webp`}
-                // src={getMapPreview(stage.stageId)}
+                src={getMapPreviewThumbnail(stage.stageId)}
                 className="w-full h-full object-contain transition-transform duration-150 group-hover:scale-105"
                 loading="lazy"
                 decoding="async"

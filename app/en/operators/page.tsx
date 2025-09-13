@@ -2,7 +2,7 @@ import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbS
 import { Separator } from "@/components/ui/separator";
 import { getCharRarity, getCharRarityColor } from "@/lib/char-utils";
 import { getOperators } from "@/lib/fetch-utils";
-import { getBranchIcon, getCharAvatar, getClassIcon } from "@/lib/image-utils";
+import { getBranchIcon, getCharAvatarThumbnail, getClassIcon } from "@/lib/image-utils";
 
 export const revalidate = 86400;
 
@@ -45,8 +45,7 @@ export default async function Page() {
           <a href={`/en/operators/${char.slug}`} key={char.slug}>
             <div className="group relative aspect-square bg-muted dark:bg-card rounded overflow-hidden">
               <img
-                // src={`https://static.closure.wiki/v1/charavatars/${char.id}.webp`}
-                src={getCharAvatar(char.id)}
+                src={getCharAvatarThumbnail(char.id)}
                 className="w-full h-full object-contain transition-transform duration-150 group-hover:scale-105"
                 loading="lazy"
                 decoding="async"

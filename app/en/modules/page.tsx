@@ -1,6 +1,7 @@
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { getModules } from "@/lib/fetch-utils";
+import { getModuleImgThumbnail } from "@/lib/image-utils";
 
 export const revalidate = 86400;
 
@@ -39,7 +40,7 @@ export default async function Page() {
           <a href={`/en/modules/${module.slug}`} key={module.slug}>
             <div className="group relative aspect-square rounded overflow-hidden">
               <img
-                src={`https://static.closure.wiki/v1/uniequipimgsmall/${module.slug}.webp`}
+                src={getModuleImgThumbnail(module.slug)}
                 className="w-full h-full object-contain transition-transform duration-150 group-hover:scale-105"
                 loading="lazy"
                 decoding="async"

@@ -134,7 +134,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
         {charArts && charArts.length > 0 && (
           <section>
-            <CarouselGallery images={charArts} />
+            <CarouselGallery images={charArts} changeAspectonMobile={true} />
           </section>
         )}
       </section>

@@ -13,7 +13,7 @@ interface GalleryImage {
   display: string;
 }
 
-export default function CarouselGallery({ images }: { images: GalleryImage[] }) {
+export default function CarouselGallery({ images, changeAspectonMobile = false }: { images: GalleryImage[], changeAspectonMobile?: boolean }) {
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const showThumbnails = true;
   
@@ -28,11 +28,17 @@ export default function CarouselGallery({ images }: { images: GalleryImage[] }) 
     <div className="w-full">
       {/* Main image (only the visible one is rendered) */}
       <div className="relative overflow-hidden rounded-lg">
-        <div className="relative aspect-square md:aspect-video w-full overflow-hidden bg-muted dark:bg-card">
+        <div
+          className={cn(
+            "relative w-full overflow-hidden bg-muted dark:bg-card",
+            changeAspectonMobile ? "aspect-square md:aspect-video" : "aspect-video"
+          )}
+        >
           <img
             key={current.src}
             src={current.src}
             className={cn("h-full w-full", current.display)}
+            loading="lazy"
             decoding="async"
           />
         </div>
@@ -60,11 +66,12 @@ export default function CarouselGallery({ images }: { images: GalleryImage[] }) 
 
         {/* Download */}
         <Button
+          asChild
           variant="secondary"
           size="icon"
           className="absolute top-2 right-2 cursor-pointer"
         >
-          <a href={current.src} download>
+          <a href={current.src} target="_blank" rel="noopener noreferrer">
             <DownloadIcon className="h-6 w-6" />
           </a>
         </Button>
@@ -79,7 +86,7 @@ export default function CarouselGallery({ images }: { images: GalleryImage[] }) 
 
       {/* Thumbnails */}
       {showThumbnails && (
-        <div className="flex gap-2 overflow-x-auto px-2 py-2">
+        <div className="flex flex-wrap gap-2 py-2">
           {images.map((image, index) => (
             <button
               key={`thumb-${index}`}

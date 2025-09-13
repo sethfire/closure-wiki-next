@@ -4,7 +4,7 @@ export default function Page() {
       <div className="mb-8">
         <h2 className="text-lg font-semibold mb-2">Welcome!</h2>
         <p>closure.wiki is an unofficial resource archive for Arknights. This is still a work in progress, so some pages may be incomplete.</p>
-        <p className="mb-4">Disclaimer: This is a hobby project and is not affiliated with Hypergryph or Yostar. All trademarks are property of their respective owners.</p>
+        <p>Disclaimer: This is a hobby project and is not affiliated with Hypergryph or Yostar. All trademarks are property of their respective owners.</p>
       </div>
       
       <div className="flex justify-center mb-8">
@@ -15,7 +15,7 @@ export default function Page() {
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold mb-2">Quick Links</h2>
+        <h2 className="text-lg font-semibold mb-2">Navigation</h2>
         <ul className="list-disc pl-5">
           <li><a href="/en/operators" className="text-blue-600 hover:underline">Operators</a></li>
           <li><a href="/en/enemies" className="text-blue-600 hover:underline">Enemies</a></li>

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface GalleryImage {
@@ -56,6 +56,17 @@ export default function CarouselGallery({ images }: { images: GalleryImage[] }) 
           disabled={currentIndex === images.length - 1}
         >
           <ChevronRightIcon className="h-6 w-6" />
+        </Button>
+
+        {/* Download */}
+        <Button
+          variant="secondary"
+          size="icon"
+          className="absolute top-2 right-2 cursor-pointer"
+        >
+          <a href={current.src} download>
+            <DownloadIcon className="h-6 w-6" />
+          </a>
         </Button>
 
         {/* Caption */}

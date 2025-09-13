@@ -12,6 +12,7 @@ import { parseRichText } from "@/lib/parse";
 import { getEnemyAttackType, getEnemyDamageType, getEnemyLevelType, getEnemyMotionType } from "@/lib/enemy-utils";
 import { getEnemies, getEnemy } from "@/lib/fetch-utils";
 import Breadcrumbs from "@/components/ui/dynamic-breadcrumb";
+import { getEnemyIcon } from "@/lib/image-utils";
 
 export const revalidate = 2419200;
 export const dynamicParams = true;
@@ -33,8 +34,8 @@ export async function generateMetadata(
 
   const title = data.enemy.name;
   const description = data.enemy.description;
-  const image = `https://static.closure.wiki/v1/enemies/${data.enemy.enemyId}.webp`;
-
+  const image = getEnemyIcon(data.enemy.enemyId);
+  
   const siteName = "Closure Wiki";
   const url = `https://closure.wiki/en/enemies/${slug}`;
 
@@ -89,7 +90,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         )}
 
         <div className="flex flex-col md:flex-row gap-4 items-start">
-          <img src={`https://static.closure.wiki/v1/enemies/${data.enemy.enemyId}.webp`}
+          <img src={getEnemyIcon(data.enemy.enemyId)}
             className="w-[180px] h-[180px] md:w-32 md:h-32 object-contain" />
 
           <div className="flex flex-1 flex-col gap-2">

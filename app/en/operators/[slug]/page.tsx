@@ -16,6 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { AlertCircleIcon } from "lucide-react";
 import { getCharBranch, getCharClass, getCharRarity, getFaction } from "@/lib/char-utils";
+import { getClassIcon, getBranchIcon, getFactionLogo, getCharAvatar } from "@/lib/image-utils";
 import { getOperator, getOperators } from "@/lib/fetch-utils";
 import { notFound } from "next/navigation";
 import { parseRichText } from "@/lib/parse";
@@ -40,7 +41,7 @@ export async function generateMetadata(
 
   const title = data.meta.name;
   const description = data.char.itemUsage;
-  const image = `https://static.closure.wiki/v1/charavatars/${data.charProfile.charID}.webp`;
+  const image = getCharAvatar(data.charProfile.charID);
 
   const siteName = "Closure Wiki";
   const url = `https://closure.wiki/en/operators/${slug}`;
@@ -75,10 +76,11 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     let avatar = "";
     if (!skin.isBuySkin) {
       skinId = skinId.replace('@', '_').replace('#', '_');
-      avatar = `https://static.closure.wiki/v1/charavatars/${skin.avatarId}.webp`;
+      avatar = getCharAvatar(skin.avatarId);
     } else {
       skinId = skinId.replace('@', '_').replace('#', '%23');
-      avatar = `https://static.closure.wiki/v1/charavatars/${skinId}.webp`;
+      avatar = getCharAvatar(skinId);
+      
     }
 
     let title = skin.displaySkin.skinName ?? skin.displaySkin.skinGroupName;
@@ -165,22 +167,52 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               <td className="border-t px-2 py-1 text-center" colSpan={3}><span dangerouslySetInnerHTML={{ __html: parseRichText(data.char.description)}} /></td>
             </tr>
             <tr>
-              <th className="bg-gray-200 dark:bg-card p-1 text-center">Class</th>
-              <td className="border-t px-2 py-1 text-center">{getCharClass(data.char.profession)}</td>
-              <th className="bg-gray-200 dark:bg-card p-1 text-center">Subbranch</th>
-              <td className="border-t px-2 py-1 text-center">{getCharBranch(data.char.subProfessionId)}</td>
-            </tr>
-            <tr>
-              <th className="bg-gray-200 dark:bg-card p-1 text-center">Nation</th>
-              <td className="border-t px-2 py-1 text-center">{getFaction(data.char.nationId)}</td>
-              <th className="bg-gray-200 dark:bg-card p-1 text-center">Faction</th>
-              <td className="border-t px-2 py-1 text-center">{getFaction(data.char.groupId)}</td>
-            </tr>
-            <tr>
               <th className="bg-gray-200 dark:bg-card p-1 text-center">Position</th>
               <td className="border-t px-2 py-1 text-center">{data.char.position ? data.char.position.charAt(0).toUpperCase() + data.char.position.slice(1).toLowerCase() : "N/A"}</td>
               <th className="bg-gray-200 dark:bg-card p-1 text-center">Tags</th>
               <td className="border-t px-2 py-1 text-center">{data.char.tagList.join(", ")}</td>
+            </tr>
+            <tr>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Class</th>
+              <td className="border-t px-2 py-1 text-center">
+                <span className="flex items-center justify-center gap-2">
+                  <img src={getClassIcon(data.char.profession)} className="w-auto h-6" />
+                  {getCharClass(data.char.profession)}
+                </span>
+              </td>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Subbranch</th>
+              <td className="border-t px-2 py-1 text-center">
+                <span className="flex items-center justify-center gap-2">
+                  <img src={getBranchIcon(data.char.subProfessionId)} className="w-auto h-6" />
+                  {getCharBranch(data.char.subProfessionId)}
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Nation</th>
+              <td className="border-t px-2 py-1 text-center">
+                {/* {data.char.nationId ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <img src={getFactionLogo(data.char.nationId)} className="w-auto h-6" />
+                    {getFaction(data.char.nationId)}
+                  </span>
+                ) : (
+                  <span className="text-muted-foreground">N/A</span>
+                )} */}
+                {getFaction(data.char.nationId)}
+              </td>
+              <th className="bg-gray-200 dark:bg-card p-1 text-center">Faction</th>
+              <td className="border-t px-2 py-1 text-center">
+                {/* {data.char.groupId ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <img src={getFactionLogo(data.char.groupId)} className="w-auto h-6" />
+                    {getFaction(data.char.groupId)}
+                  </span>
+                ) : (
+                  <span className="text-muted-foreground">N/A</span>
+                )} */}
+                {getFaction(data.char.groupId)}
+              </td>
             </tr>
           </tbody>
         </table>

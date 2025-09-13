@@ -2,6 +2,7 @@ import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbS
 import { Separator } from "@/components/ui/separator";
 import { getCharRarity, getCharRarityColor } from "@/lib/char-utils";
 import { getOperators } from "@/lib/fetch-utils";
+import { getBranchIcon, getCharAvatar, getClassIcon } from "@/lib/image-utils";
 
 export const revalidate = 86400;
 
@@ -44,26 +45,17 @@ export default async function Page() {
           <a href={`/en/operators/${char.slug}`} key={char.slug}>
             <div className="group relative aspect-square bg-muted dark:bg-card rounded overflow-hidden">
               <img
-                src={`https://static.closure.wiki/v1/charavatars/${char.id}.webp`}
+                // src={`https://static.closure.wiki/v1/charavatars/${char.id}.webp`}
+                src={getCharAvatar(char.id)}
                 className="w-full h-full object-contain transition-transform duration-150 group-hover:scale-105"
                 loading="lazy"
                 decoding="async"
               />
               <div className="absolute left-[4px] top-[4px] h-[24px] w-[24px] p-0.5 rounded bg-black/70">
-                <img
-                  src={`https://static.closure.wiki/v1/profession/icon_profession_${char.profession.toLowerCase()}.webp`}
-                  className="h-full w-full object-contain"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <img src={getClassIcon(char.profession)} className="h-full w-full object-contain" loading="lazy" decoding="async" />
               </div>
               <div className="absolute left-[32px] top-[4px] h-[24px] w-[24px] p-0.5 rounded bg-black/70">
-                <img
-                  src={`https://static.closure.wiki/v1/subprofession/sub_${char.subProfessionId.toLowerCase()}_icon.webp`}
-                  className="h-full w-full object-contain"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <img src={getBranchIcon(char.subProfessionId)} className="h-full w-full object-contain" loading="lazy" decoding="async" />
               </div>
               <div className="absolute left-0 right-0 bottom-0 h-1/3 bg-gradient-to-t from-[rgba(0,0,0,0.8)] to-transparent"></div>
               <div className="absolute bottom-0 left-0 right-0 text-white px-1 py-2 text-center font-semibold text-sm" style={{ 

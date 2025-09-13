@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { getSkillIcon } from "@/lib/image-utils";
 import { parseBlackBoard, parseRichText } from "@/lib/parse";
 
 export default function SkillsTable({ skills }: { skills: any[] }) {
@@ -18,7 +19,7 @@ export default function SkillsTable({ skills }: { skills: any[] }) {
               <tr>
                 <th className="p-2 text-left" colSpan={5}>
                   <div className="flex items-start gap-4">
-                    <img src={`https://static.closure.wiki/v1/skills/skill_icon_${skill.skillId}.webp`}
+                    <img src={getSkillIcon(skill.skillId)}
                     width="64" height="64" loading="lazy" decoding="async" />
                     <div className="flex flex-col gap-2">
                       <h3 className="text-lg">{skill.levels[0].name}</h3>

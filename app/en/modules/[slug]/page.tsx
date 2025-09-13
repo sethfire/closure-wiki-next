@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/alert";
 import { parseRichText } from "@/lib/parse";
 import { getModule, getModules } from "@/lib/fetch-utils";
+import { getModuleImg } from "@/lib/image-utils";
 
 export const revalidate = 2419200;
 export const dynamicParams = true;
@@ -38,8 +39,8 @@ export async function generateMetadata(
 
   const title = data.module.uniEquipName;
   const description = data.module.uniEquipDesc ? (data.module.uniEquipDesc as string).split("\n")[0] : "";
-  const image = `https://static.closure.wiki/v1/uniequipimg/${data.module.uniEquipIcon}.webp`;
-  
+  const image = getModuleImg(data.module.uniEquipIcon);
+
   const siteName = "Closure Wiki";
   const url = `https://closure.wiki/en/modules/${slug}`;
 
@@ -98,7 +99,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           </Alert>
         )}
         <div className="flex flex-col md:flex-row gap-4 items-start">
-          <img src={`https://static.closure.wiki/v1/uniequipimg/${data.module.uniEquipIcon}.webp`}
+          <img src={getModuleImg(data.module.uniEquipIcon)}
             className="w-[180px] h-[180px] md:w-32 md:h-32 object-contain" />
 
           <div className="flex flex-1 flex-col gap-2">

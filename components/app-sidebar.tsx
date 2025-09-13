@@ -49,11 +49,11 @@ const data = {
           url: "/en/modules",
           icon: WashingMachine,
         },
-        {
-          title: "Medals",
-          url: "/en/medals",
-          icon: Medal,
-        },
+        // {
+        //   title: "Medals",
+        //   url: "/en/medals",
+        //   icon: Medal,
+        // },
       ],
     },
   ],

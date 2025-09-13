@@ -14,6 +14,7 @@ import { AlertCircleIcon } from 'lucide-react'
 import { parseRichText, stripTags } from '@/lib/parse'
 import { getEnemyStat, getEnemyAttribute, getEnemyLevelType } from '@/lib/enemy-utils'
 import { getOperation, getOperations } from '@/lib/fetch-utils'
+import { getEnemyIcon, getMapPreview } from '@/lib/image-utils'
 
 export const revalidate = 2419200;
 export const dynamicParams = true
@@ -34,8 +35,10 @@ export async function generateMetadata(
   if (!data) notFound();
 
   const title = `${data.stage.code}: ${data.stage.name}`;
-  const description = stripTags(data.stage.description.replace(/\\n/g, "\n"));
-  const image = `https://static.closure.wiki/v1/mappreviews/${data.stage.stageId}.webp`;
+  const description = (data.stage.description)
+    ? stripTags(data.stage.description.replace(/\\n/g, "\n"))
+    : "";
+  const image = getMapPreview(data.stage.stageId);
 
   const siteName = "Closure Wiki";
   const url = `https://closure.wiki/en/operations/${slug}`;
@@ -110,7 +113,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           </Alert>
         )}
         <div className="w-full aspect-video overflow-hidden">
-          <img src={`https://static.closure.wiki/v1/mappreviews/${data.stage.stageId}.webp`} className="w-full h-full object-fill" />
+          <img src={getMapPreview(data.stage.stageId)} className="w-full h-full object-fill" />
         </div>
       </section>
       
@@ -154,7 +157,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                   const enemyLevel = data.enemies[enemyData.enemy.enemyId] ? data.enemies[enemyData.enemy.enemyId].level : null;
                   if (enemyStats === null || enemyLevel === null) return (
                     <tr key={enemyData.meta.slug}>
-                      <td className="border-t text-center"><img src={`https://static.closure.wiki/v1/enemies/${enemyData.enemy.enemyId}.webp`} className="inline-block w-12 h-12 align-middle" loading="lazy" decoding="async" /></td>
+                      <td className="border-t text-center"><img src={getEnemyIcon(enemyData.enemy.enemyId)} className="inline-block w-12 h-12 align-middle" loading="lazy" decoding="async" /></td>
                       <td className="border-t p-3 text-center"><a className="hover:underline text-blue-500" href={`/en/enemies/${enemyData.meta.slug}`}>{enemyData.meta.name}</a></td>
                       <td className="border-t p-3 text-center">{data.enemies[enemyData.enemy.enemyId] ? data.enemies[enemyData.enemy.enemyId].count : "?"}</td>
                       <td className="border-t p-3 text-center">{getEnemyLevelType(enemyData.enemy.enemyLevel)}</td>
@@ -187,7 +190,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
                   return (
                     <tr key={enemyData.meta.slug}>
-                      <td className="border-t text-center"><img src={`https://static.closure.wiki/v1/enemies/${enemyData.enemy.enemyId}.webp`} className="inline-block w-12 h-12 align-middle" loading="lazy" decoding="async" /></td>
+                      <td className="border-t text-center"><img src={getEnemyIcon(enemyData.enemy.enemyId)} className="inline-block w-12 h-12 align-middle" loading="lazy" decoding="async" /></td>
                       <td className="border-t p-3 text-center"><a className="hover:underline text-blue-500" href={`/en/enemies/${enemyData.meta.slug}`}>{enemyName[enemyLevel]}</a></td>
                       <td className="border-t p-3 text-center">{enemyCount}</td>
                       <td className="border-t p-3 text-center">{getEnemyLevelType(enemyLevelType[enemyLevel])}</td>

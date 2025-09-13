@@ -1,19 +1,29 @@
 export default function Page() {
   return (
     <div className="p-8 mx-auto w-full max-w-6xl">
-      <p className="text-xl mb-2">Welcome!</p>
-      <p>closure.wiki is an unofficial resource archive for Arknights. This is still a work in progress, so some pages may be incomplete.</p>
-      <p className="mb-4">Disclaimer: This is a hobby project and is not affiliated with Hypergryph or Yostar. All trademarks are property of their respective owners.</p>
-      {/* <p>
-        Contact: <a href="https://discord.gg/gY8V43aQdU" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">Arknights Terra Wiki Discord</a>
-      </p> */}
+      <div className="mb-8">
+        <h2 className="text-lg font-semibold mb-2">Welcome!</h2>
+        <p>closure.wiki is an unofficial resource archive for Arknights. This is still a work in progress, so some pages may be incomplete.</p>
+        <p className="mb-4">Disclaimer: This is a hobby project and is not affiliated with Hypergryph or Yostar. All trademarks are property of their respective owners.</p>
+      </div>
       
-      <div className="flex justify-center mt-8">
+      <div className="flex justify-center mb-8">
         <img
           src="https://static.closure.wiki/v1/banner.png"
           className="max-w-md md:max-w-xl w-full h-auto"
-          alt="Closure Wiki Banner"
         />
+      </div>
+
+      <div>
+        <h2 className="text-lg font-semibold mb-2">Quick Links</h2>
+        <ul className="list-disc pl-5">
+          <li><a href="/en/operators" className="text-blue-600 hover:underline">Operators</a></li>
+          <li><a href="/en/enemies" className="text-blue-600 hover:underline">Enemies</a></li>
+          <li><a href="/en/operations" className="text-blue-600 hover:underline">Operations</a></li>
+          <li><a href="/en/modules" className="text-blue-600 hover:underline">Modules</a></li>
+          <li><a href="/en/gallery/images" className="text-blue-600 hover:underline">Story Image Gallery</a></li>
+          <li><a href="/en/gallery/backgrounds" className="text-blue-600 hover:underline">Story BG Gallery</a></li>
+        </ul> 
       </div>
     </div>
   )

@@ -14,9 +14,8 @@ interface GalleryImage {
   display: string;
 }
 
-export default function CarouselGallery({ images, changeAspectonMobile = false }: { images: GalleryImage[], changeAspectonMobile?: boolean }) {
+export default function CarouselGallery({ images, changeAspectonMobile = false, showThumbnails = true }: { images: GalleryImage[], changeAspectonMobile?: boolean, showThumbnails?: boolean }) {
   const [currentIndex, setCurrentIndex] = React.useState(0);
-  const showThumbnails = true;
   
   if (!images?.length) return null;
 

@@ -18,6 +18,7 @@ import {
 import { parseRichText } from "@/lib/parse";
 import { getModule, getModules } from "@/lib/fetch-utils";
 import { getModuleImg } from "@/lib/image-utils";
+import CarouselGallery from "@/components/carousel-gallery";
 
 export const revalidate = 2419200;
 export const dynamicParams = true;
@@ -86,19 +87,20 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <h1 className="text-2xl font-semibold">{data.module.uniEquipName}</h1>
         </div>
         <div className="mb-4 text-sm flex flex-row gap-4">
-          <span>
+          {/* <span>
             <span className="text-muted-foreground">Release Date ({data.meta.isUnreleased ? "CN" : "Global"}): </span>
             {new Date(data.module.uniEquipGetTime * 1000).toLocaleDateString()}
-          </span>
+          </span> */}
+          <span className="text-muted-foreground">Operator Module</span>
         </div>
         <Separator className="mb-4" />
         {data.meta.isUnreleased && (
           <Alert className="mb-4">
             <AlertCircleIcon />
-            <AlertTitle>This module is not yet available on the Global server of Arknights.</AlertTitle>
+            <AlertTitle>This module is not yet available on the EN server of Arknights.</AlertTitle>
           </Alert>
         )}
-        <div className="flex flex-col md:flex-row gap-4 items-start">
+        {/* <div className="flex flex-col md:flex-row gap-4 items-start">
           <img src={getModuleImg(data.module.uniEquipIcon)}
             className="w-[180px] h-[180px] md:w-32 md:h-32 object-contain" />
 
@@ -115,6 +117,16 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             </div>
             <p className="flex-1">{data.module.uniEquipDesc ? (data.module.uniEquipDesc as string).split("\n")[0] : null}</p>
           </div>
+        </div> */}
+        <div>
+          <CarouselGallery images={[{
+            src: getModuleImg(data.module.uniEquipIcon),
+            thumb: getModuleImg(data.module.uniEquipIcon),
+            download: getModuleImg(data.module.uniEquipIcon),
+            title: `${data.module.typeName1}-${data.module.typeName2} ${data.module.uniEquipName}`,
+            desc: "",
+            display: "object-contain",
+          }]} changeAspectonMobile={true} showThumbnails={false} />
         </div>
       </section>
 

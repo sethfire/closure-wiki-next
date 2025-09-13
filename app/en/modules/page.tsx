@@ -50,7 +50,7 @@ export default async function Page() {
                   textShadow: '-1px 0 0 #000,1px 0 0 #000,0 -1px 0 #000,0 1px 0 #000,-1px -1px 0 #000,1px 1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000'
                 }}>
                 {module.isUnreleased && <span className="text-yellow-300">[CN] </span>}
-                {module.typeName1}-{module.typeName2}:{module.name}
+                {module.typeName1}-{module.typeName2}: {module.name}
               </div>
             </div>
           </a>

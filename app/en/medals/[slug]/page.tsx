@@ -86,7 +86,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         {data.meta.isUnreleased && (
           <Alert className="mb-4">
             <AlertCircleIcon />
-            <AlertTitle>This medal is not yet available on the Global server of Arknights.</AlertTitle>
+            <AlertTitle>This medal is not yet available on the EN server of Arknights.</AlertTitle>
           </Alert>
         )}
         <div className="flex flex-col md:flex-row gap-4 items-start">

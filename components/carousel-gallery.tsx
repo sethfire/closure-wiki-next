@@ -15,65 +15,35 @@ interface GalleryImage {
 
 export default function CarouselGallery({ images }: { images: GalleryImage[] }) {
   const [currentIndex, setCurrentIndex] = React.useState(0);
-
   const showThumbnails = true;
+  
+  if (!images?.length) return null;
 
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
+  const prevSlide = () => setCurrentIndex((i) => Math.max(0, i - 1));
+  const nextSlide = () => setCurrentIndex((i) => Math.min(images.length - 1, i + 1));
 
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
-
-  // Keyboard navigation for main carousel
-  React.useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") {
-        nextSlide();
-      } else if (e.key === "ArrowLeft") {
-        prevSlide();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  const current = images[currentIndex];
 
   return (
     <div className="w-full">
-      {/* Main carousel */}
+      {/* Main image (only the visible one is rendered) */}
       <div className="relative overflow-hidden rounded-lg">
         <div className="relative aspect-square md:aspect-video w-full overflow-hidden bg-muted dark:bg-card">
-          {images.map((image, index) => (
-            <div
-              key={`slide-${index}`}
-              className={cn(
-                "absolute inset-0 transform transition-all duration-500 ease-in-out",
-                index === currentIndex
-                  ? "translate-x-0 opacity-100"
-                  : index < currentIndex
-                    ? "-translate-x-full opacity-0"
-                    : "translate-x-full opacity-0",
-              )}
-            >
-              <img
-                src={image.src}
-                alt={`Image ${index + 1}`}
-                className={`h-full w-full ${image.display}`}
-                loading="lazy" 
-                decoding="async"
-              />
-            </div>
-          ))}
+          <img
+            key={current.src}
+            src={current.src}
+            className={cn("h-full w-full", current.display)}
+            decoding="async"
+          />
         </div>
 
-        {/* Navigation buttons */}
+        {/* Navigation */}
         <Button
           variant="secondary"
           size="icon"
           className="absolute top-1/2 left-2 -translate-y-1/2 cursor-pointer"
           onClick={prevSlide}
+          disabled={currentIndex === 0}
         >
           <ChevronLeftIcon className="h-6 w-6" />
         </Button>
@@ -83,13 +53,16 @@ export default function CarouselGallery({ images }: { images: GalleryImage[] }) 
           size="icon"
           className="absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer"
           onClick={nextSlide}
+          disabled={currentIndex === images.length - 1}
         >
           <ChevronRightIcon className="h-6 w-6" />
         </Button>
 
         {/* Caption */}
         <div className="absolute right-0 bottom-0 left-0 p-4 text-xs">
-          <b>{images[currentIndex].title}</b><br/>{images[currentIndex].desc}
+          <b>{current.title}</b>
+          <br />
+          {current.desc}
         </div>
       </div>
 
@@ -101,19 +74,16 @@ export default function CarouselGallery({ images }: { images: GalleryImage[] }) 
               key={`thumb-${index}`}
               className={cn(
                 "relative h-20 w-20 flex-shrink-0 transition-all duration-200 cursor-pointer",
-                index === currentIndex
-                  ? ""
-                  : "opacity-50 hover:opacity-100",
+                index === currentIndex ? "" : "opacity-50 hover:opacity-100"
               )}
               onClick={() => setCurrentIndex(index)}
             >
               <img
                 src={image.thumb}
-                alt={`Thumbnail ${index + 1}`}
                 width={80}
                 height={80}
                 className="h-full w-full rounded-sm object-cover"
-                loading="lazy" 
+                loading="lazy"
                 decoding="async"
               />
             </button>

@@ -16,7 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { AlertCircleIcon } from "lucide-react";
 import { getCharBranch, getCharClass, getCharRarity, getFaction } from "@/lib/char-utils";
-import { getClassIcon, getBranchIcon, getFactionLogo, getCharAvatar } from "@/lib/image-utils";
+import { getClassIcon, getBranchIcon, getFactionLogo, getCharAvatar, getCharacter } from "@/lib/image-utils";
 import { getOperator, getOperators } from "@/lib/fetch-utils";
 import { notFound } from "next/navigation";
 import { parseRichText } from "@/lib/parse";
@@ -93,7 +93,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     }
 
     charArts.push({
-      src: `https://static.closure.wiki/v1/characters/${skinId}.webp`,
+      // src: `https://static.closure.wiki/v1/characters/${skinId}.webp`,
+      src: getCharacter(skinId),
       thumb: avatar.toLowerCase(),
       title: title,
       desc: `Illustrator: ${skin.displaySkin.drawerList.join(", ")}`,

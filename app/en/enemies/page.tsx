@@ -50,7 +50,7 @@ export default async function Page() {
                   textShadow: '-1px 0 0 #000,1px 0 0 #000,0 -1px 0 #000,0 1px 0 #000,-1px -1px 0 #000,1px 1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000'
                 }}>
                 {enemy.isUnreleased && <span className="text-yellow-300">[CN] </span>}
-                {enemy.name}
+                {enemy.enemyIndex}: {enemy.name}
               </div>
               <div className="absolute left-0 right-0 bottom-0 h-[4px]" style={{ backgroundColor: getEnemyRarityColor(enemy.enemyLevel) }}></div>
             </div>

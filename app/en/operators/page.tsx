@@ -2,7 +2,7 @@ import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbS
 import { Separator } from "@/components/ui/separator";
 import { getCharRarity, getCharRarityColor } from "@/lib/char-utils";
 import { getOperators } from "@/lib/fetch-utils";
-import { getBranchIcon, getCharAvatarThumbnail, getCharPortrait, getClassIcon } from "@/lib/image-utils";
+import { getBranchIcon, getCharPortraitThumbnail, getClassIcon } from "@/lib/image-utils";
 
 export const revalidate = 86400;
 
@@ -45,9 +45,17 @@ export default async function Page() {
         {characters.map((char: any) => (
           <a href={`/en/operators/${char.slug}`} key={char.slug}>
             <div className="group relative aspect-[1/2] bg-muted dark:bg-card rounded overflow-hidden">
+              {/* Base image */}
               <img
-                src={getCharPortrait(`${char.id}_1`)}
-                className="w-full h-full object-contain transition-transform duration-150 group-hover:scale-105"
+                src={getCharPortraitThumbnail(`${char.id}_1`)}
+                className="w-full h-full object-contain absolute inset-0 opacity-100 group-hover:opacity-0 transition-opacity duration-500"
+                loading="lazy"
+                decoding="async"
+              />
+              {/* Hover image */}
+              <img
+                src={getCharPortraitThumbnail(`${char.id}_2`)}
+                className="w-full h-full object-contain absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 loading="lazy"
                 decoding="async"
               />

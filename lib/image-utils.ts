@@ -45,6 +45,10 @@ export function getCharAvatarThumbnail(id: string): string {
   return `${ASSET_URL}/${VERSION}/thumb/charavatars/${id}.webp`;
 }
 
+export function getCharPortraitThumbnail(id: string): string {
+  return `${ASSET_URL}/${VERSION}/thumb/charportraits/${id}.webp`;
+}
+
 export function getMapPreviewThumbnail(id: string): string {
   return `${ASSET_URL}/${VERSION}/thumb/mappreviews/${id}.webp`;
 }

@@ -1,6 +1,6 @@
 export default function Page() {
   return (
-    <div className="p-8 mx-auto w-full max-w-6xl">
+    <div className="flex flex-1 flex-col gap-4 w-full px-4 md:px-0">
       <div className="mb-8">
         <h2 className="text-lg font-semibold mb-2">Welcome!</h2>
         <p>closure.wiki is an unofficial resource archive for Arknights. This is still a work in progress, so some pages may be incomplete.</p>

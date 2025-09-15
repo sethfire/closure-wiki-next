@@ -110,11 +110,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroup>
         ))}
       </SidebarContent>
-      <SidebarFooter>
-        {/* <NavUser user={data.user} /> */}
+      {/* <SidebarFooter>
         <ModeToggle />
-      </SidebarFooter>
-      <SidebarRail />
+      </SidebarFooter> */}
     </Sidebar>
   )
 }

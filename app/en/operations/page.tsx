@@ -15,7 +15,7 @@ export default async function Page() {
   });
 
   return (
-    <div className="flex flex-1 flex-col gap-4 p-4 mx-auto w-full max-w-6xl">
+    <div className="flex flex-1 flex-col gap-4 w-full px-4 md:px-0">
       <div>
         <Breadcrumb className="mb-2">
           <BreadcrumbList>
@@ -34,7 +34,7 @@ export default async function Page() {
         </div>
       </div>
       <Separator />
-      <div className="grid grid-cols-3 md:grid-cols-7 gap-2">
+      <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         {stages.map((stage: any) => (
           <a href={`/en/operations/${stage.slug}`} key={stage.slug}>
             <div className="group relative aspect-square rounded overflow-hidden">

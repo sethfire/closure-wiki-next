@@ -64,7 +64,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   if (!data) notFound();
 
   return (
-    <div className="flex flex-1 flex-col gap-8 p-4 mx-auto w-full max-w-6xl mb-16">
+    <div className="flex flex-1 flex-col gap-4 w-full px-4 md:px-0">
       <section>
         <div className="flex justify-between mb-2">
           <Breadcrumbs items={[

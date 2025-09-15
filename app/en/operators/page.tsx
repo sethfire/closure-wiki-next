@@ -2,7 +2,7 @@ import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbS
 import { Separator } from "@/components/ui/separator";
 import { getCharRarity, getCharRarityColor } from "@/lib/char-utils";
 import { getOperators } from "@/lib/fetch-utils";
-import { getBranchIcon, getCharAvatarThumbnail, getClassIcon } from "@/lib/image-utils";
+import { getBranchIcon, getCharAvatarThumbnail, getCharPortrait, getClassIcon } from "@/lib/image-utils";
 
 export const revalidate = 86400;
 
@@ -21,7 +21,7 @@ export default async function Page() {
   });
 
   return (
-    <div className="flex flex-1 flex-col gap-4 p-4 mx-auto w-full max-w-6xl">
+    <div className="flex flex-1 flex-col gap-4 w-full px-4 md:px-0">
       <div>
         <Breadcrumb className="mb-2">
           <BreadcrumbList>
@@ -40,12 +40,13 @@ export default async function Page() {
         </div>
       </div>
       <Separator />
-      <div className="grid grid-cols-3 md:grid-cols-7 gap-2">
+      {/* <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4"> */}
+      <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         {characters.map((char: any) => (
           <a href={`/en/operators/${char.slug}`} key={char.slug}>
-            <div className="group relative aspect-square bg-muted dark:bg-card rounded overflow-hidden">
+            <div className="group relative aspect-[1/2] bg-muted dark:bg-card rounded overflow-hidden">
               <img
-                src={getCharAvatarThumbnail(char.id)}
+                src={getCharPortrait(`${char.id}_1`)}
                 className="w-full h-full object-contain transition-transform duration-150 group-hover:scale-105"
                 loading="lazy"
                 decoding="async"
@@ -56,8 +57,8 @@ export default async function Page() {
               <div className="absolute left-[32px] top-[4px] h-[24px] w-[24px] p-0.5 rounded bg-black/70">
                 <img src={getBranchIcon(char.subProfessionId)} className="h-full w-full object-contain" loading="lazy" decoding="async" />
               </div>
-              <div className="absolute left-0 right-0 bottom-0 h-1/3 bg-gradient-to-t from-[rgba(0,0,0,0.8)] to-transparent"></div>
-              <div className="absolute bottom-0 left-0 right-0 text-white px-1 py-2 text-center font-semibold text-sm" style={{ 
+              <div className="absolute left-0 right-0 bottom-0 h-1/2 bg-gradient-to-t from-[rgba(0,0,0,1)] to-transparent"></div>
+              <div className="absolute bottom-0 left-0 right-0 text-white px-2 py-3 text-left font-semibold text" style={{ 
                   textShadow: '-1px 0 0 #000,1px 0 0 #000,0 -1px 0 #000,0 1px 0 #000,-1px -1px 0 #000,1px 1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000'
                 }}>
                 {char.isUnreleased && <span className="text-yellow-300">[CN] </span>}

@@ -22,7 +22,7 @@ export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const medals: any[] = await getMedals("en");
-  return medals.slice(0, 10).map((medal) => ({
+  return medals.slice(0, 1).map((medal) => ({
     slug: medal.slug,
   }));
 }

@@ -15,13 +15,14 @@ import { parseRichText, stripTags } from '@/lib/parse'
 import { getEnemyStat, getEnemyAttribute, getEnemyLevelType } from '@/lib/enemy-utils'
 import { getOperation, getOperations } from '@/lib/fetch-utils'
 import { getEnemyIcon, getMapPreview } from '@/lib/image-utils'
+import CodeBlock from '@/components/code-block'
 
 export const revalidate = 2419200;
 export const dynamicParams = true
 
 export async function generateStaticParams() {
   const data: any = await getOperations("en");
-  return data.stages.slice(0, 10).map((stage: any) => ({
+  return data.stages.slice(0, 3).map((stage: any) => ({
     slug: stage.slug,
   }))
 }
@@ -88,7 +89,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   if (data.stage.stageType === "CLIMB_TOWER") operationType = "Stationary Security Service (SSS)";
 
   return (
-    <div className="flex flex-1 flex-col gap-4 w-full px-4 md:px-0">
+    <div className="flex flex-1 flex-col gap-8 w-full px-4 md:px-0 mb-32">
       <section>
         <Breadcrumb className="mb-2">
           <BreadcrumbList>
@@ -212,6 +213,15 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           </div>
         </section>
       )}
+
+      <section>
+        <h2 className="text-xl font-semibold mb-2">Reference Data</h2>
+        <Separator className="mb-4" />
+        <div>
+          <h3 className="text-lg font-semibold mb-2">stage_table.json</h3>
+          <CodeBlock code={JSON.stringify(data.stage ? data.stage : {}, null, 2)} language="json" />
+        </div>
+      </section>
     </div>
   )
 }

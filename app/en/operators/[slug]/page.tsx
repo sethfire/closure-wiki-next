@@ -20,13 +20,14 @@ import { getClassIcon, getBranchIcon, getFactionLogo, getCharAvatar, getCharacte
 import { getOperator, getOperators } from "@/lib/fetch-utils";
 import { notFound } from "next/navigation";
 import { parseRichText } from "@/lib/parse";
+import CodeBlock from "@/components/code-block";
 
 export const revalidate = 2419200;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const chars: any[] = await getOperators("en");
-  return chars.slice(0, 10).map((char) => ({
+  return chars.slice(0, 3).map((char) => ({
     slug: char.slug,
   }));
 }
@@ -103,7 +104,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   });
 
   return (
-    <div className="flex flex-1 flex-col gap-4 w-full px-4 md:px-0">
+    <div className="flex flex-1 flex-col gap-8 w-full px-4 md:px-0 mb-32">
       <section>
         <Breadcrumb className="mb-2">
           <BreadcrumbList>
@@ -318,6 +319,25 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           </div>
         </section>
       )}
+
+      <section>
+        <h2 className="text-xl font-semibold mb-2">Reference Data</h2>
+        <Separator className="mb-4" />
+        <div>
+          <h3 className="text-lg font-semibold mb-2">character_table.json</h3>
+          <CodeBlock code={JSON.stringify(data.char ?? {}, null, 2)} language="json" />
+          <h3 className="text-lg font-semibold mb-2 mt-8">handbook_info_table.json</h3>
+          <CodeBlock code={JSON.stringify(data.charProfile ?? {}, null, 2)} language="json" />
+          <h3 className="text-lg font-semibold mb-2 mt-8">charword_table.json</h3>
+          <CodeBlock code={JSON.stringify(data.charDialog ?? {}, null, 2)} language="json" />
+          <h3 className="text-lg font-semibold mb-2 mt-8">skill_table.json</h3>
+          <CodeBlock code={JSON.stringify(data.charSkills ?? {}, null, 2)} language="json" />
+          <h3 className="text-lg font-semibold mb-2 mt-8">uniequip_table.json</h3>
+          <CodeBlock code={JSON.stringify(data.charModules ?? {}, null, 2)} language="json" />
+          <h3 className="text-lg font-semibold mb-2 mt-8">skin_data.json</h3>
+          <CodeBlock code={JSON.stringify(data.charSkins ?? {}, null, 2)} language="json" />
+        </div>
+      </section>
     </div>
   )
 }

@@ -13,13 +13,14 @@ import { getEnemyAttackType, getEnemyDamageType, getEnemyLevelType, getEnemyMoti
 import { getEnemies, getEnemy } from "@/lib/fetch-utils";
 import Breadcrumbs from "@/components/ui/dynamic-breadcrumb";
 import { getEnemyIcon } from "@/lib/image-utils";
+import CodeBlock from "@/components/code-block";
 
 export const revalidate = 2419200;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const enemies: any[] = await getEnemies("en");
-  return enemies.slice(0, 10).map((enemy) => ({
+  return enemies.slice(0, 3).map((enemy) => ({
     slug: enemy.slug,
   }));
 }
@@ -64,7 +65,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   if (!data) notFound();
 
   return (
-    <div className="flex flex-1 flex-col gap-4 w-full px-4 md:px-0">
+    <div className="flex flex-1 flex-col gap-8 w-full px-4 mb-32 md:px-0 max-w-5xl mx-auto">
       <section>
         <div className="flex justify-between mb-2">
           <Breadcrumbs items={[
@@ -156,7 +157,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       {data.enemyAppearances && data.enemyAppearances.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold mb-2">Appearances</h2>
-          <Separator className="mb-2" />
+          <Separator className="mb-4" />
           <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1 list-disc pl-5">
               {data.enemyAppearances.map((stage: any, index: number) =>
                   <li key={index} className="list-disc list-item items-center gap-2 mb-1"> 
@@ -166,6 +167,17 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           </ul>
         </section>
       )}
+
+      <section>
+        <h2 className="text-xl font-semibold mb-2">Reference Data</h2>
+        <Separator className="mb-4" />
+        <div>
+          <h3 className="text-lg font-semibold mb-2">enemy_handbook_table.json</h3>
+          <CodeBlock code={JSON.stringify(data.enemy, null, 2)} language="json" />
+          <h3 className="text-lg font-semibold mb-2 mt-8">enemy_database.json</h3>
+          <CodeBlock code={JSON.stringify(data.enemyStats, null, 2)} language="json" />
+        </div>
+      </section>
     </div>
   )
 }

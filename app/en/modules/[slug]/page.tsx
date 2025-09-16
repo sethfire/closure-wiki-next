@@ -19,13 +19,14 @@ import { parseRichText } from "@/lib/parse";
 import { getModule, getModules } from "@/lib/fetch-utils";
 import { getModuleImg } from "@/lib/image-utils";
 import CarouselGallery from "@/components/carousel-gallery";
+import CodeBlock from "@/components/code-block";
 
 export const revalidate = 2419200;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const modules: any[] = await getModules("en");
-  return modules.slice(0, 10).map((module) => ({
+  return modules.slice(0, 3).map((module) => ({
     slug: module.slug,
   }));
 }
@@ -70,7 +71,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   if (!data) notFound();
 
   return (
-    <div className="flex flex-1 flex-col gap-4 w-full px-4 md:px-0">
+    <div className="flex flex-1 flex-col gap-8 w-full px-4 md:px-0 mb-32">
       <section>
         <div className="flex justify-between mb-2">
           <Breadcrumb>
@@ -148,6 +149,17 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <p className="whitespace-pre-line">
           {data.module.uniEquipDesc}
         </p>
+      </section>
+
+      <section>
+        <h2 className="text-xl font-semibold mb-2">Reference Data</h2>
+        <Separator className="mb-4" />
+        <div>
+          <h3 className="text-lg font-semibold mb-2">uniequip_table.json</h3>
+          <CodeBlock code={JSON.stringify(data.module ?? {}, null, 2)} language="json" />
+          <h3 className="text-lg font-semibold mb-2 mt-8">uniequip_table.json (Missions)</h3>
+          <CodeBlock code={JSON.stringify(data.missions ?? {}, null, 2)} language="json" />
+        </div>
       </section>
     </div>
   );

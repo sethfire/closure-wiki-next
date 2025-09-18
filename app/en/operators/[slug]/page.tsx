@@ -3,19 +3,10 @@ import PotentialsTable from "@/components/operators/potentials-table";
 import SkillsTable from "@/components/operators/skills-table";
 import StatsTable from "@/components/operators/stats-table";
 import TalentsTable from "@/components/operators/talent-table";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
-import { Alert, AlertTitle } from "@/components/ui/alert";
-import { AlertCircleIcon } from "lucide-react";
+import UnreleasedNotice from "@/components/operators/unreleased-notice";
 import { getCharClass, getCharRarity } from "@/lib/char-utils";
-import { getCharAvatar, getCharacter } from "@/lib/image-utils";
+import { getCharAvatar } from "@/lib/image-utils";
 import { getOperator, getOperators } from "@/lib/fetch-utils";
 import { notFound } from "next/navigation";
 import CodeBlock from "@/components/code-block";
@@ -23,6 +14,7 @@ import OverviewTable from "@/components/operators/overview-table";
 import CVTable from "@/components/operators/cv-table";
 import OperatorFile from "@/components/operators/operator-file";
 import OperatorGallery from "@/components/operators/operator-gallery";
+import Breadcrumbs from "@/components/ui/dynamic-breadcrumb";
 
 export const revalidate = 2419200;
 export const dynamicParams = true;
@@ -76,30 +68,26 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   return (
     <div className="flex flex-1 flex-col gap-8 w-full px-4 md:px-0 mb-32">
       <section>
-        <Breadcrumb className="mb-2">
-          <BreadcrumbList>
-            <BreadcrumbItem><BreadcrumbLink href="/en/home">Home</BreadcrumbLink></BreadcrumbItem>
-            <BreadcrumbSeparator>/</BreadcrumbSeparator>
-            <BreadcrumbItem><BreadcrumbLink href="/en/operators">Operators</BreadcrumbLink></BreadcrumbItem>
-            <BreadcrumbSeparator>/</BreadcrumbSeparator>
-            <BreadcrumbItem><BreadcrumbPage>{data.meta.name}</BreadcrumbPage></BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <div className="mb-2">
+          <Breadcrumbs items={[
+            { label: "Home", href: "/en/home" },
+            { label: "Operators", href: "/en/operators" },
+            { label: data.meta.name },
+          ]} />
+        </div>
         <div className="flex justify-between mb-2">
           <h1 className="text-2xl font-semibold">{data.meta.name}</h1>
-          <span className="text-2xl text-yellow-400">{"★".repeat(getCharRarity(data.char.rarity))}</span>
+          <div className="text-2xl text-yellow-400">{"★".repeat(getCharRarity(data.char.rarity))}</div>
         </div>
         <div className="mb-4 text-sm flex flex-row gap-4">
-          <span className="text-muted-foreground">{getCharRarity(data.char.rarity)}★ {getCharClass(data.char.profession)} Operator</span>
+          <div className="text-muted-foreground">
+            {getCharRarity(data.char.rarity)}★ {getCharClass(data.char.profession)} Operator
+          </div>
         </div>
+
         <Separator className="mb-4" />
-        
-        {data.meta.isUnreleased && (
-          <Alert className="mb-4">
-            <AlertCircleIcon />
-            <AlertTitle>This operator is not yet available on the EN server of Arknights.</AlertTitle>
-          </Alert>
-        )}
+
+        {data.meta.isUnreleased && <UnreleasedNotice entityType="operator" />}
 
         {data.charSkins && Array.isArray(data.charSkins) && data.charSkins.length > 0 && (
           <OperatorGallery charSkins={data.charSkins} />

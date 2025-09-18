@@ -1,4 +1,4 @@
-import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb";
+import Breadcrumbs from "@/components/ui/dynamic-breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { getCharRarity, getCharRarityColor } from "@/lib/char-utils";
 import { getOperators } from "@/lib/fetch-utils";
@@ -23,24 +23,20 @@ export default async function Page() {
   return (
     <div className="flex flex-1 flex-col gap-4 w-full px-4 md:px-0">
       <div>
-        <Breadcrumb className="mb-2">
-          <BreadcrumbList>
-            <BreadcrumbItem><BreadcrumbLink href="/en/home">Home</BreadcrumbLink></BreadcrumbItem>
-            <BreadcrumbSeparator>/</BreadcrumbSeparator>
-            <BreadcrumbItem><BreadcrumbPage>Operators</BreadcrumbPage></BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <div className="mb-2">
+          <Breadcrumbs items={[
+            { label: "Home", href: "/en/home" },
+            { label: "Operators" },
+          ]} />
+        </div>
         <h1 className="mb-2 text-2xl font-semibold">Operators</h1>
         <div className="text-sm">
-          <span>
-            <span className="text-muted-foreground">Showing </span>
-            <span>{characters.length}</span>
-            <span className="text-muted-foreground"> Operators</span>
-          </span>
+          <span className="text-muted-foreground">Showing </span>{characters.length}<span className="text-muted-foreground"> Operators</span>
         </div>
       </div>
+
       <Separator />
-      {/* <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4"> */}
+
       <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         {characters.map((char: any) => (
           <a href={`/en/operators/${char.slug}`} key={char.slug}>
@@ -52,6 +48,7 @@ export default async function Page() {
                 loading="lazy"
                 decoding="async"
               />
+
               {/* Hover image */}
               <img
                 src={getCharPortraitThumbnail(`${char.id}_2`)}
@@ -59,19 +56,27 @@ export default async function Page() {
                 loading="lazy"
                 decoding="async"
               />
+
+              {/* Class icons */}
               <div className="absolute left-[4px] top-[4px] h-[24px] w-[24px] p-0.5 rounded bg-black/70">
                 <img src={getClassIcon(char.profession)} className="h-full w-full object-contain" loading="lazy" decoding="async" />
               </div>
               <div className="absolute left-[32px] top-[4px] h-[24px] w-[24px] p-0.5 rounded bg-black/70">
                 <img src={getBranchIcon(char.subProfessionId)} className="h-full w-full object-contain" loading="lazy" decoding="async" />
               </div>
+              
+              {/* Gradient */}
               <div className="absolute left-0 right-0 bottom-0 h-1/2 bg-gradient-to-t from-[rgba(0,0,0,1)] to-transparent"></div>
+
+              {/* Text */}
               <div className="absolute bottom-0 left-0 right-0 text-white px-2 py-3 text-left font-semibold text" style={{ 
                   textShadow: '-1px 0 0 #000,1px 0 0 #000,0 -1px 0 #000,0 1px 0 #000,-1px -1px 0 #000,1px 1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000'
                 }}>
                 {char.isUnreleased && <span className="text-yellow-300">[CN] </span>}
                 {char.name}
               </div>
+              
+              {/* Rarity */}
               <div className="absolute left-0 right-0 bottom-0 h-[4px]" style={{ backgroundColor: getCharRarityColor(char.rarity) }}></div>
             </div>
           </a>

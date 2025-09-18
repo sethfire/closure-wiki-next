@@ -2,18 +2,13 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { Separator } from "@/components/ui/separator";
 import { notFound } from "next/navigation";
 import StatsTable from "@/components/enemies/stats-table";
-import { AlertCircleIcon } from "lucide-react";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/components/ui/alert";
 import { parseRichText } from "@/lib/parse";
 import { getEnemyAttackType, getEnemyDamageType, getEnemyLevelType, getEnemyMotionType } from "@/lib/enemy-utils";
 import { getEnemies, getEnemy } from "@/lib/fetch-utils";
 import Breadcrumbs from "@/components/ui/dynamic-breadcrumb";
 import { getEnemyIcon } from "@/lib/image-utils";
 import CodeBlock from "@/components/code-block";
+import UnreleasedNotice from "@/components/operators/unreleased-notice";
 
 export const revalidate = 2419200;
 export const dynamicParams = true;
@@ -82,13 +77,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <span className="text-muted-foreground">{getEnemyLevelType(data.enemy.enemyLevel)} Enemy</span>
         </div>
         <Separator className="mb-4" />
-        
-        {data.meta.isUnreleased && (
-          <Alert className="mb-4">
-            <AlertCircleIcon />
-            <AlertTitle>This operator is not yet available on the EN server of Arknights.</AlertTitle>
-          </Alert>
-        )}
+
+        {data.meta.isUnreleased && <UnreleasedNotice entityType="enemy" />}
 
         <div className="flex flex-col md:flex-row gap-4 items-start">
           <img src={getEnemyIcon(data.enemy.enemyId)}

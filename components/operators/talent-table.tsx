@@ -5,11 +5,6 @@ export default function TalentsTable({ talents }: { talents: any[] }) {
     <div className="flex flex-col gap-4">
       {talents.filter((talent: any) => !talent.candidates[0].isHideTalent).map((talent: any, idx: number) => (
         <table className="w-full border-collapse bg-muted" key={idx}>
-        <colgroup>
-          <col style={{ width: '150px' }} />
-          <col style={{ width: '100px' }} />
-          <col />
-        </colgroup>
         <thead className="bg-gray-200 dark:bg-card text-sm md:text-sm">
           <tr>
             {/* <th colSpan={3} className="text-lg py-1 px-2 text-left font-semibold">{talent.candidates[0].name}</th> */}

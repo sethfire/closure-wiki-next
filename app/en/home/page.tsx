@@ -7,12 +7,12 @@ export default function Page() {
         <p>Disclaimer: This is a hobby project and is not affiliated with Hypergryph or Yostar. All trademarks are property of their respective owners.</p>
       </div>
       
-      <div className="flex justify-center mb-8">
+      {/* <div className="flex justify-center mb-8">
         <img
           src="https://static.closure.wiki/v1/banner.png"
           className="max-w-md md:max-w-xl w-full h-auto"
         />
-      </div>
+      </div> */}
 
       <div>
         <h2 className="text-lg font-semibold mb-2">Navigation</h2>

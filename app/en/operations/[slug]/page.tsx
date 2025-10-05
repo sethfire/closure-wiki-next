@@ -68,18 +68,18 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const data: any = await getOperation("en", slug);
   if (!data) notFound();
 
-  const enemySortOrder: Record<string, number> = { BOSS: 0, ELITE: 1, NORMAL: 2 };
-  const sortedEnemies = Object.values(data.enemies).slice()
-    .sort((a: any, b: any) => (enemySortOrder[a.levelType] ?? 99) - (enemySortOrder[b.levelType] ?? 99));
-  const enemies = await Promise.all(sortedEnemies.map(async (enemy: any) => {
-    try {
-      const res = await fetch(`https://api.closure.wiki/en/enemies/${enemy.slug}`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return (await res.json());
-    } catch (err) {
-      return null;
-    }
-  }));
+  // const enemySortOrder: Record<string, number> = { BOSS: 0, ELITE: 1, NORMAL: 2 };
+  // const sortedEnemies = Object.values(data.enemies).slice()
+  //   .sort((a: any, b: any) => (enemySortOrder[a.levelType] ?? 99) - (enemySortOrder[b.levelType] ?? 99));
+  // const enemies = await Promise.all(sortedEnemies.map(async (enemy: any) => {
+  //   try {
+  //     const res = await fetch(`https://api.closure.wiki/en/enemies/${enemy.slug}`);
+  //     if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  //     return (await res.json());
+  //   } catch (err) {
+  //     return null;
+  //   }
+  // }));
 
   let operationType = "";
   if (data.stage.stageType === "MAIN") operationType = "Main Theme";
@@ -126,7 +126,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         </section>
       )}
 
-      {enemies && enemies.length > 0 && (
+      {/* {enemies && enemies.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold mb-2">Enemies</h2>
           <Separator className="mb-2" />
@@ -212,7 +212,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             </table>
           </div>
         </section>
-      )}
+      )} */}
 
       <section>
         <h2 className="text-xl font-semibold mb-2">Reference Data</h2>

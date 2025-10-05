@@ -87,7 +87,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
         <Separator className="mb-4" />
 
-        {data.meta.isUnreleased && <UnreleasedNotice entityType="operator" />}
+        {data.meta.isUnreleased && <UnreleasedNotice contentType="operator" />}
 
         {data.charSkins && Array.isArray(data.charSkins) && data.charSkins.length > 0 && (
           <OperatorGallery charSkins={data.charSkins} />

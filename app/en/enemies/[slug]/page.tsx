@@ -78,7 +78,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         </div>
         <Separator className="mb-4" />
 
-        {data.meta.isUnreleased && <UnreleasedNotice entityType="enemy" />}
+        {data.meta.isUnreleased && <UnreleasedNotice contentType="enemy" />}
 
         <div className="flex flex-col md:flex-row gap-4 items-start">
           <img src={getEnemyIcon(data.enemy.enemyId)}
@@ -121,15 +121,15 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <h2 className="text-xl font-semibold mb-2">Traits</h2>
           <Separator className="mb-2" />
           <ul className="ml-6">
-              {data.enemy.abilityList.map((ability: any, index: number) =>
-                  ability.textFormat === "TITLE" 
-                    ? (<li key={index} className="font-bold text-lg mt-4 mb-1 list-none">{ability.text}</li>) 
-                    : (
-                        <li key={index} className="list-disc list-item items-center mb-1">
-                          <span dangerouslySetInnerHTML={{ __html: parseRichText(ability.text) }} />
-                        </li>
-                      )
-              )}
+            {data.enemy.abilityList.map((ability: any, index: number) =>
+              ability.textFormat === "TITLE" 
+              ? (<li key={index} className="font-bold text-lg mt-4 mb-1 list-none">{ability.text}</li>) 
+              : (
+                  <li key={index} className="list-disc list-item items-center mb-1">
+                    <span dangerouslySetInnerHTML={{ __html: parseRichText(ability.text) }} />
+                  </li>
+                )
+            )}
           </ul>
         </section>
       )}
@@ -149,11 +149,11 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <h2 className="text-xl font-semibold mb-2">Appearances</h2>
           <Separator className="mb-4" />
           <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1 list-disc pl-5">
-              {data.enemyAppearances.map((stage: any, index: number) =>
-                  <li key={index} className="list-disc list-item items-center gap-2 mb-1"> 
-                    <a href={`/en/operations/${stage.stageId}`} className="hover:underline text-blue-600">{stage.code}: {stage.name}</a> 
-                  </li> 
-              )}
+            {data.enemyAppearances.map((stage: any, index: number) =>
+              <li key={index} className="list-disc list-item items-center gap-2 mb-1"> 
+                <a href={`/en/operations/${stage.stageId}`} className="hover:underline text-blue-600">{stage.code}: {stage.name}</a> 
+              </li> 
+            )}
           </ul>
         </section>
       )}

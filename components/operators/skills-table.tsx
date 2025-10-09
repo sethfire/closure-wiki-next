@@ -28,7 +28,7 @@ export default function SkillsTable({ skills }: { skills: any[] }) {
                           <Badge style={{ backgroundColor: '#8EC31F', color: 'white' }}>Auto Recovery</Badge>
                         )}
                         {skill.levels[0].spData.spType === "INCREASE_WHEN_ATTACK" && (
-                          <Badge style={{ backgroundColor: '#EF4444', color: 'white' }}>Offensive Recovery</Badge>
+                          <Badge style={{ backgroundColor: '#FD7A3F', color: 'white' }}>Offensive Recovery</Badge>
                         )}
                         {skill.levels[0].spData.spType === "INCREASE_WHEN_TAKEN_DAMAGE" && (
                           <Badge style={{ backgroundColor: '#FFB400', color: 'white' }}>Defensive Recovery</Badge>

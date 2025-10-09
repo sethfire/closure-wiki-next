@@ -10,7 +10,7 @@ export default function Page() {
           <a href="https://discord.gg/rihq" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
             https://discord.gg/rihq
           </a>
-        ) in the #aceship-toolbox channel</p>
+        )</p>
       </div>
       
       {/* <div className="flex justify-center mb-8">

@@ -34,10 +34,10 @@ export default function SkillsTable({ skills }: { skills: any[] }) {
                           <Badge style={{ backgroundColor: '#F4AF09', color: 'white' }}>Defensive Recovery</Badge>
                         )}
                         {skill.levels[0].skillType === "MANUAL" && (
-                          <Badge style={{ backgroundColor: '#808080', color: 'white' }}>Manual</Badge>
+                          <Badge style={{ backgroundColor: '#808080', color: 'white' }}>Manual Trigger</Badge>
                         )}
                         {skill.levels[0].skillType === "AUTO" && (
-                          <Badge style={{ backgroundColor: '#808080', color: 'white' }}>Auto</Badge>
+                          <Badge style={{ backgroundColor: '#808080', color: 'white' }}>Auto Trigger</Badge>
                         )}
                         {skill.levels[0].spData.spType === 8 && (
                           <Badge style={{ backgroundColor: '#808080', color: 'white' }}>Passive</Badge>

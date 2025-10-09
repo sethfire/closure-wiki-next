@@ -110,9 +110,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroup>
         ))}
       </SidebarContent>
-      {/* <SidebarFooter>
-        <ModeToggle />
-      </SidebarFooter> */}
+      <SidebarFooter>
+        <div className="text-xs text-muted-foreground px-2 py-1 text-left">
+          closure.wiki is a fan-made unofficial resource archive for Arknights. This is a hobby project and is not affiliated with Hypergryph or Yostar.
+        </div>
+        <div className="px-2 pb-2 text-left flex gap-3">
+          <a href="https://arknights.wiki.gg" target="_blank" rel="noopener noreferrer" className="text-xs underline text-muted-foreground hover:text-foreground">Terra Wiki</a>
+          <a href="/en/home" className="text-xs underline text-muted-foreground hover:text-foreground">About</a>
+          <a href="/en/home" className="text-xs underline text-muted-foreground hover:text-foreground">Contact</a>
+        </div>
+      </SidebarFooter>
     </Sidebar>
   )
 }

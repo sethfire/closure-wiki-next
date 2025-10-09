@@ -69,11 +69,24 @@ export default async function Page() {
               <div className="absolute left-0 right-0 bottom-0 h-1/2 bg-gradient-to-t from-[rgba(0,0,0,1)] to-transparent"></div>
 
               {/* Text */}
-              <div className="absolute bottom-0 left-0 right-0 text-white px-2 py-3 text-left font-semibold text" style={{ 
+              {/* <div className="absolute bottom-0 left-0 right-0 text-white px-2 py-3 text-left font-semibold text" style={{ 
                   textShadow: '-1px 0 0 #000,1px 0 0 #000,0 -1px 0 #000,0 1px 0 #000,-1px -1px 0 #000,1px 1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000'
                 }}>
                 {char.isUnreleased && <span className="text-yellow-300">[CN] </span>}
                 {char.name}
+              </div> */}
+
+              <div className="absolute bottom-0 left-0 right-0 p-2 text-left font-semibold text-white">
+                <span style={{
+                  textShadow: '-1px 0 0 #000,1px 0 0 #000,0 -1px 0 #000,0 1px 0 #000,-1px -1px 0 #000,1px 1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000'
+                }}>
+                  {char.isUnreleased && <span className="text-yellow-300">[CN] </span>}
+                  {char.name}
+                </span>
+                <br />
+                <span style={{ color: getCharRarityColor(char.rarity) }}>
+                  {"★".repeat(getCharRarity(char.rarity))}
+                </span>
               </div>
               
               {/* Rarity */}

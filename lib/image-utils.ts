@@ -60,3 +60,7 @@ export function getEnemyIconThumbnail(id: string): string {
 export function getModuleImgThumbnail(id: string): string {
   return `${ASSET_URL}/${VERSION}/thumb/modules/${id}.webp`;
 }
+
+export function getItemIcon(id: string): string {
+  return `${ASSET_URL}/${VERSION}/items/${id}.png`;
+}

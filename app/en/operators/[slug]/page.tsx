@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import UnreleasedNotice from "@/components/operators/unreleased-notice";
 import { getCharClass, getCharRarity } from "@/lib/char-utils";
 import { getCharAvatar } from "@/lib/image-utils";
-import { getOperator, getOperators } from "@/lib/fetch-utils";
+import { getItems, getOperator, getOperators } from "@/lib/fetch-utils";
 import { notFound } from "next/navigation";
 import CodeBlock from "@/components/code-block";
 import OverviewTable from "@/components/operators/overview-table";
@@ -64,6 +64,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const { slug } = await params;
   const data: any = await getOperator("en", slug);
   if (!data) notFound();
+
+  const items: any = await getItems("en");
 
   return (
     <div className="flex flex-1 flex-col gap-8 w-full px-4 md:px-0 mb-32">
@@ -125,11 +127,11 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         </section>
       )}
 
-      {data.charSkills && data.charSkills.length > 0 && (
+      {data.char.skills && data.char.skills.length > 0 && data.charSkills && data.charSkills.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold mb-2">Skills</h2>
           <Separator className="mb-4" />
-          <SkillsTable skills={data.charSkills} />
+          <SkillsTable skills={data.char.skills} charSkills={data.charSkills} allSkillLvlup={data.char.allSkillLvlup} items={items} />
         </section>
       )}
 

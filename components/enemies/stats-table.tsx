@@ -116,86 +116,88 @@ export default function StatsTable({ enemyStats }: { enemyStats: any[] }) {
       {enemyLevels.map((level: number) => (
         <div className="mb-4" key={level}>
           <h2 className="text-xl font-semibold mb-2">Level {level}</h2>
-          <table className="w-full table-fixed border-collapse bg-muted text-center">
-            <colgroup>
-              <col className="w-1/6" />
-              <col className="w-1/6" />
-              <col className="w-1/6" />
-              <col className="w-1/6" />
-              <col className="w-1/6" />
-              <col className="w-1/6" />
-            </colgroup>
-            <tbody>
-              <tr className="bg-card">
-                <th className="border p-1" colSpan={2}>Name</th>
-                <th className="border p-1" colSpan={2}>Level</th>
-                <th className="border p-1" colSpan={2}>Type</th>
-              </tr>
-              <tr>
-                <td className="border p-1" colSpan={2}>{enemyName[level]}</td>
-                <td className="border p-1" colSpan={2}>{getEnemyLevelType(enemyLevelType[level])}</td>
-                <td className="border p-1" colSpan={2}>{(() => {
-                  if (Array.isArray(enemyTags[level]) && enemyTags[level].length > 0) {
-                    const enemyTag = enemyTags[level].map((tag: string) => getEnemyTag(tag));
-                    return enemyTag.length > 0 ? enemyTag.join(", ") : "-";
-                  }
-                  return "-";
-                })()}</td>
-              </tr>
-              <tr className="bg-card"><th className="border p-1" colSpan={6}>Description</th></tr>
-              <tr><td className="border p-1" colSpan={6}><span dangerouslySetInnerHTML={{ __html: parseRichText(enemyDescription[level]) }} /></td></tr>
-              <tr>
-                <th className="border p-1 bg-card">Attack Pattern</th>
-                <td className="border p-1">{getEnemyAttackType(enemyAttackType[level])}</td>
-                <th className="border p-1 bg-card">Location</th>
-                <td className="border p-1">{getEnemyMotionType(enemyMotionType[level])}</td>
-                <th className="border p-1 bg-card">HP Recovery</th>
-                <td className="border p-1">{enemyHPRecovery[level]}</td>
-              </tr>
-              <tr className="bg-card">
-                <th className="border p-1">HP</th>
-                <th className="border p-1">ATK</th>
-                <th className="border p-1">DEF</th>
-                <th className="border p-1">RES</th>
-                <th className="border p-1">Attack Range</th>
-                <th className="border p-1">Weight</th>
-              </tr>
-              <tr>
-                <td className="border p-1">{enemyMaxHP[level]}<br /><strong>{getMaxHPRating(enemyMaxHP[level])}</strong></td>
-                <td className="border p-1">{enemyATK[level]}<br /><strong>{getMaxATKRating(enemyATK[level])}</strong></td>
-                <td className="border p-1">{enemyDEF[level]}<br /><strong>{getMaxDEFRating(enemyDEF[level])}</strong></td>
-                <td className="border p-1">{enemyRES[level]}<br /><strong>{getMaxRESRating(enemyRES[level])}</strong></td>
-                <td className="border p-1">{enemyRange[level] === -1 ? "-" : enemyRange[level]}</td>
-                <td className="border p-1">{enemyWeight[level]}</td>
-              </tr>
-              <tr className="bg-card">
-                <th className="border p-1">Movement Speed</th>
-                <th className="border p-1">Attack Interval</th>
-                <th className="border p-1">Effect Resistance</th>
-                <th className="border p-1">Elemental Resistance</th>
-                <th className="border p-1">Taunt Level</th>
-                <th className="border p-1">Life Point Penalty</th>
-              </tr>
-              <tr>
-                <td className="border p-1">{enemySpeed[level]}<br /><strong>{getMoveSpeedRating(enemySpeed[level])}</strong></td>
-                <td className="border p-1">{enemyATKSpeed[level]}<br /><strong>{getAttackSpeedRating(enemyATKSpeed[level])}</strong></td>
-                <td className="border p-1">{enemyEffectRES[level]}<br /><strong>E</strong></td>
-                <td className="border p-1">{enemyElementalRES[level]}<br /><strong>E</strong></td>
-                <td className="border p-1">{enemyTauntLevel[level]}</td>
-                <td className={`border p-1 ${enemyLifePointPenalty[level] > 0 ? 'text-destructive' : 'text-green-500'}`}>{enemyLifePointPenalty[level]}</td>
-              </tr>
-              <tr>
-                <th className="border p-1 bg-card">Resistances</th>
-                <td className="border p-1" colSpan={5}>{(() => {
-                  const attributes = enemyStats[0].enemyData.attributes;
-                  const active = ENEMY_RESISTANCES
-                    .filter(({ key }) => attributes[key]?.m_value)
-                    .map(({ label }) => label);
-                  return active.length > 0 ? active.join(", ") : "-";
-                })()}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse bg-muted text-center">
+              <colgroup>
+                <col className="w-1/6" />
+                <col className="w-1/6" />
+                <col className="w-1/6" />
+                <col className="w-1/6" />
+                <col className="w-1/6" />
+                <col className="w-1/6" />
+              </colgroup>
+              <tbody>
+                <tr className="bg-card">
+                  <th className="border p-1" colSpan={2}>Name</th>
+                  <th className="border p-1" colSpan={2}>Level</th>
+                  <th className="border p-1" colSpan={2}>Type</th>
+                </tr>
+                <tr>
+                  <td className="border p-1" colSpan={2}>{enemyName[level]}</td>
+                  <td className="border p-1" colSpan={2}>{getEnemyLevelType(enemyLevelType[level])}</td>
+                  <td className="border p-1" colSpan={2}>{(() => {
+                    if (Array.isArray(enemyTags[level]) && enemyTags[level].length > 0) {
+                      const enemyTag = enemyTags[level].map((tag: string) => getEnemyTag(tag));
+                      return enemyTag.length > 0 ? enemyTag.join(", ") : "-";
+                    }
+                    return "-";
+                  })()}</td>
+                </tr>
+                <tr className="bg-card"><th className="border p-1" colSpan={6}>Description</th></tr>
+                <tr><td className="border p-1" colSpan={6}><span dangerouslySetInnerHTML={{ __html: parseRichText(enemyDescription[level]) }} /></td></tr>
+                <tr>
+                  <th className="border p-1 bg-card">Attack Pattern</th>
+                  <td className="border p-1">{getEnemyAttackType(enemyAttackType[level])}</td>
+                  <th className="border p-1 bg-card">Location</th>
+                  <td className="border p-1">{getEnemyMotionType(enemyMotionType[level])}</td>
+                  <th className="border p-1 bg-card">HP Recovery</th>
+                  <td className="border p-1">{enemyHPRecovery[level]}</td>
+                </tr>
+                <tr className="bg-card">
+                  <th className="border p-1">HP</th>
+                  <th className="border p-1">ATK</th>
+                  <th className="border p-1">DEF</th>
+                  <th className="border p-1">RES</th>
+                  <th className="border p-1">Attack Range</th>
+                  <th className="border p-1">Weight</th>
+                </tr>
+                <tr>
+                  <td className="border p-1">{enemyMaxHP[level]}<br /><strong>{getMaxHPRating(enemyMaxHP[level])}</strong></td>
+                  <td className="border p-1">{enemyATK[level]}<br /><strong>{getMaxATKRating(enemyATK[level])}</strong></td>
+                  <td className="border p-1">{enemyDEF[level]}<br /><strong>{getMaxDEFRating(enemyDEF[level])}</strong></td>
+                  <td className="border p-1">{enemyRES[level]}<br /><strong>{getMaxRESRating(enemyRES[level])}</strong></td>
+                  <td className="border p-1">{enemyRange[level] === -1 ? "-" : enemyRange[level]}</td>
+                  <td className="border p-1">{enemyWeight[level]}</td>
+                </tr>
+                <tr className="bg-card">
+                  <th className="border p-1">Movement Speed</th>
+                  <th className="border p-1">Attack Interval</th>
+                  <th className="border p-1">Effect Resistance</th>
+                  <th className="border p-1">Elemental Resistance</th>
+                  <th className="border p-1">Taunt Level</th>
+                  <th className="border p-1">Life Point Penalty</th>
+                </tr>
+                <tr>
+                  <td className="border p-1">{enemySpeed[level]}<br /><strong>{getMoveSpeedRating(enemySpeed[level])}</strong></td>
+                  <td className="border p-1">{enemyATKSpeed[level]}<br /><strong>{getAttackSpeedRating(enemyATKSpeed[level])}</strong></td>
+                  <td className="border p-1">{enemyEffectRES[level]}<br /><strong>E</strong></td>
+                  <td className="border p-1">{enemyElementalRES[level]}<br /><strong>E</strong></td>
+                  <td className="border p-1">{enemyTauntLevel[level]}</td>
+                  <td className={`border p-1 ${enemyLifePointPenalty[level] > 0 ? 'text-destructive' : 'text-green-500'}`}>{enemyLifePointPenalty[level]}</td>
+                </tr>
+                <tr>
+                  <th className="border p-1 bg-card">Resistances</th>
+                  <td className="border p-1" colSpan={5}>{(() => {
+                    const attributes = enemyStats[0].enemyData.attributes;
+                    const active = ENEMY_RESISTANCES
+                      .filter(({ key }) => attributes[key]?.m_value)
+                      .map(({ label }) => label);
+                    return active.length > 0 ? active.join(", ") : "-";
+                  })()}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       ))}
     </>

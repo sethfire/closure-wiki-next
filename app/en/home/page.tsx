@@ -64,8 +64,10 @@ export default function Page() {
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold mb-2">Todo stuff</h2>
+        <h2 className="text-lg font-semibold mb-2">Todo stuff (in no particular order)</h2>
         <ul className="list-disc pl-5">
+          <li>Operator base skills</li>
+          <li>Operator modules</li>
           <li>Search functionality</li>
           <li>Sorting and filtering on lists</li>
           <li>Table of contents on entry pages</li>

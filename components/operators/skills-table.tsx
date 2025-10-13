@@ -130,6 +130,7 @@ export default function SkillsTable({ skills, charSkills, allSkillLvlup, items }
                                       height="48"
                                       className="w-full h-full object-contain"
                                       loading="lazy"
+                                      decoding="async"
                                     />
                                     <div className="absolute bottom-0 right-0 bg-black/75 text-white text-xs px-1 rounded">
                                       x{cost.count}
@@ -155,6 +156,7 @@ export default function SkillsTable({ skills, charSkills, allSkillLvlup, items }
                                       height="48"
                                       className="w-full h-full object-contain"
                                       loading="lazy"
+                                      decoding="async"
                                     />
                                     <div className="absolute bottom-0 right-0 bg-black/75 text-white text-xs px-1 rounded">
                                       x{cost.count}

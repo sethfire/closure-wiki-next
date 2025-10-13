@@ -1,4 +1,5 @@
 import Breadcrumbs from "@/components/ui/dynamic-breadcrumb";
+import type { Metadata, ResolvingMetadata } from "next";
 import { Separator } from "@/components/ui/separator";
 import { getCharRarity, getCharRarityColor } from "@/lib/char-utils";
 import { getOperators } from "@/lib/fetch-utils";

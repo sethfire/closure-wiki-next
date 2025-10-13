@@ -1,3 +1,36 @@
+import { Metadata, ResolvingMetadata } from "next/types";
+
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string }> },
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const title = "Closure Wiki";
+  const description = "Welcome to Closure's Wiki, Doctor!\n\nclosure.wiki is an unofficial resource archive for Arknights. This is still a work in progress, so some pages may be incomplete.";
+  const image = "https://static.closure.wiki/v1/icon.png";
+
+  const siteName = "Closure Wiki";
+  const url = `https://closure.wiki/en/operators`;
+
+  return {
+    title: title,
+    description: description,
+    openGraph: {
+      title: title,
+      description: description,
+      siteName: siteName,
+      url: url,
+      images: [{ url: image }]
+    },
+    twitter: {
+      title: title,
+      description: description,
+      card: "summary",
+      images: image,
+    },
+  }
+}
+
 export default function Page() {
   return (
     <div className="flex flex-1 flex-col gap-4 w-full px-4 md:px-0">

@@ -15,6 +15,7 @@ import CVTable from "@/components/operators/cv-table";
 import OperatorFile from "@/components/operators/operator-file";
 import OperatorGallery from "@/components/operators/operator-gallery";
 import Breadcrumbs from "@/components/ui/dynamic-breadcrumb";
+import MaterialsTable from "@/components/operators/materials-table";
 
 export const revalidate = 2419200;
 export const dynamicParams = true;
@@ -134,6 +135,24 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <SkillsTable skills={data.char.skills} charSkills={data.charSkills} allSkillLvlup={data.char.allSkillLvlup} items={items} />
         </section>
       )}
+
+      <section>
+        <h2 className="text-xl font-semibold mb-2">Promotion Cost</h2>
+        <Separator className="mb-4" />
+        <MaterialsTable phases={data.char.phases} items={items} />
+      </section>
+
+      <section>
+        <h2 className="text-xl font-semibold mb-2">Base Skills</h2>
+        <Separator className="mb-4" />
+        <div className="text-muted-foreground italic">Not yet implemented</div>
+      </section>
+
+      <section>
+        <h2 className="text-xl font-semibold mb-2">Modules</h2>
+        <Separator className="mb-4" />
+        <div className="text-muted-foreground italic">Not yet implemented</div>
+      </section>
 
       {data.charProfile && data.charProfile.storyTextAudio && data.charProfile.storyTextAudio.length > 0 && (
         <section>

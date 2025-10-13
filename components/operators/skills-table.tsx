@@ -13,7 +13,7 @@ export default function SkillsTable({ skills, charSkills, allSkillLvlup, items }
           return (
             <div key={skill.skillId}>
               <div className="overflow-x-auto">
-                <table className="w-full border-collapse bg-muted text-sm mb-4">
+                <table className="w-full border-collapse bg-muted text-sm">
                   <colgroup>
                     <col style={{ width: "50px" }} />
                     <col />
@@ -97,7 +97,7 @@ export default function SkillsTable({ skills, charSkills, allSkillLvlup, items }
                 <table className="w-full border-collapse bg-muted text-sm">
                   <thead className="bg-gray-200 dark:bg-card">
                     <tr>
-                      <th colSpan={allSkillLvlup.length + skill.levelUpCostCond.length} className="p-1">
+                      <th colSpan={allSkillLvlup.length + skill.levelUpCostCond.length} className="p-2">
                         Skill Upgrade Cost
                       </th>
                     </tr>
@@ -133,7 +133,7 @@ export default function SkillsTable({ skills, charSkills, allSkillLvlup, items }
                                       decoding="async"
                                     />
                                     <div className="absolute bottom-0 right-0 bg-black/75 text-white text-xs px-1 rounded">
-                                      x{cost.count}
+                                      {cost.count}
                                     </div>
                                   </div>
                                 </div>
@@ -159,7 +159,7 @@ export default function SkillsTable({ skills, charSkills, allSkillLvlup, items }
                                       decoding="async"
                                     />
                                     <div className="absolute bottom-0 right-0 bg-black/75 text-white text-xs px-1 rounded">
-                                      x{cost.count}
+                                      {cost.count}
                                     </div>
                                   </div>
                                 </div>

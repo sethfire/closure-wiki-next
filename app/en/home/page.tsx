@@ -44,6 +44,10 @@ export default function Page() {
             https://discord.gg/rihq
           </a>
         )</p>
+        <br/>
+        <p>Github Repository: <a href="https://github.com/sethfire/closure-wiki-next" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+            https://github.com/sethfire/closure-wiki-next
+          </a></p>
       </div>
       
       {/* <div className="flex justify-center mb-8">
@@ -52,6 +56,13 @@ export default function Page() {
           className="max-w-md md:max-w-xl w-full h-auto"
         />
       </div> */}
+      <div>
+        <h2 className="text-lg font-semibold mb-2">Changelog</h2>
+        <ul className="list-disc pl-5">
+          <li>2025/10/13 - Added promotion and skill material costs</li>
+        </ul> 
+      </div>
+
       <div>
         <h2 className="text-lg font-semibold mb-2">Todo stuff</h2>
         <ul className="list-disc pl-5">
@@ -62,7 +73,7 @@ export default function Page() {
         </ul> 
       </div>
 
-      <div>
+      {/* <div>
         <h2 className="text-lg font-semibold mb-2">Navigation</h2>
         <ul className="list-disc pl-5">
           <li><a href="/en/operators" className="text-blue-600 hover:underline">Operators</a></li>
@@ -72,7 +83,7 @@ export default function Page() {
           <li><a href="/en/gallery/images" className="text-blue-600 hover:underline">Story Image Gallery</a></li>
           <li><a href="/en/gallery/backgrounds" className="text-blue-600 hover:underline">Story BG Gallery</a></li>
         </ul> 
-      </div>
+      </div> */}
     </div>
   )
 }

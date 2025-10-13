@@ -39,14 +39,14 @@ export default function OverviewTable({ character }: { character: any }) {
           <th className="bg-gray-200 dark:bg-card p-1 text-center">Class</th>
           <td className="border-t px-2 py-1 text-center">
             <span className="flex items-center justify-center gap-2">
-              <img src={getClassIcon(character.profession)} className="w-auto h-6" />
+              {/* <img src={getClassIcon(character.profession)} className="w-auto h-6" /> */}
               {getCharClass(character.profession)}
             </span>
           </td>
           <th className="bg-gray-200 dark:bg-card p-1 text-center">Subbranch</th>
           <td className="border-t px-2 py-1 text-center">
             <span className="flex items-center justify-center gap-2">
-              <img src={getBranchIcon(character.subProfessionId)} className="w-auto h-6" />
+              {/* <img src={getBranchIcon(character.subProfessionId)} className="w-auto h-6" /> */}
               {getCharBranch(character.subProfessionId)}
             </span>
           </td>

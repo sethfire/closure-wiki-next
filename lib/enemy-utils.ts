@@ -61,11 +61,11 @@ export function getEnemyTag(value: string): string {
 }
 
 export const ENEMY_RESISTANCES = [
-  { key: "stunImmune", label: "Stun" },
   { key: "silenceImmune", label: "Silence" },
-  { key: "sleepImmune", label: "Sleep" },
+  { key: "stunImmune", label: "Stun" },
   { key: "frozenImmune", label: "Frozen" },
   { key: "levitateImmune", label: "Levitate" },
+  { key: "sleepImmune", label: "Sleep" },
   { key: "disarmedCombatImmune", label: "Frighten" },
   { key: "fearedImmune", label: "Fear" },
   { key: "palsyImmune", label: "Paralysis" },

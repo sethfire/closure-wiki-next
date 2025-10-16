@@ -185,15 +185,36 @@ export default function StatsTable({ enemyStats }: { enemyStats: any[] }) {
                   <td className="border p-1">{enemyTauntLevel[level]}</td>
                   <td className={`border p-1 ${enemyLifePointPenalty[level] > 0 ? 'text-destructive' : 'text-green-500'}`}>{enemyLifePointPenalty[level]}</td>
                 </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse bg-muted text-center">
+              <tbody>
+                <tr className="bg-card">
+                  <th className="border border-t-0 p-1" colSpan={ENEMY_RESISTANCES.length}>Resistances</th>
+                </tr>
+                <tr className="bg-card">
+                  {ENEMY_RESISTANCES.map(({ label }) => (
+                    <th key={label} className="border p-1 whitespace-nowrap">{label}</th>
+                  ))}
+                </tr>
                 <tr>
-                  <th className="border p-1 bg-card">Resistances</th>
-                  <td className="border p-1" colSpan={5}>{(() => {
+                  {ENEMY_RESISTANCES.map(({ key, label }) => {
                     const attributes = enemyStats[0].enemyData.attributes;
-                    const active = ENEMY_RESISTANCES
-                      .filter(({ key }) => attributes[key]?.m_value)
-                      .map(({ label }) => label);
-                    return active.length > 0 ? active.join(", ") : "-";
-                  })()}</td>
+                    const isImmune = attributes[key]?.m_value;
+                    return (
+                      <td 
+                        key={label} 
+                        className={`border p-1 whitespace-nowrap ${
+                          isImmune ? 'text-destructive' : 'text-green-500'
+                        }`}
+                      >
+                        {isImmune ? 'Immune' : 'Vulnerable'}
+                      </td>
+                    );
+                  })}
                 </tr>
               </tbody>
             </table>

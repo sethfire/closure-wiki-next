@@ -143,7 +143,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           {data.meta.isUnreleased === false && (
             <Alert className="mb-4">
               <AlertCircleIcon />
-              <AlertTitle>Note: A mismatch between the CN and EN data format may cause resistance indicators for Stun, Paralysis, and Lure to display inaccurately for certain EN enemies. This will be fixed in the near future (CN enemies are not affected)</AlertTitle>
+              <AlertTitle>Note: A mismatch between CN and EN may cause some resistance indicators for certain enemies to display incorrectly. This will be fixed in the near future (CN enemies should not be affected)</AlertTitle>
             </Alert>
           )}
           <StatsTable enemyStats={data.enemyStats} />

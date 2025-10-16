@@ -9,6 +9,8 @@ import Breadcrumbs from "@/components/ui/dynamic-breadcrumb";
 import { getEnemyIcon } from "@/lib/image-utils";
 import CodeBlock from "@/components/code-block";
 import UnreleasedNotice from "@/components/operators/unreleased-notice";
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import { AlertCircleIcon } from "lucide-react";
 
 export const revalidate = 2419200;
 export const dynamicParams = true;
@@ -138,9 +140,13 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <section>
           <h2 className="text-xl font-semibold mb-2">Attributes</h2>
           <Separator className="mb-4" />
-          <div className="overflow-x-auto">
-            <StatsTable enemyStats={data.enemyStats} />
-          </div>
+          {data.meta.isUnreleased === false && (
+            <Alert className="mb-4">
+              <AlertCircleIcon />
+              <AlertTitle>Note: A mismatch between the CN and EN data format may cause resistance indicators for Stun, Paralysis, and Lure to display inaccurately for certain EN enemies. This will be fixed in the near future (CN enemies are not affected)</AlertTitle>
+            </Alert>
+          )}
+          <StatsTable enemyStats={data.enemyStats} />
         </section>
       )}
 

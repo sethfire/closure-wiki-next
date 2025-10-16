@@ -64,12 +64,12 @@ export const ENEMY_RESISTANCES = [
   { key: "stunImmune", label: "Stun" },
   { key: "silenceImmune", label: "Silence" },
   { key: "sleepImmune", label: "Sleep" },
-  { key: "frozenImmune", label: "Freeze" },
+  { key: "frozenImmune", label: "Frozen" },
   { key: "levitateImmune", label: "Levitate" },
-  { key: "disarmedCombatImmune", label: "Disarm" },
+  { key: "disarmedCombatImmune", label: "Frighten" },
   { key: "fearedImmune", label: "Fear" },
   { key: "palsyImmune", label: "Paralysis" },
-  { key: "attractImmune", label: "Attract" },
+  { key: "attractImmune", label: "Lure" },
 ];
 
 export function getEnemyStat(enemyStats: any[], field: string, defaultValue: any){

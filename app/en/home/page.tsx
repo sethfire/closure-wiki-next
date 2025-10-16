@@ -60,6 +60,7 @@ export default function Page() {
         <h2 className="text-lg font-semibold mb-2">Changelog</h2>
         <ul className="list-disc pl-5">
           <li>2025/10/13 - Added promotion and skill material costs</li>
+          <li>2025/10/16 - Updated enemy resistance terms to use official localization</li>
         </ul> 
       </div>
 

@@ -188,37 +188,38 @@ export default function StatsTable({ enemyStats }: { enemyStats: any[] }) {
               </tbody>
             </table>
           </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse bg-muted text-center">
-              <tbody>
-                <tr className="bg-card">
-                  <th className="border border-t-0 p-1" colSpan={ENEMY_RESISTANCES.length}>Resistances</th>
-                </tr>
-                <tr className="bg-card">
-                  {ENEMY_RESISTANCES.map(({ label }) => (
-                    <th key={label} className="border p-1 whitespace-nowrap">{label}</th>
-                  ))}
-                </tr>
-                <tr>
-                  {ENEMY_RESISTANCES.map(({ key, label }) => {
-                    const attributes = enemyStats[0].enemyData.attributes;
-                    const isImmune = attributes[key]?.m_value;
-                    return (
-                      <td 
-                        key={label} 
-                        className={`border p-1 whitespace-nowrap ${
-                          isImmune ? 'text-destructive' : 'text-green-500'
-                        }`}
-                      >
-                        {isImmune ? 'Immune' : 'Vulnerable'}
-                      </td>
-                    );
-                  })}
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          {level === 0 && (
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse bg-muted text-center">
+                <tbody>
+                  <tr className="bg-card">
+                    <th className="border border-t-0 p-1" colSpan={ENEMY_RESISTANCES.length}>Resistances</th>
+                  </tr>
+                  <tr className="bg-card">
+                    {ENEMY_RESISTANCES.map(({ label }) => (
+                      <th key={label} className="border p-1 whitespace-nowrap">{label}</th>
+                    ))}
+                  </tr>
+                  <tr>
+                    {ENEMY_RESISTANCES.map(({ key, label }) => {
+                      const attributes = enemyStats[0].enemyData.attributes;
+                      const isImmune = attributes[key]?.m_value;
+                      return (
+                        <td 
+                          key={label} 
+                          className={`border p-1 whitespace-nowrap ${
+                            isImmune ? 'text-destructive' : 'text-green-500'
+                          }`}
+                        >
+                          {isImmune ? 'Immune' : 'Vulnerable'}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       ))}
     </>

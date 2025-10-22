@@ -1,7 +1,7 @@
 const API_BASE_URL = "https://api.closure.wiki";
 
-const ALLOWED_LANGS = ["en"];
-const ALLOWED_TYPES = ["operators", "enemies", "operations", "modules", "medals", "items"];
+const ALLOWED_LANGS = ["en", "cn", "jp"];
+const ALLOWED_TYPES = ["operators", "enemies", "operations", "modules", "items"];
 
 async function getDataItems(lang: string, type: string) {
   if (!ALLOWED_LANGS.includes(lang)) return null;
@@ -37,8 +37,8 @@ export const getOperation = async (lang: string, slug: string) => getDataItem(la
 export const getModules = async (lang: string) => getDataItems(lang, "modules");
 export const getModule = async (lang: string, slug: string) => getDataItem(lang, "modules", slug);
 
-export const getMedals = async (lang: string) => getDataItems(lang, "medals");
-export const getMedal = async (lang: string, slug: string) => getDataItem(lang, "medals", slug);
-
 export const getItems = async (lang: string) => getDataItems(lang, "items");
 export const getItem = async (lang: string, slug: string) => getDataItem(lang, "items", slug);
+
+// export const getMedals = async (lang: string) => getDataItems(lang, "medals");
+// export const getMedal = async (lang: string, slug: string) => getDataItem(lang, "medals", slug);

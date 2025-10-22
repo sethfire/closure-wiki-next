@@ -20,6 +20,7 @@ import { getModule, getModules } from "@/lib/fetch-utils";
 import { getModuleImg } from "@/lib/image-utils";
 import CarouselGallery from "@/components/carousel-gallery";
 import CodeBlock from "@/components/code-block";
+import UnreleasedNotice from "@/components/operators/unreleased-notice";
 
 export const revalidate = 2419200;
 export const dynamicParams = true;
@@ -65,9 +66,9 @@ export async function generateMetadata(
   };
 }
 
-export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const data: any = await getModule("en", slug);
+export default async function Page({ params }: { params: Promise<{ lang: string, slug: string }> }) {
+  const { lang, slug } = await params;
+  const data: any = await getModule(lang, slug);
   if (!data) notFound();
 
   return (
@@ -76,9 +77,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <div className="flex justify-between mb-2">
           <Breadcrumb>
             <BreadcrumbList>
-              <BreadcrumbItem><BreadcrumbLink href="/en/home">Home</BreadcrumbLink></BreadcrumbItem>
+              <BreadcrumbItem><BreadcrumbLink href={`/${lang}/home`}>Home</BreadcrumbLink></BreadcrumbItem>
               <BreadcrumbSeparator>/</BreadcrumbSeparator>
-              <BreadcrumbItem><BreadcrumbLink href="/en/modules">Modules</BreadcrumbLink></BreadcrumbItem>
+              <BreadcrumbItem><BreadcrumbLink href={`/${lang}/modules`}>Modules</BreadcrumbLink></BreadcrumbItem>
               <BreadcrumbSeparator>/</BreadcrumbSeparator>
               <BreadcrumbItem><BreadcrumbPage>{data.module.uniEquipName}</BreadcrumbPage></BreadcrumbItem>
             </BreadcrumbList>
@@ -95,12 +96,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <span className="text-muted-foreground">Operator Module</span>
         </div>
         <Separator className="mb-4" />
-        {data.meta.isUnreleased && (
-          <Alert className="mb-4">
-            <AlertCircleIcon />
-            <AlertTitle>This module is not yet available on the EN server of Arknights.</AlertTitle>
-          </Alert>
-        )}
+        {data.meta.isUnreleased && <UnreleasedNotice contentType="module" />}
         {/* <div className="flex flex-col md:flex-row gap-4 items-start">
           <img src={getModuleImg(data.module.uniEquipIcon)}
             className="w-[180px] h-[180px] md:w-32 md:h-32 object-contain" />

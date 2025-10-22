@@ -1,46 +1,46 @@
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
-import { getModules } from "@/lib/fetch-utils";
-import { getModuleImgThumbnail } from "@/lib/image-utils";
+import { getOperations } from "@/lib/fetch-utils";
+import { getMapPreviewThumbnail } from "@/lib/image-utils";
+import { notFound } from "next/navigation";
 
 export const revalidate = 86400;
 
-export default async function Page() {
-  const data: any = await getModules("en");
+export default async function Page({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
+  const data: any = await getOperations(lang);
+  if (!data) notFound();
 
-  const modules = data
-    .filter((module: any) => module.type === "ADVANCED")
-    .sort((a: any, b: any) => {
-      if (a.isUnreleased !== b.isUnreleased) return b.isUnreleased ? 1 : -1;
-      return b.getTime - a.getTime;
-    });
+  const stages = data.stages.sort((a: any, b: any) => {
+    if (a.isUnreleased !== b.isUnreleased) return b.isUnreleased ? 1 : -1;
+  });
 
   return (
     <div className="flex flex-1 flex-col gap-4 w-full px-4 md:px-0">
       <div>
         <Breadcrumb className="mb-2">
           <BreadcrumbList>
-            <BreadcrumbItem><BreadcrumbLink href="/en/home">Home</BreadcrumbLink></BreadcrumbItem>
+            <BreadcrumbItem><BreadcrumbLink href={`/${lang}/home`}>Home</BreadcrumbLink></BreadcrumbItem>
             <BreadcrumbSeparator>/</BreadcrumbSeparator>
-            <BreadcrumbItem><BreadcrumbPage>Modules</BreadcrumbPage></BreadcrumbItem>
+            <BreadcrumbItem><BreadcrumbPage>Operations</BreadcrumbPage></BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <h1 className="mb-2 text-2xl font-semibold">Modules</h1>
+        <h1 className="mb-2 text-2xl font-semibold">Operations</h1>
         <div className="text-sm">
           <span>
             <span className="text-muted-foreground">Showing </span>
-            <span>{modules.length}</span>
-            <span className="text-muted-foreground"> Modules</span>
+            <span>{stages.length}</span>
+            <span className="text-muted-foreground"> Operations</span>
           </span>
         </div>
       </div>
       <Separator />
       <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-        {modules.map((module: any) => (
-          <a href={`/en/modules/${module.slug}`} key={module.slug}>
-            <div className="group relative aspect-square rounded bg-muted dark:bg-card overflow-hidden">
+        {stages.map((stage: any) => (
+          <a href={`/${lang}/operations/${stage.slug}`} key={stage.slug}>
+            <div className="group relative aspect-square rounded overflow-hidden">
               <img
-                src={getModuleImgThumbnail(module.slug)}
+                src={getMapPreviewThumbnail(stage.stageId)}
                 className="w-full h-full object-contain transition-transform duration-150 group-hover:scale-105"
                 loading="lazy"
                 decoding="async"
@@ -49,8 +49,8 @@ export default async function Page() {
               <div className="absolute bottom-0 left-0 right-0 text-white px-1 py-2 text-center font-semibold text-sm" style={{ 
                   textShadow: '-1px 0 0 #000,1px 0 0 #000,0 -1px 0 #000,0 1px 0 #000,-1px -1px 0 #000,1px 1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000'
                 }}>
-                {module.isUnreleased && <span className="text-yellow-300">[CN] </span>}
-                {module.typeName1}-{module.typeName2}: {module.name}
+                {stage.isUnreleased && <span className="text-yellow-300">[CN] </span>}
+                {stage.code}: {stage.name}
               </div>
             </div>
           </a>

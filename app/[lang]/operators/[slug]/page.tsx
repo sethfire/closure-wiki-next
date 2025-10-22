@@ -61,12 +61,12 @@ export async function generateMetadata(
   };
 }
 
-export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const data: any = await getOperator("en", slug);
+export default async function Page({ params }: { params: Promise<{ lang: string, slug: string }> }) {
+  const { lang, slug } = await params;
+  const data: any = await getOperator(lang, slug);
   if (!data) notFound();
 
-  const items: any = await getItems("en");
+  const items: any = await getItems(lang);
 
   return (
     <div className="flex flex-1 flex-col gap-8 w-full px-4 md:px-0 mb-32">
@@ -145,13 +145,13 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       <section>
         <h2 className="text-xl font-semibold mb-2">Base Skills</h2>
         <Separator className="mb-4" />
-        <div className="text-muted-foreground italic">Not yet implemented</div>
+        <div className="text-muted-foreground italic">TBD</div>
       </section>
 
       <section>
         <h2 className="text-xl font-semibold mb-2">Modules</h2>
         <Separator className="mb-4" />
-        <div className="text-muted-foreground italic">Not yet implemented</div>
+        <div className="text-muted-foreground italic">TBD</div>
       </section>
 
       {data.charProfile && data.charProfile.storyTextAudio && data.charProfile.storyTextAudio.length > 0 && (

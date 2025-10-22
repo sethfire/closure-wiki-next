@@ -23,11 +23,11 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata(
-  { params }: { params: Promise<{ slug: string }> },
+  { params }: { params: Promise<{ lang: string, slug: string }> },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const { slug } = await params;
-  const data: any = await getEnemy("en", slug);
+  const { lang, slug } = await params;
+  const data: any = await getEnemy(lang, slug);
   if (!data) notFound();
 
   const title = data.enemy.name;
@@ -35,7 +35,7 @@ export async function generateMetadata(
   const image = getEnemyIcon(data.enemy.enemyId);
   
   const siteName = "Closure Wiki";
-  const url = `https://closure.wiki/en/enemies/${slug}`;
+  const url = `https://closure.wiki/${lang}/enemies/${slug}`;
 
   return {
     title: title,
@@ -56,9 +56,9 @@ export async function generateMetadata(
   }
 }
 
-export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const data: any = await getEnemy("en", slug);
+export default async function Page({ params }: { params: Promise<{ lang: string, slug: string }> }) {
+  const { lang, slug } = await params;
+  const data: any = await getEnemy(lang, slug);
   if (!data) notFound();
 
   return (
@@ -66,11 +66,10 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       <section>
         <div className="flex justify-between mb-2">
           <Breadcrumbs items={[
-            { label: "Home", href: "/en/home" },
-            { label: "Enemies", href: "/en/enemies" },
+            { label: "Home", href: `/${lang}/home` },
+            { label: "Enemies", href: `/${lang}/enemies` },
             { label: data.enemy.name },
           ]} />
-          <a href={`/en/enemies/${slug}/export`} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Export</a>
         </div>
         <div className="flex justify-between mb-2">
           <h1 className="text-2xl font-semibold">{data.enemy.name}</h1>
@@ -157,7 +156,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1 list-disc pl-5">
             {data.enemyAppearances.map((stage: any, index: number) =>
               <li key={index} className="list-disc list-item items-center gap-2 mb-1"> 
-                <a href={`/en/operations/${stage.stageId}`} className="hover:underline text-blue-600">{stage.code}: {stage.name}</a> 
+                <a href={`/${lang}/operations/${stage.stageId}`} className="hover:underline text-blue-600">{stage.code}: {stage.name}</a> 
               </li> 
             )}
           </ul>

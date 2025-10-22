@@ -1,14 +1,16 @@
 import Breadcrumbs from "@/components/ui/dynamic-breadcrumb";
-import type { Metadata, ResolvingMetadata } from "next";
 import { Separator } from "@/components/ui/separator";
 import { getCharRarity, getCharRarityColor } from "@/lib/char-utils";
 import { getOperators } from "@/lib/fetch-utils";
 import { getBranchIcon, getCharPortraitThumbnail, getClassIcon } from "@/lib/image-utils";
+import { notFound } from "next/navigation";
 
 export const revalidate = 86400;
 
-export default async function Page() {
-  const data: any = await getOperators("en");
+export default async function Page({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
+  const data: any = await getOperators(lang);
+  if (!data) notFound();
 
   const sortOrderResponse: any = await fetch("https://api.closure.wiki/v2/en/operators/order");
   const sortOrderMap = await sortOrderResponse.json();
@@ -26,7 +28,7 @@ export default async function Page() {
       <div>
         <div className="mb-2">
           <Breadcrumbs items={[
-            { label: "Home", href: "/en/home" },
+            { label: "Home", href: `/${lang}/home` },
             { label: "Operators" },
           ]} />
         </div>
@@ -40,7 +42,7 @@ export default async function Page() {
 
       <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         {characters.map((char: any) => (
-          <a href={`/en/operators/${char.slug}`} key={char.slug}>
+          <a href={`/${lang}/operators/${char.slug}`} key={char.slug}>
             <div className="group relative aspect-[1/2] bg-muted dark:bg-card rounded overflow-hidden">
               {/* Base image */}
               <img

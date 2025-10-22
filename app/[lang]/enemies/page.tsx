@@ -3,11 +3,14 @@ import { Separator } from "@/components/ui/separator";
 import { getEnemyRarityColor } from "@/lib/enemy-utils";
 import { getEnemies } from "@/lib/fetch-utils";
 import { getEnemyIconThumbnail } from "@/lib/image-utils";
+import { notFound } from "next/navigation";
 
 export const revalidate = 86400;
 
-export default async function Page() {
-  const data: any = await getEnemies("en");
+export default async function Page({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
+  const data: any = await getEnemies(lang);
+  if (!data) notFound();
 
   const enemies = data
     .filter((enemy: any) => !enemy.hideInHandbook)
@@ -20,7 +23,7 @@ export default async function Page() {
       <div>
         <Breadcrumb className="mb-2">
           <BreadcrumbList>
-            <BreadcrumbItem><BreadcrumbLink href="/en/home">Home</BreadcrumbLink></BreadcrumbItem>
+            <BreadcrumbItem><BreadcrumbLink href={`/${lang}/home`}>Home</BreadcrumbLink></BreadcrumbItem>
             <BreadcrumbSeparator>/</BreadcrumbSeparator>
             <BreadcrumbItem><BreadcrumbPage>Enemies</BreadcrumbPage></BreadcrumbItem>
           </BreadcrumbList>
@@ -37,7 +40,7 @@ export default async function Page() {
       <Separator />
       <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         {enemies.map((enemy: any) => (
-          <a href={`/en/enemies/${enemy.slug}`} key={enemy.slug}>
+          <a href={`/${lang}/enemies/${enemy.slug}`} key={enemy.slug}>
             <div className="group relative aspect-square rounded overflow-hidden bg-muted dark:bg-transparent">
               <img
                 src={getEnemyIconThumbnail(enemy.slug)}

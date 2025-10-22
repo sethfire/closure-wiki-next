@@ -1,4 +1,6 @@
+
 import { Metadata, ResolvingMetadata } from "next/types";
+import { notFound } from "next/navigation";
 
 
 export async function generateMetadata(
@@ -10,7 +12,7 @@ export async function generateMetadata(
   const image = "https://static.closure.wiki/v1/icon.png";
 
   const siteName = "Closure Wiki";
-  const url = `https://closure.wiki/en/operators`;
+  // const url = `https://closure.wiki/en/operators`;
 
   return {
     title: title,
@@ -19,7 +21,7 @@ export async function generateMetadata(
       title: title,
       description: description,
       siteName: siteName,
-      url: url,
+      // url: url,
       images: [{ url: image }]
     },
     twitter: {
@@ -28,10 +30,14 @@ export async function generateMetadata(
       card: "summary",
       images: image,
     },
-  }
+  };
 }
 
-export default function Page() {
+export default async function Page({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
+  const languages = ["en", "jp", "cn"];
+  if (!languages.includes(lang)) notFound();
+
   return (
     <div className="flex flex-1 flex-col gap-4 w-full px-4 md:px-0">
       <div>
@@ -49,13 +55,6 @@ export default function Page() {
             https://github.com/sethfire/closure-wiki-next
           </a></p>
       </div>
-      
-      {/* <div className="flex justify-center mb-8">
-        <img
-          src="https://static.closure.wiki/v1/banner.png"
-          className="max-w-md md:max-w-xl w-full h-auto"
-        />
-      </div> */}
       <div>
         <h2 className="text-lg font-semibold mb-2">Changelog</h2>
         <ul className="list-disc pl-5">
@@ -63,7 +62,6 @@ export default function Page() {
           <li>2025/10/16 - Updated enemy resistances table</li>
         </ul> 
       </div>
-
       <div>
         <h2 className="text-lg font-semibold mb-2">Todo stuff (in no particular order)</h2>
         <ul className="list-disc pl-5">
@@ -75,18 +73,6 @@ export default function Page() {
           <li>Multiple language support</li>
         </ul> 
       </div>
-
-      {/* <div>
-        <h2 className="text-lg font-semibold mb-2">Navigation</h2>
-        <ul className="list-disc pl-5">
-          <li><a href="/en/operators" className="text-blue-600 hover:underline">Operators</a></li>
-          <li><a href="/en/enemies" className="text-blue-600 hover:underline">Enemies</a></li>
-          <li><a href="/en/operations" className="text-blue-600 hover:underline">Operations</a></li>
-          <li><a href="/en/modules" className="text-blue-600 hover:underline">Modules</a></li>
-          <li><a href="/en/gallery/images" className="text-blue-600 hover:underline">Story Image Gallery</a></li>
-          <li><a href="/en/gallery/backgrounds" className="text-blue-600 hover:underline">Story BG Gallery</a></li>
-        </ul> 
-      </div> */}
     </div>
-  )
+  );
 }

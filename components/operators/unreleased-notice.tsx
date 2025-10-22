@@ -7,8 +7,8 @@ export default function UnreleasedNotice({ contentType }: {contentType?: string}
       <AlertCircleIcon />
       <AlertTitle>
         {contentType
-          ? `This ${contentType} is not yet available on the EN server of Arknights.`
-          : "This content is not yet available on the EN server of Arknights."}
+          ? `This ${contentType} is not yet available on the Global server of Arknights.`
+          : "This content is not yet available on the Global server of Arknights."}
       </AlertTitle>
     </Alert>
   );

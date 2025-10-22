@@ -2,10 +2,15 @@ import CarouselGallery from "@/components/carousel-gallery";
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { storyGroupLabels } from "@/lib/gallery-utils";
+import { notFound } from "next/navigation";
 
 export const revalidate = 86400;
 
-export default async function Page() {
+export default async function Page({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
+  const languages = ["en", "jp", "cn"];
+  if (!languages.includes(lang)) notFound();
+
   const data: any = await fetch("https://api.closure.wiki/v2/en/avg/backgrounds");
   const backgrounds = await data.json();
   

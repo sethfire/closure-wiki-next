@@ -16,6 +16,7 @@ import { getEnemyStat, getEnemyAttribute, getEnemyLevelType } from '@/lib/enemy-
 import { getOperation, getOperations } from '@/lib/fetch-utils'
 import { getEnemyIcon, getMapPreview } from '@/lib/image-utils'
 import CodeBlock from '@/components/code-block'
+import UnreleasedNotice from '@/components/operators/unreleased-notice'
 
 export const revalidate = 2419200;
 export const dynamicParams = true
@@ -63,9 +64,9 @@ export async function generateMetadata(
   }
 }
 
-export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const data: any = await getOperation("en", slug);
+export default async function Page({ params }: { params: Promise<{ lang: string, slug: string }> }) {
+  const { lang, slug } = await params;
+  const data: any = await getOperation(lang, slug);
   if (!data) notFound();
 
   // const enemySortOrder: Record<string, number> = { BOSS: 0, ELITE: 1, NORMAL: 2 };
@@ -93,9 +94,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       <section>
         <Breadcrumb className="mb-2">
           <BreadcrumbList>
-            <BreadcrumbItem><BreadcrumbLink href="/en/home">Home</BreadcrumbLink></BreadcrumbItem>
+            <BreadcrumbItem><BreadcrumbLink href={`/${lang}/home`}>Home</BreadcrumbLink></BreadcrumbItem>
             <BreadcrumbSeparator>/</BreadcrumbSeparator>
-            <BreadcrumbItem><BreadcrumbLink href="/en/operations">Operations</BreadcrumbLink></BreadcrumbItem>
+            <BreadcrumbItem><BreadcrumbLink href={`/${lang}/operations`}>Operations</BreadcrumbLink></BreadcrumbItem>
             <BreadcrumbSeparator>/</BreadcrumbSeparator>
             <BreadcrumbItem><BreadcrumbPage>{data.stage.name}</BreadcrumbPage></BreadcrumbItem>
           </BreadcrumbList>
@@ -107,12 +108,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <span className="text-muted-foreground">{`${operationType} Operation`}</span>
         </div>
         <Separator className="mb-4" />
-        {data.meta.isUnreleased && (
-          <Alert className="mb-4">
-            <AlertCircleIcon />
-            <AlertTitle>This operation is not yet available on the EN server of Arknights.</AlertTitle>
-          </Alert>
-        )}
+        {data.meta.isUnreleased && <UnreleasedNotice contentType="operation" />}
         <div className="w-full aspect-video overflow-hidden">
           <img src={getMapPreview(data.stage.stageId)} className="w-full h-full object-fill" />
         </div>

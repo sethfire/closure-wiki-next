@@ -28,11 +28,11 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata(
-  { params }: { params: Promise<{ slug: string }> },
+  { params }: { params: Promise<{ lang: string, slug: string }> },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const { slug } = await params;
-  const data: any = await getOperator("en", slug);
+  const { lang, slug } = await params;
+  const data: any = await getOperator(lang, slug);
   if (!data) notFound();
 
   const title = data.meta.name;
@@ -40,7 +40,7 @@ export async function generateMetadata(
   const image = getCharAvatar(data.charProfile.charID);
 
   const siteName = "Closure Wiki";
-  const url = `https://closure.wiki/en/operators/${slug}`;
+  const url = `https://closure.wiki/${lang}/operators/${slug}`;
 
   return {
     title: title,

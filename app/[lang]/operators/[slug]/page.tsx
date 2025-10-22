@@ -73,8 +73,8 @@ export default async function Page({ params }: { params: Promise<{ lang: string,
       <section>
         <div className="mb-2">
           <Breadcrumbs items={[
-            { label: "Home", href: "/en/home" },
-            { label: "Operators", href: "/en/operators" },
+            { label: "Home", href: `/${lang}/home` },
+            { label: "Operators", href: `/${lang}/operators` },
             { label: data.meta.name },
           ]} />
         </div>

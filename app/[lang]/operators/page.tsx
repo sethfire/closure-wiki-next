@@ -1,9 +1,8 @@
 import Breadcrumbs from "@/components/ui/dynamic-breadcrumb";
 import { Separator } from "@/components/ui/separator";
-import { getCharRarity, getCharRarityColor } from "@/lib/char-utils";
 import { getOperators } from "@/lib/fetch-utils";
-import { getBranchIcon, getCharPortraitThumbnail, getClassIcon } from "@/lib/image-utils";
 import { notFound } from "next/navigation";
+import OperatorsList from "@/components/operators-list";
 
 export const revalidate = 86400;
 
@@ -15,16 +14,8 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
   const sortOrderResponse: any = await fetch("https://api.closure.wiki/v2/en/operators/order");
   const sortOrderMap = await sortOrderResponse.json();
 
-  const characters = data.slice().sort((a: any, b: any) => {
-    // if (a.isUnreleased !== b.isUnreleased) return b.isUnreleased ? 1 : -1;
-    // if (getCharRarity(b.rarity) !== getCharRarity(a.rarity)) return getCharRarity(b.rarity) - getCharRarity(a.rarity);
-    const aOrder = sortOrderMap[a.id] ?? Number.MAX_SAFE_INTEGER;
-    const bOrder = sortOrderMap[b.id] ?? Number.MAX_SAFE_INTEGER;
-    return bOrder - aOrder;
-  });
-
   return (
-    <div className="flex flex-1 flex-col gap-4 w-full px-4 md:px-0">
+    <div className="flex flex-1 flex-col gap-2 w-full px-4 md:px-0">
       <div>
         <div className="mb-2">
           <Breadcrumbs items={[
@@ -32,72 +23,14 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
             { label: "Operators" },
           ]} />
         </div>
-        <h1 className="mb-2 text-2xl font-semibold">Operators</h1>
-        <div className="text-sm">
-          <span className="text-muted-foreground">Showing </span>{characters.length}<span className="text-muted-foreground"> Operators</span>
-        </div>
+        <h1 className="text-2xl font-semibold">Operators</h1>
       </div>
-
-      <Separator />
-
-      <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-        {characters.map((char: any) => (
-          <a href={`/${lang}/operators/${char.slug}`} key={char.slug}>
-            <div className="group relative aspect-[1/2] bg-muted dark:bg-card rounded overflow-hidden">
-              {/* Base image */}
-              <img
-                src={getCharPortraitThumbnail(`${char.id}_1`)}
-                className="w-full h-full object-contain absolute inset-0 opacity-100 group-hover:opacity-0 transition-opacity duration-500"
-                loading="lazy"
-                decoding="async"
-              />
-
-              {/* Hover image */}
-              <img
-                src={getCharPortraitThumbnail(`${char.id}_2`)}
-                className="w-full h-full object-contain absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                loading="lazy"
-                decoding="async"
-              />
-
-              {/* Class icons */}
-              <div className="absolute left-[4px] top-[4px] h-[24px] w-[24px] p-0.5 rounded bg-black/70">
-                <img src={getClassIcon(char.profession)} className="h-full w-full object-contain" loading="lazy" decoding="async" />
-              </div>
-              <div className="absolute left-[32px] top-[4px] h-[24px] w-[24px] p-0.5 rounded bg-black/70">
-                <img src={getBranchIcon(char.subProfessionId)} className="h-full w-full object-contain" loading="lazy" decoding="async" />
-              </div>
-              
-              {/* Gradient */}
-              <div className="absolute left-0 right-0 bottom-0 h-1/2 bg-gradient-to-t from-[rgba(0,0,0,1)] to-transparent"></div>
-
-              {/* Text */}
-              {/* <div className="absolute bottom-0 left-0 right-0 text-white px-2 py-3 text-left font-semibold text" style={{ 
-                  textShadow: '-1px 0 0 #000,1px 0 0 #000,0 -1px 0 #000,0 1px 0 #000,-1px -1px 0 #000,1px 1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000'
-                }}>
-                {char.isUnreleased && <span className="text-yellow-300">[CN] </span>}
-                {char.name}
-              </div> */}
-
-              <div className="absolute bottom-0 left-0 right-0 p-2 text-left font-semibold text-white">
-                <span style={{
-                  textShadow: '-1px 0 0 #000,1px 0 0 #000,0 -1px 0 #000,0 1px 0 #000,-1px -1px 0 #000,1px 1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000'
-                }}>
-                  {char.isUnreleased && <span className="text-yellow-300">[CN] </span>}
-                  {char.name}
-                </span>
-                <br />
-                <span style={{ color: getCharRarityColor(char.rarity) }}>
-                  {"★".repeat(getCharRarity(char.rarity))}
-                </span>
-              </div>
-              
-              {/* Rarity */}
-              <div className="absolute left-0 right-0 bottom-0 h-[4px]" style={{ backgroundColor: getCharRarityColor(char.rarity) }}></div>
-            </div>
-          </a>
-        ))}
-      </div>
+      
+      <OperatorsList 
+        characters={data}
+        sortOrderMap={sortOrderMap}
+        lang={lang}
+      />
     </div>
   )
 }

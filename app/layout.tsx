@@ -38,7 +38,7 @@ export default function RootLayout({
                 <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-2 px-4 mb-4 bg-background">
                   <SidebarTrigger className="md:hidden" />
                   <div className="ml-auto flex items-center gap-4">
-                    <Input type="search" disabled placeholder="Search (Not currently available)" className="w-64" />
+                    {/* <Input type="search" disabled placeholder="Search (Not currently available)" className="w-64" /> */}
                     <ModeToggle />
                   </div>
                 </header>

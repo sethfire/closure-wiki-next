@@ -11,6 +11,7 @@ import CodeBlock from "@/components/code-block";
 import UnreleasedNotice from "@/components/operators/unreleased-notice";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { AlertCircleIcon } from "lucide-react";
+import EntryTitle from "@/components/entry-title";
 
 export const revalidate = 2419200;
 export const dynamicParams = true;
@@ -71,20 +72,14 @@ export default async function Page({ params }: { params: Promise<{ lang: string,
             { label: data.enemy.name },
           ]} />
         </div>
-        <div className="flex justify-between mb-2">
-          <h1 className="text-2xl font-semibold">{data.enemy.name}</h1>
-        </div>
-        <div className="mb-4 text-sm flex flex-row gap-4">
-          <span className="text-muted-foreground">{getEnemyLevelType(data.enemy.enemyLevel)} Enemy</span>
-        </div>
+        <EntryTitle
+          title={data.enemy.name}
+          caption={`${getEnemyLevelType(data.enemy.enemyLevel)} Enemy`}
+          icon={getEnemyIcon(data.enemy.enemyId)}
+        />
         <Separator className="mb-4" />
-
         {data.meta.isUnreleased && <UnreleasedNotice contentType="enemy" />}
-
         <div className="flex flex-col md:flex-row gap-4 items-start">
-          <img src={getEnemyIcon(data.enemy.enemyId)}
-            className="w-[180px] h-[180px] md:w-32 md:h-32 object-contain" />
-
           <div className="flex flex-1 flex-col gap-2">
             <div className="flex flex-row gap-4 text-sm overflow-x-auto">
               <span>

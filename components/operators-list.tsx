@@ -282,16 +282,10 @@ export default function OperatorList({ characters, sortOrderMap, lang }: {
       <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         {filteredAndSortedCharacters.map((char) => (
           <a href={`/${lang}/operators/${char.slug}`} key={char.slug}>
-            <div className="group relative aspect-[1/2] bg-muted dark:bg-card rounded overflow-hidden">
+            <div className="group relative aspect-[1/2] bg-muted dark:bg-card rounded overflow-hidden hover:opacity-80 transition-opacity">
               <img
                 src={getCharPortraitThumbnail(`${char.id}_1`)}
-                className="w-full h-full object-contain absolute inset-0 opacity-100 group-hover:opacity-0 transition-opacity duration-500"
-                loading="lazy"
-                decoding="async"
-              />
-              <img
-                src={getCharPortraitThumbnail(`${char.id}_2`)}
-                className="w-full h-full object-contain absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                className="w-full h-full object-contain absolute inset-0"
                 loading="lazy"
                 decoding="async"
               />

@@ -5,7 +5,7 @@ import StatsTable from "@/components/operators/stats-table";
 import TalentsTable from "@/components/operators/talent-table";
 import { Separator } from "@/components/ui/separator";
 import UnreleasedNotice from "@/components/operators/unreleased-notice";
-import { getCharClass, getCharRarity } from "@/lib/char-utils";
+import { getCharClass, getCharRarity, getCharRarityColor } from "@/lib/char-utils";
 import { getCharAvatar } from "@/lib/image-utils";
 import { getItems, getOperator, getOperators } from "@/lib/fetch-utils";
 import { notFound } from "next/navigation";
@@ -16,6 +16,7 @@ import OperatorFile from "@/components/operators/operator-file";
 import OperatorGallery from "@/components/operators/operator-gallery";
 import Breadcrumbs from "@/components/ui/dynamic-breadcrumb";
 import MaterialsTable from "@/components/operators/materials-table";
+import EntryTitle from "@/components/entry-title";
 
 export const revalidate = 2419200;
 export const dynamicParams = true;
@@ -78,20 +79,13 @@ export default async function Page({ params }: { params: Promise<{ lang: string,
             { label: data.meta.name },
           ]} />
         </div>
-        <div className="flex justify-between mb-2">
-          <h1 className="text-2xl font-semibold">{data.meta.name}</h1>
-          <div className="text-2xl text-yellow-400">{"★".repeat(getCharRarity(data.char.rarity))}</div>
-        </div>
-        <div className="mb-4 text-sm flex flex-row gap-4">
-          <div className="text-muted-foreground">
-            {getCharRarity(data.char.rarity)}★ {getCharClass(data.char.profession)} Operator
-          </div>
-        </div>
-
+        <EntryTitle
+          title={data.meta.name}
+          caption={`${getCharRarity(data.char.rarity)}★ ${getCharClass(data.char.profession)} Operator`}
+          icon={getCharAvatar(data.charProfile.charID)}
+        />
         <Separator className="mb-4" />
-
         {data.meta.isUnreleased && <UnreleasedNotice contentType="operator" />}
-
         {data.charSkins && Array.isArray(data.charSkins) && data.charSkins.length > 0 && (
           <OperatorGallery charSkins={data.charSkins} />
         )}

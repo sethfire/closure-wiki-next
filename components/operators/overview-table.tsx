@@ -14,9 +14,6 @@ export default function OverviewTable({ character }: { character: any }) {
         </colgroup>
         <tbody>
           <tr>
-            <th className="bg-gray-200 dark:bg-card p-1 text-center" colSpan={4}>Overview</th>
-          </tr>
-          <tr>
             <th className="bg-gray-200 dark:bg-card p-1 text-center">Name</th>
             <td className="px-2 py-1 text-center">{character.name}</td>
             <th className="bg-gray-200 dark:bg-card p-1 text-center">Display No.</th>

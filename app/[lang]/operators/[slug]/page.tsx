@@ -18,6 +18,7 @@ import Breadcrumbs from "@/components/ui/dynamic-breadcrumb";
 import MaterialsTable from "@/components/operators/materials-table";
 import EntryTitle from "@/components/entry-title";
 import BaseSkills from "@/components/operators/base-skills";
+import OperatorModules from "@/components/operators/operator-modules";
 
 export const revalidate = 2419200;
 export const dynamicParams = true;
@@ -146,7 +147,7 @@ export default async function Page({ params }: { params: Promise<{ lang: string,
       <section>
         <h2 className="text-xl font-semibold mb-2">Modules</h2>
         <Separator className="mb-4" />
-        <div className="text-muted-foreground italic">TBD</div>
+        <OperatorModules charModules={data.charModules} moduleMissions={data.moduleMissions} moduleData={data.moduleData} items={items} />
       </section>
 
       {data.handbookInfo && data.handbookInfo.storyTextAudio && data.handbookInfo.storyTextAudio.length > 0 && (
@@ -190,6 +191,10 @@ export default async function Page({ params }: { params: Promise<{ lang: string,
           <CodeBlock code={JSON.stringify(data.charSkins ?? {}, null, 2)} language="json" />
           <h3 className="text-lg font-semibold mb-2 mt-8">building_data.json</h3>
           <CodeBlock code={JSON.stringify({chars: data.baseSkills, buffs: data.baseSkillData}, null, 2)} language="json" />
+          <h3 className="text-lg font-semibold mb-2 mt-8">uniequip_table.json</h3>
+          <CodeBlock code={JSON.stringify({equipDict: data.charModules, missionList: data.moduleMissions}, null, 2)} language="json" />
+          <h3 className="text-lg font-semibold mb-2 mt-8">battle_equip_table.json</h3>
+          <CodeBlock code={JSON.stringify(data.moduleData ?? {}, null, 2)} language="json" />
         </div>
       </section>
     </div>

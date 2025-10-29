@@ -7,7 +7,7 @@ export default function SkillsTable({ skills, charSkills, allSkillLvlup, items }
     return (
       <div className="flex flex-col gap-4">
         {skills.map((skill: any) => {
-          const charSkill = charSkills.find((cs: any) => cs.skillId === skill.skillId);
+          const charSkill = charSkills[skill.skillId];
           if (!charSkill) return null;
 
           return (

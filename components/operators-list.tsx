@@ -29,13 +29,12 @@ type Operator = {
   isUnreleased: boolean;
 };
 
-export default function OperatorList({ characters, sortOrderMap, lang }: {
+export default function OperatorList({ characters, lang }: {
   characters: Operator[];
-  sortOrderMap: Record<string, number>;
   lang: string;
 }) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState("release");
+  const [sortBy, setSortBy] = useState("rarity");
   const [selectedRarities, setSelectedRarities] = useState<number[]>([1, 2, 3, 4, 5, 6]);
   const [selectedClasses, setSelectedClasses] = useState<string[]>([
     "PIONEER", "WARRIOR", "TANK", "SNIPER", "CASTER", "MEDIC", "SUPPORT", "SPECIAL"
@@ -81,12 +80,10 @@ export default function OperatorList({ characters, sortOrderMap, lang }: {
     // Sort
     filtered.sort((a, b) => {
       switch (sortBy) {
-        case "release":
-          const aOrder = sortOrderMap[a.id] ?? Number.MAX_SAFE_INTEGER;
-          const bOrder = sortOrderMap[b.id] ?? Number.MAX_SAFE_INTEGER;
-          return bOrder - aOrder;
         case "rarity":
           return getCharRarity(b.rarity) - getCharRarity(a.rarity);
+        case "release":
+          return 0;
         case "name":
           return a.name.localeCompare(b.name);
         case "class":
@@ -97,7 +94,7 @@ export default function OperatorList({ characters, sortOrderMap, lang }: {
     });
 
     return filtered;
-  }, [characters, searchQuery, selectedRarities, selectedClasses, releaseFilter, sortBy, sortOrderMap]);
+  }, [characters, searchQuery, selectedRarities, selectedClasses, releaseFilter, sortBy]);
 
   return (
     <div className="flex flex-1 flex-col gap-4 w-full">
@@ -133,8 +130,8 @@ export default function OperatorList({ characters, sortOrderMap, lang }: {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuRadioGroup value={sortBy} onValueChange={setSortBy}>
-                <DropdownMenuRadioItem value="release">Release (Newest)</DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="rarity">Rarity (High to Low)</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="release">Release (Newest)</DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="name">Name (A-Z)</DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="class">Class</DropdownMenuRadioItem>
               </DropdownMenuRadioGroup>

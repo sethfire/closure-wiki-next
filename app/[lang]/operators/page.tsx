@@ -10,9 +10,7 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
   const { lang } = await params;
   const data: any = await getOperators(lang);
   if (!data) notFound();
-
-  const sortOrderResponse: any = await fetch("https://api.closure.wiki/v2/en/operators/order");
-  const sortOrderMap = await sortOrderResponse.json();
+  const reversedData = Array.isArray(data) ? [...data].reverse() : data;
 
   return (
     <div className="flex flex-1 flex-col gap-2 w-full px-4 md:px-0">
@@ -27,8 +25,7 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
       </div>
       
       <OperatorsList 
-        characters={data}
-        sortOrderMap={sortOrderMap}
+        characters={reversedData}
         lang={lang}
       />
     </div>

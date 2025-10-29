@@ -17,6 +17,7 @@ import OperatorGallery from "@/components/operators/operator-gallery";
 import Breadcrumbs from "@/components/ui/dynamic-breadcrumb";
 import MaterialsTable from "@/components/operators/materials-table";
 import EntryTitle from "@/components/entry-title";
+import BaseSkills from "@/components/operators/base-skills";
 
 export const revalidate = 2419200;
 export const dynamicParams = true;
@@ -36,9 +37,9 @@ export async function generateMetadata(
   const data: any = await getOperator(lang, slug);
   if (!data) notFound();
 
-  const title = data.meta.name;
-  const description = data.char.itemUsage;
-  const image = getCharAvatar(data.charProfile.charID);
+  const title = data.summary.name;
+  const description = data.summary.desc;
+  const image = getCharAvatar(data.summary.id);
 
   const siteName = "Closure Wiki";
   const url = `https://closure.wiki/${lang}/operators/${slug}`;
@@ -76,17 +77,17 @@ export default async function Page({ params }: { params: Promise<{ lang: string,
           <Breadcrumbs items={[
             { label: "Home", href: `/${lang}/home` },
             { label: "Operators", href: `/${lang}/operators` },
-            { label: data.meta.name },
+            { label: data.summary.name },
           ]} />
         </div>
         <EntryTitle
-          title={data.meta.name}
-          caption={`${getCharRarity(data.char.rarity)}★ ${getCharClass(data.char.profession)} Operator`}
-          icon={getCharAvatar(data.charProfile.charID)}
+          title={data.summary.name}
+          caption={`${getCharRarity(data.character.rarity)}★ ${getCharClass(data.character.profession)} Operator`}
+          icon={getCharAvatar(data.summary.id)}
         />
         <Separator className="mb-4" />
-        {data.meta.isUnreleased && <UnreleasedNotice contentType="operator" />}
-        {data.charSkins && Array.isArray(data.charSkins) && data.charSkins.length > 0 && (
+        {data.summary.isUnreleased && <UnreleasedNotice contentType="operator" />}
+        {data.charSkins && (
           <OperatorGallery charSkins={data.charSkins} />
         )}
       </section>
@@ -94,52 +95,52 @@ export default async function Page({ params }: { params: Promise<{ lang: string,
       <section>
         <h2 className="text-xl font-semibold mb-2">Overview</h2>
         <Separator className="mb-4" />
-        <OverviewTable character={data.char} />
+        <OverviewTable character={data.character} />
         <CVTable charSkins={data.charSkins} voiceLangDict={data.voiceLangDict} />
       </section>
 
-      {data.char.phases && data.char.phases.length > 0 && (
+      {data.character.phases && data.character.phases.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold mb-2">Attributes</h2>
           <Separator className="mb-4" />
-          <StatsTable phases={data.char.phases} favorKeyFrames={data.char.favorKeyFrames} />
+          <StatsTable phases={data.character.phases} favorKeyFrames={data.character.favorKeyFrames} />
         </section>
       )}
 
-      {data.char.talents && data.char.talents.length > 0 && (
+      {data.character.talents && data.character.talents.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold mb-2">Talents</h2>
           <Separator className="mb-4" />
-          <TalentsTable talents={data.char.talents} />
+          <TalentsTable talents={data.character.talents} />
         </section>
       )}
 
-      {data.char.potentialRanks && data.char.potentialRanks.length === 5 && (
+      {data.character.potentialRanks && data.character.potentialRanks.length === 5 && (
         <section>
           <h2 className="text-xl font-semibold mb-2">Potentials</h2>
           <Separator className="mb-4" />
-          <PotentialsTable potentialRanks={data.char.potentialRanks} />
+          <PotentialsTable potentialRanks={data.character.potentialRanks} />
         </section>
       )}
 
-      {data.char.skills && data.char.skills.length > 0 && data.charSkills && data.charSkills.length > 0 && (
+      {data.character.skills && data.character.skills.length > 0 && data.charSkills && (
         <section>
           <h2 className="text-xl font-semibold mb-2">Skills</h2>
           <Separator className="mb-4" />
-          <SkillsTable skills={data.char.skills} charSkills={data.charSkills} allSkillLvlup={data.char.allSkillLvlup} items={items} />
+          <SkillsTable skills={data.character.skills} charSkills={data.charSkills} allSkillLvlup={data.character.allSkillLvlup} items={items} />
         </section>
       )}
 
       <section>
         <h2 className="text-xl font-semibold mb-2">Promotion Cost</h2>
         <Separator className="mb-4" />
-        <MaterialsTable phases={data.char.phases} items={items} />
+        <MaterialsTable phases={data.character.phases} items={items} />
       </section>
 
       <section>
         <h2 className="text-xl font-semibold mb-2">Base Skills</h2>
         <Separator className="mb-4" />
-        <div className="text-muted-foreground italic">TBD</div>
+        <BaseSkills baseSkills={data.baseSkills} baseSkillData={data.baseSkillData} />
       </section>
 
       <section>
@@ -148,22 +149,22 @@ export default async function Page({ params }: { params: Promise<{ lang: string,
         <div className="text-muted-foreground italic">TBD</div>
       </section>
 
-      {data.charProfile && data.charProfile.storyTextAudio && data.charProfile.storyTextAudio.length > 0 && (
+      {data.handbookInfo && data.handbookInfo.storyTextAudio && data.handbookInfo.storyTextAudio.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold mb-2">Operator File</h2>
           <Separator className="mb-4" />
-          <OperatorFile storyTextAudio={data.charProfile.storyTextAudio} />
+          <OperatorFile storyTextAudio={data.handbookInfo.storyTextAudio} />
         </section>
       )}
 
-      {data.charDialog && data.charDialog.length > 0 && (
+      {data.charWords && (
         <section>
           <h2 className="text-xl font-semibold mb-2">Operator Dialogue</h2>
           <Separator className="mb-6" />
           <div className="bg-muted dark:bg-card rounded-lg shadow p-4">
             <ul className="space-y-4">
-              {data.charDialog.map((dialogue: any, idx: number) => (
-                <li className="flex flex-col" key={idx}>
+              {Object.entries(data.charWords).map(([key, dialogue]: [string, any]) => (
+                <li className="flex flex-col" key={key}>
                   <span className="font-semibold">{dialogue.voiceTitle}</span>
                   <span className="text-muted-foreground">{dialogue.voiceText}</span>
                 </li>
@@ -178,17 +179,17 @@ export default async function Page({ params }: { params: Promise<{ lang: string,
         <Separator className="mb-4" />
         <div>
           <h3 className="text-lg font-semibold mb-2">character_table.json</h3>
-          <CodeBlock code={JSON.stringify(data.char ?? {}, null, 2)} language="json" />
+          <CodeBlock code={JSON.stringify(data.character ?? {}, null, 2)} language="json" />
           <h3 className="text-lg font-semibold mb-2 mt-8">handbook_info_table.json</h3>
-          <CodeBlock code={JSON.stringify(data.charProfile ?? {}, null, 2)} language="json" />
+          <CodeBlock code={JSON.stringify(data.handbookInfo ?? {}, null, 2)} language="json" />
           <h3 className="text-lg font-semibold mb-2 mt-8">charword_table.json</h3>
-          <CodeBlock code={JSON.stringify(data.charDialog ?? {}, null, 2)} language="json" />
+          <CodeBlock code={JSON.stringify(data.charWords ?? {}, null, 2)} language="json" />
           <h3 className="text-lg font-semibold mb-2 mt-8">skill_table.json</h3>
           <CodeBlock code={JSON.stringify(data.charSkills ?? {}, null, 2)} language="json" />
-          <h3 className="text-lg font-semibold mb-2 mt-8">uniequip_table.json</h3>
-          <CodeBlock code={JSON.stringify(data.charModules ?? {}, null, 2)} language="json" />
           <h3 className="text-lg font-semibold mb-2 mt-8">skin_table.json</h3>
           <CodeBlock code={JSON.stringify(data.charSkins ?? {}, null, 2)} language="json" />
+          <h3 className="text-lg font-semibold mb-2 mt-8">building_data.json</h3>
+          <CodeBlock code={JSON.stringify({chars: data.baseSkills, buffs: data.baseSkillData}, null, 2)} language="json" />
         </div>
       </section>
     </div>

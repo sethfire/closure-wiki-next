@@ -3,6 +3,8 @@ import { getBranchIcon, getClassIcon } from "@/lib/image-utils";
 import { parseRichText } from "@/lib/parse";
 
 export default function OverviewTable({ character }: { character: any }) {
+  if (!character) return null;
+
   return (
     <div className="overflow-x-auto">
       <table className="w-full border-collapse bg-muted text-sm mb-4">

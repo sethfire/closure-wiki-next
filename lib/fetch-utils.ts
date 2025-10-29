@@ -25,8 +25,28 @@ async function getDataItem(lang: string, type: string, slug: string) {
   return data;
 }
 
-export const getOperators = async (lang: string) => getDataItems(lang, "operators");
-export const getOperator = async (lang: string, slug: string) => getDataItem(lang, "operators", slug);
+export async function getOperators(lang: string) {
+  if (!ALLOWED_LANGS.includes(lang)) return null;
+
+  const response: any = await fetch(`${API_BASE_URL}/v2/${lang}/operators`);
+  if (!response.ok) return null;
+  
+  const data: any = await response.json();
+  return data;
+}
+
+export async function getOperator(lang: string, slug: string) {
+  if (!ALLOWED_LANGS.includes(lang)) return null;
+
+  const response: any = await fetch(`${API_BASE_URL}/v2/${lang}/operators/${slug}`);
+  if (!response.ok) return null;
+
+  const data: any = await response.json();
+  return data;
+}
+
+// export const getOperators = async (lang: string) => getDataItems(lang, "operators");
+// export const getOperator = async (lang: string, slug: string) => getDataItem(lang, "operators", slug);
 
 export const getEnemies = async (lang: string) => getDataItems(lang, "enemies");
 export const getEnemy = async (lang: string, slug: string) => getDataItem(lang, "enemies", slug);

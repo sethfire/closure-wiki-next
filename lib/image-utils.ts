@@ -13,6 +13,11 @@ export function getSkillIcon(skill: string): string {
   return `${ASSET_URL}/${VERSION}/skills/skill_icon_${skill.toLowerCase()}.png`;
 }
 
+export function getBaseSkillIcon(icon: string): string {
+  return `${ASSET_URL}/${VERSION}/baseskills/${icon.toLowerCase()}.png`;
+}
+
+
 export function getFactionLogo(faction: string): string {
   return `${ASSET_URL}/${VERSION}/factions/logo_${faction.toLowerCase()}.png`;
 }

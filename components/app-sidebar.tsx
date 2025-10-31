@@ -14,7 +14,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { Ghost, Home, Image, Map, Medal, Users, WashingMachine, PictureInPicture, Camera } from "lucide-react"
+import { Ghost, Home, Image, Map, Medal, Users, WashingMachine, PictureInPicture, Camera, Shirt } from "lucide-react"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname()
@@ -47,10 +47,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             icon: Map,
           },
           {
-            title: "Modules",
-            url: `/${lang}/modules`,
-            icon: WashingMachine,
+            title: "Outfits",
+            url: `/${lang}/outfits`,
+            icon: Shirt,
           },
+          // {
+          //   title: "Modules",
+          //   url: `/${lang}/modules`,
+          //   icon: WashingMachine,
+          // },
           {
             title: "Story Images",
             url: `/${lang}/gallery/images`,

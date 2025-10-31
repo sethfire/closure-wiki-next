@@ -9,12 +9,9 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import { notFound } from 'next/navigation'
-import { Alert, AlertTitle } from '@/components/ui/alert'
-import { AlertCircleIcon } from 'lucide-react'
 import { parseRichText, stripTags } from '@/lib/parse'
-import { getEnemyStat, getEnemyAttribute, getEnemyLevelType } from '@/lib/enemy-utils'
 import { getOperation, getOperations } from '@/lib/fetch-utils'
-import { getEnemyIcon, getMapPreview } from '@/lib/image-utils'
+import { getMapPreview } from '@/lib/image-utils'
 import CodeBlock from '@/components/code-block'
 import UnreleasedNotice from '@/components/operators/unreleased-notice'
 
@@ -23,7 +20,7 @@ export const dynamicParams = true
 
 export async function generateStaticParams() {
   const data: any = await getOperations("en");
-  return data.stages.slice(0, 3).map((stage: any) => ({
+  return data.slice(0, 3).map((stage: any) => ({
     slug: stage.slug,
   }))
 }
@@ -37,10 +34,8 @@ export async function generateMetadata(
   if (!data) notFound();
 
   const title = `${data.stage.code}: ${data.stage.name}`;
-  const description = (data.stage.description)
-    ? stripTags(data.stage.description.replace(/\\n/g, "\n"))
-    : "";
-  const image = getMapPreview(data.stage.stageId);
+  const description = data.summary.desc
+  const image = data.summary.icon;
 
   const siteName = "Closure Wiki";
   const url = `https://closure.wiki/en/operations/${slug}`;
@@ -108,7 +103,7 @@ export default async function Page({ params }: { params: Promise<{ lang: string,
           <span className="text-muted-foreground">{`${operationType} Operation`}</span>
         </div>
         <Separator className="mb-4" />
-        {data.meta.isUnreleased && <UnreleasedNotice contentType="operation" />}
+        {data.summary.isUnreleased && <UnreleasedNotice contentType="operation" />}
         <div className="w-full aspect-video overflow-hidden">
           <img src={getMapPreview(data.stage.stageId)} className="w-full h-full object-fill" />
         </div>

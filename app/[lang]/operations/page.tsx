@@ -2,6 +2,7 @@ import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbS
 import { Separator } from "@/components/ui/separator";
 import { getOperations } from "@/lib/fetch-utils";
 import { getMapPreviewThumbnail } from "@/lib/image-utils";
+import { getStageType } from "@/lib/stage-utils";
 import { notFound } from "next/navigation";
 
 export const revalidate = 86400;
@@ -11,7 +12,34 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
   const data: any = await getOperations(lang);
   if (!data) notFound();
 
-  const stages = data.stages.sort((a: any, b: any) => {
+  const excludedZoneIds = [
+    "act1multi_zone1",
+    "act2vmulti_zone1",
+    "act2multi_zone1",
+    "act2enemyduel_zone1",
+    // "act1break_zone1",
+    // "act1break_zone2",
+    // "act1break_zone3",
+    // "act1vecb_zone1",
+    // "act1vecb_zone2",
+    // "act1vecb_zone3",
+    "act1bossrush_zone1",
+    "act2bossrush_zone1",
+    "act3bossrush_zone1",
+    "act4bossrush_zone1",
+    "act5bossrush_zone1",
+    // "act1vautochess_zone1"
+    "act1lock_zone1",
+  ];
+
+  const filteredStages = data.filter(
+    (stage: any) => 
+      !excludedZoneIds.includes(stage.zoneId) && 
+      stage.stageType !== "CLIMB_TOWER" &&
+      stage.stageType !== "GUIDE"
+  );
+
+  const stages = filteredStages.sort((a: any, b: any) => {
     if (a.isUnreleased !== b.isUnreleased) return b.isUnreleased ? 1 : -1;
   });
 
@@ -40,17 +68,21 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
           <a href={`/${lang}/operations/${stage.slug}`} key={stage.slug}>
             <div className="group relative aspect-square rounded overflow-hidden">
               <img
-                src={getMapPreviewThumbnail(stage.stageId)}
+                src={getMapPreviewThumbnail(stage.id)}
                 className="w-full h-full object-contain transition-transform duration-150 group-hover:scale-105"
                 loading="lazy"
                 decoding="async"
               />
               <div className="absolute left-0 right-0 bottom-0 h-1/3 bg-gradient-to-t from-[rgba(0,0,0,0.8)] to-transparent"></div>
-              <div className="absolute bottom-0 left-0 right-0 text-white px-1 py-2 text-center font-semibold text-sm" style={{ 
+              <div className="absolute bottom-0 left-0 right-0 p-2 text-left font-semibold text-white text-sm">
+                <span style={{
                   textShadow: '-1px 0 0 #000,1px 0 0 #000,0 -1px 0 #000,0 1px 0 #000,-1px -1px 0 #000,1px 1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000'
                 }}>
-                {stage.isUnreleased && <span className="text-yellow-300">[CN] </span>}
-                {stage.code}: {stage.name}
+                  {stage.isUnreleased && <span className="text-yellow-300">[CN] </span>}
+                  {stage.code}: {stage.name}
+                </span>
+                <br />
+                <span className="text-muted-foreground">{getStageType(stage.stageType)}</span>
               </div>
             </div>
           </a>

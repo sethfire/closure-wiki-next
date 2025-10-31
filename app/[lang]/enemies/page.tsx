@@ -41,10 +41,10 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
       <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         {enemies.map((enemy: any) => (
           <a href={`/${lang}/enemies/${enemy.slug}`} key={enemy.slug}>
-            <div className="group relative aspect-square rounded overflow-hidden bg-muted dark:bg-transparent">
+            <div className="group relative aspect-square rounded overflow-hidden bg-muted dark:bg-transparent hover:opacity-80 transition-opacity">
               <img
                 src={getEnemyIconThumbnail(enemy.slug)}
-                className="w-full h-full object-contain transition-transform duration-150 scale-115 group-hover:scale-120"
+                className="w-full h-full object-contain scale-115"
                 loading="lazy"
                 decoding="async"
               />
@@ -53,7 +53,7 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
                   textShadow: '-1px 0 0 #000,1px 0 0 #000,0 -1px 0 #000,0 1px 0 #000,-1px -1px 0 #000,1px 1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000'
                 }}>
                 {enemy.isUnreleased && <span className="text-yellow-300">[CN] </span>}
-                {enemy.enemyIndex}: {enemy.name}
+                {enemy.name}
               </div>
               <div className="absolute left-0 right-0 bottom-0 h-[4px]" style={{ backgroundColor: getEnemyRarityColor(enemy.enemyLevel) }}></div>
             </div>

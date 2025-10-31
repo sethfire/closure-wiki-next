@@ -31,10 +31,10 @@ export async function generateMetadata(
   const data: any = await getEnemy(lang, slug);
   if (!data) notFound();
 
-  const title = data.enemy.name;
-  const description = data.enemy.description;
-  const image = getEnemyIcon(data.enemy.enemyId);
-  
+  const title = data.summary.name;
+  const description = data.summary.description;
+  const image = data.summary.image;
+
   const siteName = "Closure Wiki";
   const url = `https://closure.wiki/${lang}/enemies/${slug}`;
 
@@ -69,55 +69,56 @@ export default async function Page({ params }: { params: Promise<{ lang: string,
           <Breadcrumbs items={[
             { label: "Home", href: `/${lang}/home` },
             { label: "Enemies", href: `/${lang}/enemies` },
-            { label: data.enemy.name },
+            { label: data.summary.name },
           ]} />
         </div>
         <EntryTitle
-          title={data.enemy.name}
-          caption={`${getEnemyLevelType(data.enemy.enemyLevel)} Enemy`}
-          icon={getEnemyIcon(data.enemy.enemyId)}
+          title={data.summary.name}
+          caption={`${getEnemyLevelType(data.enemyHandbook.enemyLevel)} Enemy`}
+          icon={getEnemyIcon(data.enemyHandbook.enemyId)}
         />
         <Separator className="mb-4" />
-        {data.meta.isUnreleased && <UnreleasedNotice contentType="enemy" />}
+        {data.summary.isUnreleased && <UnreleasedNotice contentType="enemy" />}
+
         <div className="flex flex-col md:flex-row gap-4 items-start">
           <div className="flex flex-1 flex-col gap-2">
             <div className="flex flex-row gap-4 text-sm overflow-x-auto">
               <span>
                 <span className="text-muted-foreground">Code: </span>
-                {data.enemy.enemyIndex}
+                {data.enemyHandbook.enemyIndex}
               </span>
               <span>
                 <span className="text-muted-foreground">Type: </span>
-                {getEnemyLevelType(data.enemy.enemyLevel)}
+                {getEnemyLevelType(data.enemyHandbook.enemyLevel)}
               </span>
-                {data.enemyStats && (
+                {data.enemyDatabase && (
                   <span>
                     <span className="text-muted-foreground">Attack Pattern: </span>
-                    {getEnemyAttackType(data.enemyStats[0].enemyData.applyWay.m_value)}
+                    {getEnemyAttackType(data.enemyDatabase[0].enemyData.applyWay.m_value)}
                   </span>
                 )}
               <span>
                 <span className="text-muted-foreground">Damage: </span>
-                {data.enemy.damageType.map((type: string) => getEnemyDamageType(type)).join("/")}
+                {data.enemyHandbook.damageType.map((type: string) => getEnemyDamageType(type)).join("/")}
               </span>
-                {data.enemyStats && (
+                {data.enemyDatabase && (
                   <span>
                     <span className="text-muted-foreground">Location: </span>
-                    {getEnemyMotionType(data.enemyStats[0].enemyData.motion.m_value)}
+                    {getEnemyMotionType(data.enemyDatabase[0].enemyData.motion.m_value)}
                   </span>
                 )}
             </div>
-            <p className="flex-1">{data.enemy.description}</p>
+            <p className="flex-1">{data.enemyHandbook.description}</p>
           </div>
         </div>
       </section>
 
-      {data.enemy.abilityList && data.enemy.abilityList.length > 0 && (
+      {data.enemyHandbook.abilityList && data.enemyHandbook.abilityList.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold mb-2">Traits</h2>
           <Separator className="mb-2" />
           <ul className="ml-6">
-            {data.enemy.abilityList.map((ability: any, index: number) =>
+            {data.enemyHandbook.abilityList.map((ability: any, index: number) =>
               ability.textFormat === "TITLE" 
               ? (<li key={index} className="font-bold text-lg mt-4 mb-1 list-none">{ability.text}</li>) 
               : (
@@ -130,17 +131,17 @@ export default async function Page({ params }: { params: Promise<{ lang: string,
         </section>
       )}
 
-      {data.enemyStats && data.enemyStats.length > 0 && (
+      {data.enemyDatabase && data.enemyDatabase.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold mb-2">Attributes</h2>
           <Separator className="mb-4" />
-          {data.meta.isUnreleased === false && (
+          {data.summary.isUnreleased === false && (
             <Alert className="mb-4">
               <AlertCircleIcon />
-              <AlertTitle>Note: A mismatch between CN and EN may cause some resistance indicators for certain enemies to display incorrectly. This will be fixed in the near future (CN enemies should not be affected)</AlertTitle>
+              <AlertTitle>Note: The text below may be in CN since CN data is being used for this table</AlertTitle>
             </Alert>
           )}
-          <StatsTable enemyStats={data.enemyStats} />
+          <StatsTable enemyStats={data.enemyDatabase} />
         </section>
       )}
 
@@ -163,9 +164,9 @@ export default async function Page({ params }: { params: Promise<{ lang: string,
         <Separator className="mb-4" />
         <div>
           <h3 className="text-lg font-semibold mb-2">enemy_handbook_table.json</h3>
-          <CodeBlock code={JSON.stringify(data.enemy, null, 2)} language="json" />
+          <CodeBlock code={JSON.stringify(data.enemyHandbook, null, 2)} language="json" />
           <h3 className="text-lg font-semibold mb-2 mt-8">enemy_database.json</h3>
-          <CodeBlock code={JSON.stringify(data.enemyStats, null, 2)} language="json" />
+          <CodeBlock code={JSON.stringify(data.enemyDatabase, null, 2)} language="json" />
         </div>
       </section>
     </div>

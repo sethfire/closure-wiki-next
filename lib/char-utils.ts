@@ -158,6 +158,7 @@ export function getCharBranch(value: string): string {
     case "primprotector": return "Primal Protector";
     case "skywalker": return "Skyranger";
     case "soulcaster": return "Shaper Caster";
-    default: return "???";
+    case "counsellor": return "Strategist";
+    default: return value;
   }
 }

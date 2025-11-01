@@ -11,26 +11,22 @@ const tagStyles: Record<string, React.CSSProperties> = {
 export function parseBlackBoard(str: string, blackboard: any): string {
   try {
     if (!str) return "";
-
     return str.replace(/{([^}:]+)(?::([^}]+))?}/g, (_, key, format) => {
-        // console.log("Parsing key:", key, "with format:", format);
-
-        const entry = blackboard[key];
+      let val;
+      if (Array.isArray(blackboard)) {
+        const entry = blackboard.find((b: any) => b.key === key);
         if (!entry) return `{${key}}`;
-        let val = entry;
-
-        // const entry = blackboard.find((b: any) => b.key === key);
-        // if (!entry) return `{${key}}`;
-        // let val = entry.value;
-
-        if (format === "0%") return `${Math.round(val * 100)}%`;
-        if (format === "0.0") return val.toFixed(1);
-        if (format === "0") return val.toFixed(0);
-
-        return val.toString();
+        val = entry.value;
+      } else {
+        val = blackboard[key];
+        if (val === undefined) return `{${key}}`;
       }
-    );
-
+      
+      if (format === "0%") return `${Math.round(val * 100)}%`;
+      if (format === "0.0") return val.toFixed(1);
+      if (format === "0") return val.toFixed(0);
+      return val.toString();
+    });
   } catch (e) {
     return str;
   }

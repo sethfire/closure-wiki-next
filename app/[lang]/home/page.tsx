@@ -57,15 +57,7 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
           <li>2025/10/13 - Added promotion and skill material costs</li>
           <li>2025/10/16 - Updated enemy resistances table</li>
           <li>2025/10/29 - Add operator base skills and modules</li>
-        </ul> 
-      </div>
-      <div>
-        <h2 className="text-lg font-semibold mb-2">Todo stuff (in no particular order)</h2>
-        <ul className="list-disc pl-5">
-          <li>Search functionality</li>
-          <li>Sorting and filtering on lists</li>
-          <li>Table of contents on entry pages</li>
-          <li>Multiple language support</li>
+          <li>2025/11/02 - Sorting/filtering on operators, enemies, and operations lists</li>
         </ul> 
       </div>
     </div>

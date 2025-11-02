@@ -12,7 +12,7 @@ export function getEnemyLevelType(value: string): string {
     case "NORMAL": return "Normal";
     case "ELITE": return "Elite";
     case "BOSS": return "Boss";
-    default: return "-";
+    default: return value;
   }
 }
 
@@ -22,7 +22,7 @@ export function getEnemyAttackType(value: string): string {
     case "RANGED": return "Ranged";
     case "ALL": return "Melee/Ranged";
     case "NONE": return "None";
-    default: return "-";
+    default: return value;
   }
 }
 
@@ -30,7 +30,7 @@ export function getEnemyMotionType(value: string): string {
   switch (value) {
     case "WALK": return "Ground";
     case "FLY": return "Aerial";
-    default: return "-";
+    default: return value;
   }
 }
 
@@ -39,7 +39,7 @@ export function getEnemyDamageType(value: string): string {
     case "PHYSIC": return "Physical";
     case "MAGIC": return "Arts";
     case "NO_DAMAGE": return "None";
-    default: return "-";
+    default: return value;
   }
 }
 
@@ -56,7 +56,7 @@ export function getEnemyTag(value: string): string {
     case "wildanimal": return "Wild Beast";
     case "collapsal": return "Collapsal";
     case "origen": return "Originium Creation";
-    default: return "-";
+    default: return value;
   }
 }
 

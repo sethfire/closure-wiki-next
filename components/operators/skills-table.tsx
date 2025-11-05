@@ -1,14 +1,25 @@
+"use client";
+
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { getItemIcon, getSkillIcon } from "@/lib/image-utils";
 import { parseBlackBoard, parseRichText } from "@/lib/parse";
+import { useState } from "react";
 
 export default function SkillsTable({ skills, charSkills, allSkillLvlup, items }: { skills: any[], charSkills: any[], allSkillLvlup: any[], items: any[] }) {
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  
   try {
     return (
       <div className="flex flex-col gap-4">
         {skills.map((skill: any) => {
           const charSkill = charSkills[skill.skillId];
           if (!charSkill) return null;
+
+          // Reverse order if desc
+          const displayLevels = sortOrder === 'desc' 
+            ? [...charSkill.levels].reverse()
+            : charSkill.levels;
 
           return (
             <div key={skill.skillId}>
@@ -27,8 +38,18 @@ export default function SkillsTable({ skills, charSkills, allSkillLvlup, items }
                         <div className="flex items-start gap-4">
                           <img src={getSkillIcon(skill.skillId)}
                           width="64" height="64" loading="lazy" decoding="async" />
-                          <div className="flex flex-col gap-2">
-                            <h3 className="text-lg">{charSkill.levels[0].name}</h3>
+                          <div className="flex flex-col gap-2 flex-1">
+                            <div className="flex items-start justify-between gap-2">
+                              <h3 className="text-lg">{charSkill.levels[0].name}</h3>
+                              <Button
+                                variant={sortOrder === 'desc' ? "outline" : "outline"}
+                                size="sm"
+                                onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                                className="shrink-0 cursor-pointer"
+                              >
+                                {sortOrder === 'asc' ? "Sort Descending" : "Sort Ascending"}
+                              </Button>
+                            </div>
                             <div className="flex flex-row gap-2">
                               {charSkill.levels[0].spData.spType === "INCREASE_WITH_TIME" && (
                                 <Badge style={{ backgroundColor: '#8EC31F', color: 'white' }}>Auto Recovery</Badge>
@@ -62,33 +83,36 @@ export default function SkillsTable({ skills, charSkills, allSkillLvlup, items }
                     </tr>
                   </thead>
                   <tbody>
-                    {charSkill.levels.map((level: any, idx: number) => (
-                      <tr key={idx}>
-                        <td className="border-t p-1 text-center">
-                          {(() => {
-                            switch (idx) {
-                              case 0: return "1";
-                              case 1: return "2";
-                              case 2: return "3";
-                              case 3: return "4";
-                              case 4: return "5";
-                              case 5: return "6";
-                              case 6: return "7";
-                              case 7: return "M1";
-                              case 8: return "M2";
-                              case 9: return "M3";
-                              default: return "";
-                            }
-                          })()}
-                        </td>
-                        <td className="border-t p-1 text-left whitespace-pre-line">
-                          <span dangerouslySetInnerHTML={{ __html: parseRichText(parseBlackBoard(level.description, level.blackboard).replace(/\\n/g, "\n")) }} />
-                        </td>
-                        <td className="border-t p-1 text-center">{level.spData.initSp}</td>
-                        <td className="border-t p-1 text-center">{level.spData.spCost}</td>
-                        <td className="border-t p-1 text-center">{level.duration === -1 ? '-' : level.duration}</td>
-                      </tr>
-                    ))}
+                    {displayLevels.map((level: any, idx: number) => {
+                      const actualIdx = sortOrder === 'asc' ? idx : charSkill.levels.length - 1 - idx;
+                      return (
+                        <tr key={idx}>
+                          <td className="border-t p-1 text-center">
+                            {(() => {
+                              switch (actualIdx) {
+                                case 0: return "1";
+                                case 1: return "2";
+                                case 2: return "3";
+                                case 3: return "4";
+                                case 4: return "5";
+                                case 5: return "6";
+                                case 6: return "7";
+                                case 7: return "M1";
+                                case 8: return "M2";
+                                case 9: return "M3";
+                                default: return "";
+                              }
+                            })()}
+                          </td>
+                          <td className="border-t p-1 text-left whitespace-pre-line">
+                            <span dangerouslySetInnerHTML={{ __html: parseRichText(parseBlackBoard(level.description, level.blackboard).replace(/\\n/g, "\n")) }} />
+                          </td>
+                          <td className="border-t p-1 text-center">{level.spData.initSp}</td>
+                          <td className="border-t p-1 text-center">{level.spData.spCost}</td>
+                          <td className="border-t p-1 text-center">{level.duration === -1 ? '-' : level.duration}</td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>

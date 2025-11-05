@@ -86,7 +86,7 @@ export default function SkillsTable({ skills, charSkills, allSkillLvlup, items }
                     {displayLevels.map((level: any, idx: number) => {
                       const actualIdx = sortOrder === 'asc' ? idx : charSkill.levels.length - 1 - idx;
                       return (
-                        <tr key={idx} className={actualIdx === 9 ? "bg-yellow-50 dark:bg-yellow-200/20" : ""}>
+                        <tr key={idx} className={actualIdx === 9 ? "bg-yellow-50 dark:bg-white/5" : ""}>
                           <td className="border-t p-1 text-center">
                             {(() => {
                               switch (actualIdx) {

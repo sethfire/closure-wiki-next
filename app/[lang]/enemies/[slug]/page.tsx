@@ -32,8 +32,8 @@ export async function generateMetadata(
   if (!data) notFound();
 
   const title = data.summary.name;
-  const description = data.summary.description;
-  const image = data.summary.image;
+  const description = data.summary.desc;
+  const image = data.summary.icon;
 
   const siteName = "Closure Wiki";
   const url = `https://closure.wiki/${lang}/enemies/${slug}`;
